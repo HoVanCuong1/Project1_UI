@@ -1,0 +1,79 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  text-align: center;
+}
+
+/* Header */
+.header {
+  background: #2c7cb0;
+  color: white;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.logo {
+  width: 60px;
+  height: auto;
+}
+
+.header h1 {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+/* Nội dung chính */
+.main {
+  display: flex;
+  height: calc(100vh - 80px);
+}
+
+.half {
+  flex: 1;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.left {
+  background-image: url("https://ktx.vnuhcm.edu.vn/Portals/0/EasyDNNNews/230/640600p701EDNmainktx.png");
+}
+
+.right {
+  background-image: url("https://ktx.vnuhcm.edu.vn/Portals/0/EasyDNNNews/231/640600p706EDNmainktx2.png");
+}
+
+/* Overlay */
+.overlay {
+  background: rgba(44, 124, 176, 0.7);
+  color: white;
+  padding: 30px;
+  border-radius: 10px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.btn {
+  margin-top: 15px;
+  padding: 10px 20px;
+  border: 2px solid white;
+  border-radius: 5px;
+  background: transparent;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background: white;
+  color: #2c7cb0;
+}
