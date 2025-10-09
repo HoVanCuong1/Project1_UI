@@ -1,0 +1,141 @@
+/* Tổng thể */
+.layout {
+  font-family: "Segoe UI", sans-serif;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header {
+  background-color: #1e90ff;
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.header-left {
+  display: flex;
+  align-items: center;
+}
+.header-logo {
+  width: 45px;
+  margin-right: 10px;
+}
+.header-title {
+  font-size: 18px;
+  font-weight: 600;
+}
+.header-right {
+  font-size: 14px;
+}
+
+/* Body layout */
+.body {
+  flex: 1;
+  display: flex;
+  background-color: #f5f6fa;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 230px;
+  background-color: white;
+  border-right: 1px solid #ddd;
+  padding: 15px;
+}
+.sidebar h3 {
+  font-size: 15px;
+  color: #1e3a8a;
+  margin-bottom: 8px;
+}
+.sidebar ul {
+  list-style: none;
+  padding-left: 0;
+}
+.sidebar li {
+  padding: 6px 0;
+  cursor: pointer;
+  color: #374151;
+}
+.sidebar li:hover {
+  color: #1d4ed8;
+  font-weight: 500;
+}
+.sub-menu {
+  padding-left: 15px;
+  font-size: 14px;
+}
+.notice {
+  margin-top: 30px;
+  background: #f0f9ff;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+.notice h4 {
+  margin-bottom: 5px;
+  color: #1e3a8a;
+}
+
+/* Main content */
+.content {
+  flex: 1;
+  padding: 30px 60px;
+  position: relative;
+}
+.alert {
+  background-color: #fee2e2;
+  border: 1px solid #fca5a5;
+  color: #b91c1c;
+  padding: 10px 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+.form {
+  background-color: white;
+  padding: 25px;
+  border-radius: 12px;
+  width: 500px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+.form-group label {
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #374151;
+}
+.form-group input {
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 8px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.form-group input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 4px rgba(37, 99, 235, 0.3);
+}
+
+/* Save button */
+.save-btn {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  font-weight: 600;
+  position: absolute;
+  bottom: 30px;
+  right: 80px;
+}
+.save-btn:hover {
+  background-color: #1d4ed8;
+}
