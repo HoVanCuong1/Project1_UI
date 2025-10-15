@@ -1,0 +1,106 @@
+.booking-room {
+  padding: 30px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Tiêu đề chính */
+.booking-room h1 {
+  font-size: 36px;
+  font-weight: 700;
+  color: #004aad;
+  margin-bottom: 25px;
+}
+
+/* Lưới chọn lọc */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr) auto;
+  gap: 20px;
+  align-items: end;
+  margin-bottom: 25px;
+}
+
+/* Label */
+.form-grid label {
+  display: block;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+/* Select */
+.form-grid select {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  background-color: #f9f9f9;
+}
+
+/* Nút reload */
+.reload-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  height: 38px;
+  transition: background-color 0.2s ease;
+}
+
+.reload-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Danh sách phòng */
+.room-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.room-card {
+  position: relative;
+  width: 150px;
+  padding: 15px;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.room-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Ảnh giường */
+.room-card img {
+  width: 100%;
+  max-width: 100px;
+  margin: 0 auto 10px;
+  display: block;
+}
+
+/* Tên phòng */
+.room-card p {
+  font-weight: 500;
+  margin: 5px 0 0;
+}
+
+/* Số thứ tự */
+.room-num {
+  position: absolute;
+  top: 5px;
+  right: 8px;
+  background-color: #ff6600;
+  color: white;
+  font-size: 14px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+}

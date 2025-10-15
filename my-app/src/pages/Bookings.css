@@ -1,0 +1,88 @@
+.bookings-container {
+  padding: 20px;
+  background-color: #fff;
+}
+
+.bookings-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #0074d9;
+  margin-bottom: 10px;
+}
+
+.warning-text {
+  color: #c0392b;
+  font-style: italic;
+  margin-bottom: 15px;
+}
+
+.booking-btn {
+  background-color: #0074d9;
+  color: white;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-bottom: 15px;
+  transition: background 0.3s;
+}
+
+.booking-btn:hover {
+  background-color: #005fa3;
+}
+
+.bookings-table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.bookings-table th,
+.bookings-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+.bookings-table th {
+  background-color: #f5f5f5;
+  color: #333;
+  font-weight: 600;
+}
+
+.accepted-row {
+  background-color: #d4f8d4;
+}
+
+.status.accepted {
+  color: green;
+  font-weight: bold;
+}
+
+.bookings-table tr:hover {
+  background-color: #f0f8ff;
+  transition: 0.2s;
+}
+/* Nút Booking Bed */
+.booking-btn {
+  display: inline-block;
+  margin: 15px 0;
+  padding: 10px 20px;
+  background-color: #007bff; /* Màu xanh dương */
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 15px;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.booking-btn:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+.booking-btn:active {
+  transform: scale(0.98);
+}

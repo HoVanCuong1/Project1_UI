@@ -1,0 +1,81 @@
+.sis-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "header header"
+    "sidebar content";
+  height: 100vh;
+}
+
+/* Header */
+.sis-header {
+  grid-area: header;
+  background: #0f172a;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.utc-logo {
+  height: 60px;
+  margin-right: 15px;
+}
+
+.header-text h1 {
+  font-size: 18px;
+  margin: 0;
+}
+.header-text p {
+  font-size: 12px;
+  margin: 0;
+}
+
+/* Sidebar */
+.sis-sidebar {
+  grid-area: sidebar;
+  background: #1e293b;
+  color: white;
+  padding: 15px;
+}
+
+.sis-sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sis-sidebar li {
+  margin-bottom: 10px;
+}
+
+.sis-sidebar a {
+  text-decoration: none;
+  color: #e2e8f0;
+  display: block;
+  padding: 10px;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+
+.sis-sidebar a:hover {
+  background-color: #334155;
+}
+
+.sis-sidebar a.active {
+  background-color: #2563eb;
+  color: white;
+}
+
+/* Content */
+.sis-content {
+  grid-area: content;
+  padding: 20px;
+  background: #f8fafc;
+}
