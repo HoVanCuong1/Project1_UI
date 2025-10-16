@@ -1,5 +1,7 @@
+// src/pages/SisUtcLogin.jsx  (hoặc đường dẫn file hiện tại của bạn)
 import React, { useState } from "react";
-import "./SisUtcLogin/SisUtcLogin.css";
+import { useNavigate } from "react-router-dom";
+import "./SisUtcLogin.css";
 
 export default function SisUtcLogin() {
   const [studentId, setStudentId] = useState("");
@@ -7,6 +9,11 @@ export default function SisUtcLogin() {
   const [remember, setRemember] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
+
+  // Tài khoản demo
+  const DEMO_USER = { studentId: "20180001", password: "123456" };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,11 +26,29 @@ export default function SisUtcLogin() {
 
     setLoading(true);
     try {
-      // API giả lập
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      alert("Đăng nhập thành công (demo)");
+      // giả lập request tới API
+      await new Promise((resolve) => setTimeout(resolve, 700));
+
+      // kiểm tra credentials (demo)
+      if (
+        studentId === DEMO_USER.studentId &&
+        password === DEMO_USER.password
+      ) {
+        // lưu trạng thái đăng nhập (ví dụ localStorage)
+        const user = { studentId, remember };
+        if (remember) {
+          localStorage.setItem("utc_user", JSON.stringify(user));
+        } else {
+          sessionStorage.setItem("utc_user", JSON.stringify(user));
+        }
+
+        // redirect sang layout chính
+        navigate("/", { replace: true });
+      } else {
+        setError("Mã sinh viên hoặc mật khẩu không đúng");
+      }
     } catch (err) {
-      setError("Đã xảy ra lỗi");
+      setError("Đã xảy ra lỗi. Vui lòng thử lại.");
     } finally {
       setLoading(false);
     }
@@ -45,7 +70,7 @@ export default function SisUtcLogin() {
           <input
             value={studentId}
             onChange={(e) => setStudentId(e.target.value)}
-            placeholder="VD: 12345678"
+            placeholder="VD: 20180001"
           />
 
           <label>Mật khẩu</label>
