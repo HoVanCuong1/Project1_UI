@@ -1,54 +1,52 @@
-// src/pages/SisUtcLogin.jsx  (hoặc đường dẫn file hiện tại của bạn)
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./SisUtcLogin.css";
+import "./SisUtcLogin.css";                // giữ lại CSS cũ
+import { useAuth } from "../contexts/AuthContext";
 
 export default function SisUtcLogin() {
-  const [studentId, setStudentId] = useState("");
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
+  // vẫn dùng email/password thật (không dùng studentId nữa),
+  // nhưng giữ nguyên giao diện/label nếu bạn muốn
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate();
-
-  // Tài khoản demo
-  const DEMO_USER = { studentId: "20180001", password: "123456" };
+  // nếu muốn auto-fill email đã “ghi nhớ”
+  useEffect(() => {
+    const saved = localStorage.getItem("remember_email");
+    if (saved) {
+      setEmail(saved);
+      setRemember(true);
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
-    if (!studentId || !password) {
-      setError("Vui lòng nhập mã sinh viên và mật khẩu");
+    if (!email || !password) {
+      setError("Vui lòng nhập email và mật khẩu");
       return;
     }
 
-    setLoading(true);
+    setLoading(true); 
     try {
-      // giả lập request tới API
-      await new Promise((resolve) => setTimeout(resolve, 700));
+      await login({ email, password }); // gọi API thật -> BE set cookie AUTH
+      if (remember) localStorage.setItem("remember_email", email);
+      else localStorage.removeItem("remember_email");
 
-      // kiểm tra credentials (demo)
-      if (
-        studentId === DEMO_USER.studentId &&
-        password === DEMO_USER.password
-      ) {
-        // lưu trạng thái đăng nhập (ví dụ localStorage)
-        const user = { studentId, remember };
-        if (remember) {
-          localStorage.setItem("utc_user", JSON.stringify(user));
-        } else {
-          sessionStorage.setItem("utc_user", JSON.stringify(user));
-        }
-
-        // redirect sang layout chính
-        navigate("/", { replace: true });
-      } else {
-        setError("Mã sinh viên hoặc mật khẩu không đúng");
-      }
+      navigate("/", { replace: true });
     } catch (err) {
-      setError("Đã xảy ra lỗi. Vui lòng thử lại.");
+      // FormatResponse phía BE: {resultCode, resultDesc, data}
+      const msg =
+        err?.response?.data?.resultDesc ||
+        err?.message ||
+        "Đăng nhập thất bại";
+      setError(msg);
     } finally {
       setLoading(false);
     }
@@ -57,6 +55,7 @@ export default function SisUtcLogin() {
   return (
     <div className="login-container">
       <div className="login-box">
+        {/* Header + logo như cũ */}
         <div className="login-header">
           <img src="/images/logo-utc.jpg" alt="UTC" className="logo" />
           <div>
@@ -66,11 +65,12 @@ export default function SisUtcLogin() {
         </div>
 
         <form onSubmit={handleSubmit}>
-          <label>Mã sinh viên</label>
+          {/* Nếu muốn giữ label “Mã sinh viên” thì đổi chữ, còn dữ liệu là email */}
+          <label>Email</label>
           <input
-            value={studentId}
-            onChange={(e) => setStudentId(e.target.value)}
-            placeholder="VD: 20180001"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="you@example.com"
           />
 
           <label>Mật khẩu</label>
