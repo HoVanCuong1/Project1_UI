@@ -1,18 +1,18 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import SisUtcLayout from "./SisUtcLayout/SisUtcLayout";
+import SisUtcLayout from "./pages/SisUtcLayout/SisUtcLayout";
 import Home from "./pages/Home";
 import News from "./pages/News";
 import Bookings from "./pages/Bookings";
-import BookingRoom from "./pages/BookingRoom";
-import SisUtcLogin from "./SisUtcLogin/SisUtcLogin"; // đường dẫn đúng với file bạn lưu
+import SisUtcLogin from "./pages/SisUtcLogin/SisUtcLogin";
 import ProtectedRoute from "./components/ProtectedRoute";
+import RoomDetail from "./pages/RoomDetail";
 
 export default function App() {
   return (
     <Router>
       <Routes>
-        {/* Công khai: login */}
+        {/* Trang công khai: login */}
         <Route path="/login" element={<SisUtcLogin />} />
 
         {/* Các route cần đăng nhập */}
@@ -27,8 +27,7 @@ export default function App() {
           <Route index element={<Home />} />
           <Route path="news" element={<News />} />
           <Route path="bookings" element={<Bookings />} />
-          <Route path="booking_room" element={<BookingRoom />} />
-          {/* thêm các route khác */}
+          <Route path="/room/:roomId" element={<RoomDetail />} />
         </Route>
       </Routes>
     </Router>
