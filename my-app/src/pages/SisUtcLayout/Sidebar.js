@@ -6,19 +6,22 @@ export default function Sidebar() {
     <aside className="sis-sidebar">
       <ul>
         <li>
-          <Link to="/">Home</Link>
+          <Link to="/">Trang Chủ</Link>
         </li>
         <li>
-          <Link to="/news">News</Link>
+          <Link to="/news">Tin Tức</Link>
         </li>
         <li>
-          <Link to="/bookings">Bookings</Link>
+          <Link to="/bookings">Đăng Kí Phòng</Link>
         </li>
         <li>
-          <Link to="/electricity-water">Electricity water usage</Link>
+          <Link to="/payment-electricity">Thanh toán tiền điện</Link>
         </li>
         <li>
-          <Link to="/payment-history">Payment history</Link>
+          <Link to="/payment-water">Thanh toán tiền nước</Link>
+        </li>
+        <li>
+          <Link to="/payment-room">Thanh toán tiền phòng</Link>
         </li>
       </ul>
     </aside>
