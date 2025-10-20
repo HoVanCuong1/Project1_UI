@@ -62,9 +62,29 @@ export default function SisUtcLayout() {
 
       <nav className="sis-sidebar">
         <ul>
-          <li><NavLink to="/" end>Home</NavLink></li>
-          <li><NavLink to="/news">News</NavLink></li>
-          <li><NavLink to="/bookings">Bookings</NavLink></li>
+          <li>
+            <NavLink to="/" end>
+              Trang Chủ
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/news">Tin Tức</NavLink>
+          </li>
+          <li>
+            <NavLink to="/bookings">Đăng Kí KTX</NavLink>
+          </li>
+          <li>
+            <NavLink to="/payment-room">Thanh toán tiền phòng</NavLink>
+          </li>
+          <li>
+            <NavLink to="/payment-electricity">Thanh toán tiền điện</NavLink>
+          </li>
+          <li>
+            <NavLink to="/payment-water">Thanh toán tiền nước</NavLink>
+          </li>
+          <li>
+            <NavLink to="/bookings">Lịch sử thanh toán</NavLink>
+          </li>
         </ul>
       </nav>
 
