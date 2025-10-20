@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import "./StudentForm.css";
 
 export default function StudentForm() {
@@ -32,7 +33,7 @@ export default function StudentForm() {
         return;
       }
     }
-
+    console.log(student);
     // Chuyển sang trang Bookings và truyền dữ liệu sinh viên
     navigate("/bookings", { state: { student } });
   };
