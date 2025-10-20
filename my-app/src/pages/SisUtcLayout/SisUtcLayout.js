@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import "./SisUtcLayout.css";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function SisUtcLayout() {
   const { user, logout } = useAuth();
