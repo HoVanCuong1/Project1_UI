@@ -1,101 +1,110 @@
 import React from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import "./RoomDetail.css";
-import { useNavigate, useParams } from "react-router-dom";
 
 export default function RoomDetail() {
+  const { roomId } = useParams();
   const navigate = useNavigate();
-  const { id } = useParams(); // ví dụ id = "P104"
 
-  // Giả lập dữ liệu phòng (sau này bạn có thể fetch API thật)
+  // Giả lập dữ liệu phòng
   const roomData = {
-    khu: "Khu A",
-    nha: "A05",
-    phong: id,
-    loaiphong: "Phòng 6 sinh viên",
-    choTrong: [
-      { id: 1, tinhtrang: "Đã được đăng ký" },
-      { id: 2, tinhtrang: "Trống" },
-      { id: 3, tinhtrang: "Đã được đăng ký" },
-      { id: 4, tinhtrang: "Trống" },
-      { id: 5, tinhtrang: "Đã được đăng ký" },
-      { id: 6, tinhtrang: "Đã được đăng ký" },
-    ],
+    P101: {
+      khu: "A",
+      nha: "A10",
+      phong: "P101",
+      loaiPhong: "Phòng 6 sinh viên",
+      choNgoi: [
+        { id: 1, trangThai: "Đã được đăng ký" },
+        { id: 2, trangThai: "Trống" },
+        { id: 3, trangThai: "Đã được đăng ký" },
+        { id: 4, trangThai: "Trống" },
+        { id: 5, trangThai: "Đã được đăng ký" },
+        { id: 6, trangThai: "Đã được đăng ký" },
+      ],
+    },
+    P202: {
+      khu: "A",
+      nha: "A11",
+      phong: "P202",
+      loaiPhong: "Phòng 4 sinh viên",
+      choNgoi: [
+        { id: 1, trangThai: "Trống" },
+        { id: 2, trangThai: "Trống" },
+        { id: 3, trangThai: "Đã được đăng ký" },
+        { id: 4, trangThai: "Trống" },
+      ],
+    },
   };
+
+  const phong = roomData[roomId];
+
+  if (!phong) {
+    return (
+      <div className="room-detail-container">
+        <h2>Không tìm thấy thông tin phòng {roomId}</h2>
+        <button onClick={() => navigate(-1)}>⬅ Trở lại</button>
+      </div>
+    );
+  }
 
   return (
     <div className="room-detail-container">
-      <div className="room-info">
-        <h3>THÔNG TIN PHÒNG</h3>
+      <div className="info-box">
+        <h2>THÔNG TIN PHÒNG</h2>
         <table>
           <tbody>
             <tr>
               <td>Khu</td>
-              <td>
-                <b>{roomData.khu}</b>
-              </td>
+              <td>{phong.khu}</td>
             </tr>
             <tr>
               <td>Nhà</td>
-              <td>
-                <b>{roomData.nha}</b>
-              </td>
+              <td>{phong.nha}</td>
             </tr>
             <tr>
               <td>Phòng</td>
-              <td>
-                <b>{roomData.phong}</b>
-              </td>
+              <td>{phong.phong}</td>
             </tr>
             <tr>
               <td>Loại phòng</td>
-              <td>
-                <b>{roomData.loaiphong}</b>
-              </td>
+              <td>{phong.loaiPhong}</td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <div className="room-available">
-        <h3>DANH SÁCH CHỖ TRỐNG</h3>
+      <div className="slots-box">
+        <h2>DANH SÁCH CHỖ TRỐNG</h2>
         <table>
           <thead>
             <tr>
-              <th>Chỗ trống</th>
+              <th>Chỗ</th>
               <th>Tình trạng</th>
             </tr>
           </thead>
           <tbody>
-            {roomData.choTrong.map((cho) => (
+            {phong.choNgoi.map((cho) => (
               <tr key={cho.id}>
                 <td>
                   <input
                     type="radio"
-                    disabled={cho.tinhtrang !== "Trống"}
-                    name="cho"
+                    disabled={cho.trangThai !== "Trống"}
+                    name="chonCho"
                   />{" "}
-                  <button
-                    className={`cho-btn ${
-                      cho.tinhtrang !== "Trống" ? "disabled" : ""
-                    }`}
-                  >
-                    Chỗ {cho.id}
-                  </button>
+                  Chỗ {cho.id}
                 </td>
-                <td className={cho.tinhtrang === "Trống" ? "trong" : "dangky"}>
-                  {cho.tinhtrang}
+                <td className={cho.trangThai === "Trống" ? "trong" : "dangky"}>
+                  {cho.trangThai}
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-      </div>
 
-      <div className="actions">
-        <button onClick={() => navigate(-1)} className="back-btn">
-          ← Trở lại
-        </button>
-        <button className="next-btn">Tiếp tục →</button>
+        <div className="buttons">
+          <button onClick={() => navigate(-1)}>⬅ Trở lại</button>
+          <button className="next-btn">Tiếp tục ➡</button>
+        </div>
       </div>
     </div>
   );

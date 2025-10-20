@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./Bookings.css";
 
 export default function Booking() {
+  const location = useLocation();
   const navigate = useNavigate();
+  const studentData = location.state?.student; // Lấy đúng thông tin sinh viên được truyền từ form
 
   // Các state cần đặt ở đầu component
   const [khu, setKhu] = useState("");
@@ -53,7 +55,15 @@ export default function Booking() {
 
   // Khi click vào phòng → chuyển sang trang chi tiết
   const handleRoomClick = (roomId) => {
-    navigate(`/room/${roomId}`);
+    navigate("/student", { state: { roomId } }); // <-- chuyển sang StudentForm, mang theo id phòng
+  };
+
+  // Khi nhấn xác nhận
+  const handleConfirm = () => {
+    console.log("Thông tin sinh viên:", studentData);
+    console.log("Phòng đã chọn:", { khu, gioiTinh, loaiPhong, nha, tang });
+    alert("Đăng ký thành công!");
+    navigate("/success");
   };
 
   // Khi thay đổi select
@@ -97,6 +107,17 @@ export default function Booking() {
 
   return (
     <div className="booking-container">
+      <h2>Chọn phòng ký túc xá</h2>
+
+      {studentData ? (
+        <p className="welcome">
+          Xin chào <b>{studentData.fullName}</b> ({studentData.studentId}) –{" "}
+          {studentData.gender}
+        </p>
+      ) : (
+        <p className="warning">Không có thông tin sinh viên!</p>
+      )}
+
       {/* Hàng chọn bộ lọc */}
       <div className="filter-row">
         <select value={khu} onChange={handleKhuChange}>
@@ -194,6 +215,10 @@ export default function Booking() {
               </div>
             ))}
           </div>
+
+          <button className="confirm-btn" onClick={handleConfirm}>
+            Xác nhận đăng ký
+          </button>
         </>
       )}
     </div>
