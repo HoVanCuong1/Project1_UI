@@ -23,6 +23,18 @@
     }
   },
 
+  "LoginManager": {
+    "request": {
+      "username": "manager1",
+      "password": "123"
+    },
+    "response": {
+      "username": "manager1",
+      "role": "manager",
+      "fullName": "Le Van Bach"
+    }
+  },
+
   "LayDSToaNha": {
     "response": [
       { "TenKhu": "A01", "MaToa": "A1" },

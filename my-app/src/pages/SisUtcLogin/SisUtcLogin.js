@@ -13,7 +13,8 @@ export default function SisUtcLogin() {
 
   // ====== Tài khoản demo ======
   const DEMO_USER = { studentId: "20180001", password: "123456", role: "student" };
-  const DEMO_ADMIN = { studentId: "admin", password: "admin123", role: "admin" };
+  const DEMO_ADMIN = { studentId: "admin", password: "123", role: "admin" };
+  const DEMO_MANAGER = { studentId: "manager1", password: "123", role: "manager" };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,11 +32,13 @@ export default function SisUtcLogin() {
 
       let user = null;
 
-      // ====== Kiểm tra tài khoản (demo) ======
+      // ====== Kiểm tra tài khoản demo ======
       if (studentId === DEMO_USER.studentId && password === DEMO_USER.password) {
         user = DEMO_USER;
       } else if (studentId === DEMO_ADMIN.studentId && password === DEMO_ADMIN.password) {
         user = DEMO_ADMIN;
+      } else if (studentId === DEMO_MANAGER.studentId && password === DEMO_MANAGER.password) {
+        user = DEMO_MANAGER;
       }
 
       if (user) {
@@ -50,6 +53,8 @@ export default function SisUtcLogin() {
         // ====== Điều hướng theo role ======
         if (user.role === "admin") {
           navigate("/admin", { replace: true });
+        } else if (user.role === "manager") {
+          navigate("/manager", { replace: true });
         } else {
           navigate("/", { replace: true });
         }
@@ -75,11 +80,11 @@ export default function SisUtcLogin() {
         </div>
 
         <form onSubmit={handleSubmit}>
-          <label>Mã sinh viên</label>
+          <label>Mã sinh viên / Admin / Manager</label>
           <input
             value={studentId}
             onChange={(e) => setStudentId(e.target.value)}
-            placeholder="VD: 20180001 hoặc admin"
+            placeholder="VD: 20180001, admin hoặc manager1"
           />
 
           <label>Mật khẩu</label>

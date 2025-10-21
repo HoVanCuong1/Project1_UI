@@ -13,6 +13,10 @@ import StudentForm from "./pages/Register/StudentForm";
 import AdminLayout from "./pages/SisUtcLayout/AdminLayout";
 import AdminHome from "./pages/AdminHome";
 
+// ====== Thêm import cho manager ======
+import ManagerLayout from "./pages/SisUtcLayout/ManagerLayout";
+import ManagerHome from "./pages/ManagerHome";
+
 export default function App() {
   return (
     <Router>
@@ -36,7 +40,7 @@ export default function App() {
           <Route path="student" element={<StudentForm />} />
         </Route>
 
-        {/* ====== Route cho admin ====== */}
+        {/* Route cho admin */}
         <Route
           path="/admin"
           element={
@@ -46,6 +50,18 @@ export default function App() {
           }
         >
           <Route index element={<AdminHome />} />
+        </Route>
+
+        {/* Route cho manager */}
+        <Route
+          path="/manager"
+          element={
+            <ProtectedRoute>
+              <ManagerLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<ManagerHome />} />
         </Route>
       </Routes>
     </Router>
