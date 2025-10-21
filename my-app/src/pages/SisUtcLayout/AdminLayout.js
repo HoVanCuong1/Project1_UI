@@ -22,8 +22,7 @@ export default function AdminLayout() {
         <ul>
           <li><NavLink to="/admin" end>Dashboard</NavLink></li>
           <li><NavLink to="/admin/users">Quản lý người dùng</NavLink></li>
-          <li><NavLink to="/admin/rooms">Quản lý phòng</NavLink></li>
-          <li><NavLink to="/admin/announcements">Thông báo</NavLink></li>
+          <li><NavLink to="/admin/rooms">Báo cáo thống kê</NavLink></li>
         </ul>
       </nav>
 
