@@ -9,6 +9,10 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import RoomDetail from "./pages/Register/RoomDetail";
 import StudentForm from "./pages/Register/StudentForm";
 
+// ====== Thêm import cho admin ======
+import AdminLayout from "./pages/SisUtcLayout/AdminLayout";
+import AdminHome from "./pages/AdminHome";
+
 export default function App() {
   return (
     <Router>
@@ -30,6 +34,18 @@ export default function App() {
           <Route path="bookings" element={<Bookings />} />
           <Route path="room/:roomId" element={<RoomDetail />} />
           <Route path="student" element={<StudentForm />} />
+        </Route>
+
+        {/* ====== Route cho admin ====== */}
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <AdminLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<AdminHome />} />
         </Route>
       </Routes>
     </Router>

@@ -11,6 +11,18 @@
     }
   },
 
+  "LoginAdmin": {
+    "request": {
+      "username": "admin",
+      "password": "123"
+    },
+    "response": {
+      "username": "admin",
+      "role": "admin",
+      "fullName": "Quản trị viên"
+    }
+  },
+
   "LayDSToaNha": {
     "response": [
       { "TenKhu": "A01", "MaToa": "A1" },

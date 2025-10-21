@@ -1,4 +1,3 @@
-// src/pages/SisUtcLogin.jsx  (hoặc đường dẫn file hiện tại của bạn)
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./SisUtcLogin.css";
@@ -12,8 +11,9 @@ export default function SisUtcLogin() {
 
   const navigate = useNavigate();
 
-  // Tài khoản demo
-  const DEMO_USER = { studentId: "20180001", password: "123456" };
+  // ====== Tài khoản demo ======
+  const DEMO_USER = { studentId: "20180001", password: "123456", role: "student" };
+  const DEMO_ADMIN = { studentId: "admin", password: "admin123", role: "admin" };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,24 +26,33 @@ export default function SisUtcLogin() {
 
     setLoading(true);
     try {
-      // giả lập request tới API
+      // Giả lập request tới API
       await new Promise((resolve) => setTimeout(resolve, 700));
 
-      // kiểm tra credentials (demo)
-      if (
-        studentId === DEMO_USER.studentId &&
-        password === DEMO_USER.password
-      ) {
-        // lưu trạng thái đăng nhập (ví dụ localStorage)
-        const user = { studentId, remember };
+      let user = null;
+
+      // ====== Kiểm tra tài khoản (demo) ======
+      if (studentId === DEMO_USER.studentId && password === DEMO_USER.password) {
+        user = DEMO_USER;
+      } else if (studentId === DEMO_ADMIN.studentId && password === DEMO_ADMIN.password) {
+        user = DEMO_ADMIN;
+      }
+
+      if (user) {
+        // Lưu trạng thái đăng nhập
+        const userData = { studentId, role: user.role, remember };
         if (remember) {
-          localStorage.setItem("utc_user", JSON.stringify(user));
+          localStorage.setItem("utc_user", JSON.stringify(userData));
         } else {
-          sessionStorage.setItem("utc_user", JSON.stringify(user));
+          sessionStorage.setItem("utc_user", JSON.stringify(userData));
         }
 
-        // redirect sang layout chính
-        navigate("/", { replace: true });
+        // ====== Điều hướng theo role ======
+        if (user.role === "admin") {
+          navigate("/admin", { replace: true });
+        } else {
+          navigate("/", { replace: true });
+        }
       } else {
         setError("Mã sinh viên hoặc mật khẩu không đúng");
       }
@@ -70,7 +79,7 @@ export default function SisUtcLogin() {
           <input
             value={studentId}
             onChange={(e) => setStudentId(e.target.value)}
-            placeholder="VD: 20180001"
+            placeholder="VD: 20180001 hoặc admin"
           />
 
           <label>Mật khẩu</label>
@@ -100,9 +109,7 @@ export default function SisUtcLogin() {
           </button>
         </form>
 
-        <div className="footer">
-          © {new Date().getFullYear()} UTC — Phiên bản demo
-        </div>
+        <div className="footer">© {new Date().getFullYear()} UTC — Phiên bản demo</div>
       </div>
     </div>
   );
