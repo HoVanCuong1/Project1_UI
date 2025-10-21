@@ -32,8 +32,8 @@ export default function App() {
           <Route index element={<Home />} />
           <Route path="news" element={<News />} />
           <Route path="bookings" element={<Bookings />} />
-          <Route path="/room/:roomId" element={<RoomDetail />} />
-          <Route path="/student" element={<StudentForm />} />
+          <Route path="room/:roomId" element={<RoomDetail />} />
+          <Route path="student" element={<StudentForm />} />
         </Route>
          {/* /admin: chỉ ADMIN hoặc MANAGER */}
         <Route

@@ -83,7 +83,7 @@ export default function SisUtcLayout() {
             <NavLink to="/payment-water">Thanh toán tiền nước</NavLink>
           </li>
           <li>
-            <NavLink to="/bookings">Lịch sử thanh toán</NavLink>
+            <NavLink to="/payment-history">Lịch sử thanh toán</NavLink>
           </li>
         </ul>
       </nav>
