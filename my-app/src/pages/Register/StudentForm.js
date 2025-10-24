@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./StudentForm.css";
 
 export default function StudentForm() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const bookingInfo = location.state?.bookingInfo;
 
   const [student, setStudent] = useState({
     fullName: "",
@@ -16,6 +17,11 @@ export default function StudentForm() {
     department: "",
     className: "",
     address: "",
+    khu: bookingInfo?.khu || "",
+    nha: bookingInfo?.nha || "",
+    tang: bookingInfo?.tang || "",
+    loaiphong: bookingInfo?.loaiPhong || "",
+    phong: bookingInfo?.phong || "",
   });
 
   const handleChange = (e) => {
@@ -28,7 +34,10 @@ export default function StudentForm() {
 
     // Kiểm tra bắt buộc các trường
     for (let key in student) {
-      if (student[key].trim() === "") {
+      const value = student[key];
+
+      // Chuyển tất cả về chuỗi để tránh lỗi trim()
+      if (String(value).trim() === "") {
         alert("Vui lòng điền đầy đủ thông tin trước khi tiếp tục!");
         return;
       }

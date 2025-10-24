@@ -54,8 +54,20 @@ export default function Booking() {
   };
 
   // Khi click vào phòng → chuyển sang trang chi tiết
+  //Lưu giá trị phòng
   const handleRoomClick = (roomId) => {
-    navigate("/student", { state: { roomId } }); // <-- chuyển sang StudentForm, mang theo id phòng
+    navigate("/student", {
+      state: {
+        bookingInfo: {
+          khu,
+          gioiTinh,
+          loaiPhong,
+          nha,
+          tang,
+          phong: roomId,
+        },
+      },
+    });
   };
 
   // Khi nhấn xác nhận
@@ -108,7 +120,6 @@ export default function Booking() {
   return (
     <div className="booking-container">
       <h2>Chọn phòng ký túc xá</h2>
-
       {studentData ? (
         <p className="welcome">
           Xin chào <b>{studentData.fullName}</b> ({studentData.studentId}) –{" "}
@@ -117,7 +128,6 @@ export default function Booking() {
       ) : (
         <p className="warning">Không có thông tin sinh viên!</p>
       )}
-
       {/* Hàng chọn bộ lọc */}
       <div className="filter-row">
         <select value={khu} onChange={handleKhuChange}>
@@ -174,7 +184,57 @@ export default function Booking() {
             ))}
         </select>
       </div>
-
+      {/* Bảng hiển thị thông tin sinh viên */}
+      {studentData && (
+        <table className="student-table">
+          <thead>
+            <tr>
+              <th>Mã SV</th>
+              <th>Họ và Tên</th>
+              <th>Giới tính</th>
+              <th>Ngày sinh</th>
+              <th>Lớp</th>
+              <th>Khoa</th>
+              <th>Quê Quán</th>
+              <th>Xác Nhận</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{studentData.studentId}</td>
+              <td>{studentData.fullName}</td>
+              <td>{studentData.gender}</td>
+              <td>{studentData.dateOfBirth}</td>
+              <td>{studentData.className}</td>
+              <td>{studentData.department}</td>
+              <td>{studentData.address}</td>
+              <td>{"Gửi || Xóa"}</td>
+            </tr>
+          </tbody>
+        </table>
+      )}
+      {studentData && (
+        <table className="room-table">
+          <thead>
+            <tr>
+              <th>Khu </th>
+              <th>Tầng</th>
+              <th>Loại phòng</th>
+              <th>Nhà</th>
+              <th>Phòng</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{studentData.khu}</td>
+              <td>{studentData.tang}</td>
+              <td>{studentData.loaiphong}</td>
+              <td>{studentData.nha}</td>
+              <td>{studentData.phong}</td>
+            </tr>
+          </tbody>
+        </table>
+      )}
       {/* Khi đã chọn nhà */}
       {nha && (
         <>
@@ -215,10 +275,9 @@ export default function Booking() {
               </div>
             ))}
           </div>
-
-          <button className="confirm-btn" onClick={handleConfirm}>
-            Xác nhận đăng ký
-          </button>
+          <div className="confirm-btn">
+            <button onClick={handleConfirm}>Xác nhận đăng ký</button>
+          </div>
         </>
       )}
     </div>
