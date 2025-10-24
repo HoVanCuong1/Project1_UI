@@ -16,6 +16,7 @@ import AdminHome from "./pages/AdminHome";
 // ====== Thêm import cho manager ======
 import ManagerLayout from "./pages/SisUtcLayout/ManagerLayout";
 import ManagerHome from "./pages/ManagerHome";
+import Approval from "./pages/Manager/Approval";
 
 export default function App() {
   return (
@@ -62,6 +63,7 @@ export default function App() {
           }
         >
           <Route index element={<ManagerHome />} />
+          <Route path="approval" element={<Approval />} />
         </Route>
       </Routes>
     </Router>

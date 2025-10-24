@@ -1,5 +1,6 @@
 import React from "react";
 import { NavLink, Outlet } from "react-router-dom";
+import Approval from "../Manager/Approval";
 import "./SisUtcLayout.css";
 
 export default function ManagerLayout() {
@@ -23,12 +24,14 @@ export default function ManagerLayout() {
           <li><NavLink to="/manager" end>Dashboard</NavLink></li>
           <li><NavLink to="/manager/rooms">Quản lý phòng</NavLink></li>
           <li><NavLink to="/manager/payments">Quản lý thanh toán</NavLink></li>
+          <li><NavLink to="/manager/approval">Duyệt đăng ký phòng</NavLink></li>
         </ul>
       </nav>
 
       <main className="sis-content">
         <Outlet />
       </main>
+
     </div>
   );
 }

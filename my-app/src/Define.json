@@ -127,5 +127,24 @@
       "MaTin": "T003",
       "ThongBao": "Tin tức đã được đăng thành công."
     }
-  }
+  },
+    
+  "room_registrations": [
+    {
+      "registration_id": 1,
+      "student_id": "ST01",
+      "room_id": "RMA1",
+      "registration_date": "2025-10-07",
+      "status": "Approved",
+      "request_type": "Register"
+    },
+    {
+      "registration_id": 2,
+      "student_id": "ST02",
+      "room_id": "RMA2",
+      "registration_date": "2025-10-07",
+      "status": "Pending",
+      "request_type": "Register"
+    }
+  ]
 }
