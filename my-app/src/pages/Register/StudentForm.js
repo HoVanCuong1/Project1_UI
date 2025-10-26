@@ -29,20 +29,55 @@ export default function StudentForm() {
     setStudent({ ...student, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Kiểm tra bắt buộc các trường
     for (let key in student) {
       const value = student[key];
-
-      // Chuyển tất cả về chuỗi để tránh lỗi trim()
       if (String(value).trim() === "") {
         alert("Vui lòng điền đầy đủ thông tin trước khi tiếp tục!");
         return;
       }
     }
-    console.log(student);
+
+    // === Ghi dữ liệu thật vào API server.js ===
+    try {
+      const res = await fetch("http://localhost:4000/api/registrations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          student_id: student.studentId,
+          full_name: student.fullName,
+          gender: student.gender,
+          date_of_birth: student.dateOfBirth,
+          email: student.email,
+          phone: student.phone,
+          department: student.department,
+          class_name: student.className,
+          address: student.address,
+          khu: student.khu,
+          nha: student.nha,
+          tang: student.tang,
+          room_type: student.loaiphong,
+          room_id: student.phong,
+          registration_date: new Date().toISOString().split("T")[0],
+          status: "PENDING",
+          request_type: "REGISTER"
+        })
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        alert("Đăng ký phòng thành công! Dữ liệu đã được lưu lại.");
+      } else {
+        alert("Không thể ghi dữ liệu đăng ký.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Không thể kết nối máy chủ lưu dữ liệu.");
+    }
+
     // Chuyển sang trang Bookings và truyền dữ liệu sinh viên
     navigate("/bookings", { state: { student } });
   };

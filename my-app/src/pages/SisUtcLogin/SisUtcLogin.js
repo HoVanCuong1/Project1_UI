@@ -11,17 +11,29 @@ export default function SisUtcLogin() {
 
   const navigate = useNavigate();
 
-  // ====== Tài khoản demo ======
-  const DEMO_USER = { studentId: "20180001", password: "123456", role: "student" };
-  const DEMO_ADMIN = { studentId: "admin", password: "123", role: "admin" };
-  const DEMO_MANAGER = { studentId: "manager1", password: "123", role: "manager" };
+  // ====== Danh sách tài khoản demo ======
+  const DEMO_USERS = [
+    { studentId: "221230001", password: "123", role: "USER" },
+    { studentId: "221230002", password: "123", role: "USER" },
+    { studentId: "221230003", password: "123", role: "USER" },
+    { studentId: "221230004", password: "123", role: "USER" },
+    { studentId: "221230005", password: "123", role: "USER" },
+    { studentId: "221230006", password: "123", role: "USER" },
+    { studentId: "221230007", password: "123", role: "USER" },
+    { studentId: "221230008", password: "123", role: "USER" },
+    { studentId: "221230009", password: "123", role: "USER" },
+    { studentId: "221230010", password: "123", role: "USER" }
+  ];
+
+  const DEMO_MANAGER = { studentId: "manager", password: "123", role: "MANAGER" };
+  const DEMO_ADMIN = { studentId: "admin", password: "123", role: "ADMIN" };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
     if (!studentId || !password) {
-      setError("Vui lòng nhập mã sinh viên và mật khẩu");
+      setError("Vui lòng nhập mã tài khoản và mật khẩu");
       return;
     }
 
@@ -30,39 +42,32 @@ export default function SisUtcLogin() {
       // Giả lập request tới API
       await new Promise((resolve) => setTimeout(resolve, 700));
 
-      let user = null;
+      let user = DEMO_USERS.find(
+        (u) => u.studentId === studentId && u.password === password
+      );
 
-      // ====== Kiểm tra tài khoản demo ======
-      if (studentId === DEMO_USER.studentId && password === DEMO_USER.password) {
-        user = DEMO_USER;
-      } else if (studentId === DEMO_ADMIN.studentId && password === DEMO_ADMIN.password) {
-        user = DEMO_ADMIN;
-      } else if (studentId === DEMO_MANAGER.studentId && password === DEMO_MANAGER.password) {
-        user = DEMO_MANAGER;
+      if (!user) {
+        if (studentId === DEMO_MANAGER.studentId && password === DEMO_MANAGER.password)
+          user = DEMO_MANAGER;
+        else if (studentId === DEMO_ADMIN.studentId && password === DEMO_ADMIN.password)
+          user = DEMO_ADMIN;
       }
 
       if (user) {
-        // Lưu trạng thái đăng nhập
         const userData = { studentId, role: user.role, remember };
-        if (remember) {
+        if (remember)
           localStorage.setItem("utc_user", JSON.stringify(userData));
-        } else {
+        else
           sessionStorage.setItem("utc_user", JSON.stringify(userData));
-        }
 
-        // ====== Điều hướng theo role ======
-        if (user.role === "admin") {
-          navigate("/admin", { replace: true });
-        } else if (user.role === "manager") {
-          navigate("/manager", { replace: true });
-        } else {
-          navigate("/", { replace: true });
-        }
+        if (user.role === "ADMIN") navigate("/admin", { replace: true });
+        else if (user.role === "MANAGER") navigate("/manager", { replace: true });
+        else navigate("/", { replace: true });
       } else {
-        setError("Mã sinh viên hoặc mật khẩu không đúng");
+        setError("Sai thông tin đăng nhập");
       }
-    } catch (err) {
-      setError("Đã xảy ra lỗi. Vui lòng thử lại.");
+    } catch {
+      setError("Lỗi hệ thống, vui lòng thử lại");
     } finally {
       setLoading(false);
     }
@@ -74,17 +79,17 @@ export default function SisUtcLogin() {
         <div className="login-header">
           <img src="/images/logo-utc.jpg" alt="UTC" className="logo" />
           <div>
-            <h1>Hệ thống thông tin sinh viên</h1>
-            <p>Trường Đại học Giao thông vận tải</p>
+            <h1>Hệ thống quản lý ký túc xá</h1>
+            <p>Trường Đại học Giao thông Vận tải</p>
           </div>
         </div>
 
         <form onSubmit={handleSubmit}>
-          <label>Mã sinh viên / Admin / Manager</label>
+          <label>Tài khoản</label>
           <input
             value={studentId}
             onChange={(e) => setStudentId(e.target.value)}
-            placeholder="VD: 20180001, admin hoặc manager1"
+            placeholder="VD: 221230001, manager hoặc admin"
           />
 
           <label>Mật khẩu</label>
@@ -92,7 +97,7 @@ export default function SisUtcLogin() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Mật khẩu"
+            placeholder="Mật khẩu: 123"
           />
 
           <div className="form-footer">
@@ -104,7 +109,6 @@ export default function SisUtcLogin() {
               />
               Ghi nhớ đăng nhập
             </label>
-            <a href="#">Quên mật khẩu?</a>
           </div>
 
           {error && <div className="error">{error}</div>}

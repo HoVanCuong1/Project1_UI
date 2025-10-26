@@ -1,56 +1,101 @@
 {
-  "Login": {
-    "request": {
-      "username": "20180001",
-      "password": "123456"
+  "LoginUsers": [
+    {
+      "username": "221230001",
+      "password": "123",
+      "role": "USER"
     },
-    "response": {
-      "username": "20180001",
-      "role": "student",
-      "fullName": "Nguyễn Văn A"
-    }
-  },
-
-  "LoginAdmin": {
-    "request": {
-      "username": "admin",
-      "password": "123"
+    {
+      "username": "221230002",
+      "password": "123",
+      "role": "USER"
     },
-    "response": {
-      "username": "admin",
-      "role": "admin",
-      "fullName": "Quản trị viên"
+    {
+      "username": "221230003",
+      "password": "123",
+      "role": "USER"
+    },
+    {
+      "username": "221230004",
+      "password": "123",
+      "role": "USER"
+    },
+    {
+      "username": "221230005",
+      "password": "123",
+      "role": "USER"
+    },
+    {
+      "username": "221230006",
+      "password": "123",
+      "role": "USER"
+    },
+    {
+      "username": "221230007",
+      "password": "123",
+      "role": "USER"
+    },
+    {
+      "username": "221230008",
+      "password": "123",
+      "role": "USER"
+    },
+    {
+      "username": "221230009",
+      "password": "123",
+      "role": "USER"
+    },
+    {
+      "username": "221230010",
+      "password": "123",
+      "role": "USER"
     }
-  },
-
+  ],
   "LoginManager": {
-    "request": {
-      "username": "manager1",
-      "password": "123"
-    },
-    "response": {
-      "username": "manager1",
-      "role": "manager",
-      "fullName": "Le Van Bach"
-    }
+    "username": "manager",
+    "password": "123",
+    "role": "MANAGER",
+    "fullName": "Nguyễn Quản Lý"
   },
-
+  "LoginAdmin": {
+    "username": "admin",
+    "password": "123",
+    "role": "ADMIN",
+    "fullName": "Trần Quản Trị"
+  },
   "LayDSToaNha": {
     "response": [
-      { "TenKhu": "A01", "MaToa": "A1" },
-      { "TenKhu": "A02", "MaToa": "A2" },
-      { "TenKhu": "B01", "MaToa": "B1" }
+      {
+        "TenKhu": "A01",
+        "MaToa": "A1"
+      },
+      {
+        "TenKhu": "A02",
+        "MaToa": "A2"
+      },
+      {
+        "TenKhu": "B01",
+        "MaToa": "B1"
+      }
     ]
   },
-
   "LayDSLoaiPhong": {
-    "request": { "MaToa": "A01" },
+    "request": {
+      "MaToa": "A01"
+    },
     "response": [
-      { "LoaiPhong": "Phòng 4 người", "MaLoaiPhong": "L4", "Gia": "120000" },
-      { "LoaiPhong": "Phòng 6 người", "MaLoaiPhong": "L6", "Gia": "100000" }
+      {
+        "LoaiPhong": "Phòng 4 người",
+        "MaLoaiPhong": "L4",
+        "Gia": "120000"
+      },
+      {
+        "LoaiPhong": "Phòng 6 người",
+        "MaLoaiPhong": "L6",
+        "Gia": "100000"
+      }
     ]
   },
-
   "LayDSPhongTrong": {
     "request": {
       "Gioitinh": "Nam",
@@ -58,11 +103,16 @@
       "MaLoaiPhong": "L6"
     },
     "response": [
-      { "LoaiPhong": "Dịch vụ phòng 6 người", "MaPhong": "P403" },
-      { "LoaiPhong": "Dịch vụ phòng 6 người", "MaPhong": "P404" }
+      {
+        "LoaiPhong": "Phòng 6 người",
+        "MaPhong": "P403"
+      },
+      {
+        "LoaiPhong": "Phòng 6 người",
+        "MaPhong": "P404"
+      }
     ]
   },
-
   "LayDSGiuong": {
     "request": {
       "MaPhong": "P403",
@@ -71,7 +121,11 @@
       "MaLoaiPhong": "L6"
     },
     "response": [
-      { "MaGiuong": "G1", "TenGiuong": "Giường 1", "TTGiuong": "Trống" },
+      {
+        "MaGiuong": "G1",
+        "TenGiuong": "Giường 1",
+        "TTGiuong": "Trống"
+      },
       {
         "MaGiuong": "G2",
         "TenGiuong": "Giường 2",
@@ -79,72 +133,26 @@
       }
     ]
   },
-
-  "XacNhanDatPhong": {
-    "request": {
-      "MaPhong": "P403",
-      "MaToa": "A01",
-      "Gioitinh": "Nam",
-      "MaLoaiPhong": "L6",
-      "MaGiuong": "G1",
-      "Gia": "100000"
-    },
-    "response": {
-      "TrangThai": "Thành công",
-      "ThongBao": "Đặt giường thành công, vui lòng thanh toán để hoàn tất.",
-      "QRThanhToan": "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=ThanhToan_G1_100000"
-    }
-  },
-
-  "LayDSTinTuc": {
-    "response": [
-      {
-        "MaTin": "T001",
-        "TieuDe": "Thông báo đăng ký ký túc xá học kỳ 2/2025",
-        "NoiDung": "Sinh viên vui lòng hoàn tất đăng ký trước ngày 30/11/2025.",
-        "NgayDang": "2025-10-13",
-        "NguoiDang": "Phòng CTCT - SV"
-      },
-      {
-        "MaTin": "T002",
-        "TieuDe": "Thông báo bảo trì hệ thống",
-        "NoiDung": "Hệ thống SIS sẽ bảo trì từ 22h đến 23h ngày 15/10/2025.",
-        "NgayDang": "2025-10-12",
-        "NguoiDang": "Trung tâm CNTT"
-      }
-    ]
-  },
-
-  "DangTinTuc": {
-    "request": {
-      "TieuDe": "Thông báo họp lớp sinh viên K64",
-      "NoiDung": "Tất cả sinh viên lớp K64-HTTT họp tại hội trường A2 lúc 9h sáng ngày 20/10.",
-      "NguoiDang": "Nguyễn Văn A (Lớp trưởng)",
-      "NgayDang": "2025-10-13"
-    },
-    "response": {
-      "TrangThai": "Thành công",
-      "MaTin": "T003",
-      "ThongBao": "Tin tức đã được đăng thành công."
-    }
-  },
-    
   "room_registrations": [
     {
-      "registration_id": 1,
-      "student_id": "ST01",
-      "room_id": "RMA1",
-      "registration_date": "2025-10-07",
-      "status": "Approved",
-      "request_type": "Register"
-    },
-    {
-      "registration_id": 2,
-      "student_id": "ST02",
-      "room_id": "RMA2",
-      "registration_date": "2025-10-07",
-      "status": "Pending",
-      "request_type": "Register"
+      "student_id": "221230001",
+      "full_name": "Họ và tên 1",
+      "gender": "Nam",
+      "date_of_birth": "2025-10-01",
+      "email": "Email@1",
+      "phone": "Số điện thoại 1",
+      "department": "Khoa 1",
+      "class_name": "Lớp 1",
+      "address": "Địa chỉ 1",
+      "khu": "A",
+      "nha": "A10",
+      "tang": 1,
+      "room_type": "Phòng 6 sinh viên",
+      "room_id": "P101",
+      "registration_date": "2025-10-26",
+      "status": "APPROVED",
+      "request_type": "REGISTER",
+      "registration_id": 1761478580708
     }
   ]
 }

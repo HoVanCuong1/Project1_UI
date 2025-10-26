@@ -22,7 +22,7 @@ export default function ManagerLayout() {
       <nav className="sis-sidebar">
         <ul>
           <li><NavLink to="/manager" end>Dashboard</NavLink></li>
-          <li><NavLink to="/manager/rooms">Quản lý phòng</NavLink></li>
+          <li><NavLink to="/manager/dorms">Quản lý phòng</NavLink></li> {/* ← đổi đường dẫn này */}
           <li><NavLink to="/manager/payments">Quản lý thanh toán</NavLink></li>
           <li><NavLink to="/manager/approval">Duyệt đăng ký phòng</NavLink></li>
         </ul>
@@ -31,7 +31,6 @@ export default function ManagerLayout() {
       <main className="sis-content">
         <Outlet />
       </main>
-
     </div>
   );
 }

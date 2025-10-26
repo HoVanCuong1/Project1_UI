@@ -1,0 +1,56 @@
+.manager-dorms {
+  padding: 16px;
+  font-family: Arial, sans-serif;
+  color: #222;
+}
+
+h2 {
+  margin-bottom: 12px;
+}
+
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.filter-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-item label {
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.filter-item select {
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  min-width: 180px;
+}
+
+.student-list {
+  margin-top: 16px;
+}
+
+.students-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+}
+
+.students-table th,
+.students-table td {
+  border: 1px solid #eee;
+  padding: 8px;
+  text-align: left;
+  font-size: 13px;
+}
+
+.info {
+  color: #777;
+  padding: 8px 0;
+}

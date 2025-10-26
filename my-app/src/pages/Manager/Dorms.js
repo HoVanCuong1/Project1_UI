@@ -1,16 +1,18 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Dorms.css";
-import "./Approval.css";
 
 export default function Dorms() {
+  const navigate = useNavigate();
+
+  // Bộ lọc
   const [khu, setKhu] = useState("");
   const [gioiTinh, setGioiTinh] = useState("");
   const [loaiPhong, setLoaiPhong] = useState("");
   const [nha, setNha] = useState("");
   const [tang, setTang] = useState(1);
-  const [selectedRoom, setSelectedRoom] = useState(null);
 
-  // dữ liệu tĩnh
+  // Dữ liệu mẫu (giống Bookings.js)
   const data = {
     A: {
       Nam: {
@@ -48,18 +50,29 @@ export default function Dorms() {
     ],
   };
 
-  // khi click phòng
+  // Click phòng
   const handleRoomClick = (roomId) => {
-    setSelectedRoom(roomId);
+    navigate(`/manager/room/${roomId}`, {
+      state: { khu, gioiTinh, loaiPhong, nha, tang },
+    });
   };
 
-  // biểu tượng giường
   const getBedIcons = (used, total) => {
     const arr = [];
-    for (let i = 0; i < used; i++)
-      arr.push(<span key={"r" + i} className="bed red">👤</span>);
-    for (let i = 0; i < total - used; i++)
-      arr.push(<span key={"g" + i} className="bed green">🧍‍♂️</span>);
+    for (let i = 0; i < used; i++) {
+      arr.push(
+        <span key={"r" + i} className="bed red">
+          👤
+        </span>
+      );
+    }
+    for (let i = 0; i < total - used; i++) {
+      arr.push(
+        <span key={"g" + i} className="bed green">
+          🧍‍♂️
+        </span>
+      );
+    }
     return arr;
   };
 
@@ -69,28 +82,36 @@ export default function Dorms() {
 
       {/* Bộ lọc */}
       <div className="filter-row">
-        <select value={khu} onChange={(e) => { setKhu(e.target.value); setGioiTinh(""); setLoaiPhong(""); setNha(""); }}>
+        <select value={khu} onChange={(e) => {setKhu(e.target.value); setGioiTinh(""); setLoaiPhong(""); setNha("");}}>
           <option value="">-- Chọn Khu --</option>
-          {Object.keys(data).map((k) => <option key={k} value={k}>{k}</option>)}
+          {Object.keys(data).map((k) => (
+            <option key={k} value={k}>{k}</option>
+          ))}
         </select>
 
-        <select value={gioiTinh} onChange={(e) => { setGioiTinh(e.target.value); setLoaiPhong(""); setNha(""); }} disabled={!khu}>
+        <select value={gioiTinh} onChange={(e) => {setGioiTinh(e.target.value); setLoaiPhong(""); setNha("");}} disabled={!khu}>
           <option value="">-- Giới tính --</option>
-          {khu && Object.keys(data[khu]).map((g) => <option key={g} value={g}>{g}</option>)}
+          {khu && Object.keys(data[khu]).map((g) => (
+            <option key={g} value={g}>{g}</option>
+          ))}
         </select>
 
-        <select value={loaiPhong} onChange={(e) => { setLoaiPhong(e.target.value); setNha(""); }} disabled={!gioiTinh}>
+        <select value={loaiPhong} onChange={(e) => {setLoaiPhong(e.target.value); setNha("");}} disabled={!gioiTinh}>
           <option value="">-- Loại phòng --</option>
-          {khu && gioiTinh && Object.keys(data[khu][gioiTinh]).map((lp) => <option key={lp} value={lp}>{lp}</option>)}
+          {khu && gioiTinh && Object.keys(data[khu][gioiTinh]).map((lp) => (
+            <option key={lp} value={lp}>{lp}</option>
+          ))}
         </select>
 
         <select value={nha} onChange={(e) => setNha(e.target.value)} disabled={!loaiPhong}>
           <option value="">-- Nhà --</option>
-          {khu && gioiTinh && loaiPhong && data[khu][gioiTinh][loaiPhong].map((n) => <option key={n} value={n}>{n}</option>)}
+          {khu && gioiTinh && loaiPhong && data[khu][gioiTinh][loaiPhong].map((n) => (
+            <option key={n} value={n}>{n}</option>
+          ))}
         </select>
       </div>
 
-      {/* Khi chọn nhà */}
+      {/* Khi đã chọn Nhà */}
       {nha && (
         <>
           <div className="legend">
@@ -100,7 +121,11 @@ export default function Dorms() {
 
           <div className="floor-tabs">
             {[1, 2, 3, 4].map((f) => (
-              <button key={f} className={tang === f ? "active" : ""} onClick={() => setTang(f)}>
+              <button
+                key={f}
+                className={tang === f ? "active" : ""}
+                onClick={() => setTang(f)}
+              >
                 Tầng {f}
               </button>
             ))}
@@ -110,7 +135,7 @@ export default function Dorms() {
             {roomsByFloor[tang].map((room) => (
               <div
                 key={room.id}
-                className={`room-card ${selectedRoom === room.id ? "selected" : ""}`}
+                className="room-card"
                 onClick={() => handleRoomClick(room.id)}
               >
                 <h3>{room.name}</h3>
@@ -123,32 +148,6 @@ export default function Dorms() {
                 <div className="beds">{getBedIcons(room.used, room.total)}</div>
               </div>
             ))}
-          </div>
-
-          <div className="approval-container" style={{ marginTop: "30px" }}>
-            <h3>
-              {selectedRoom
-                ? `Danh sách sinh viên trong phòng ${selectedRoom}`
-                : "Danh sách sinh viên trong phòng"}
-            </h3>
-            <table className="approval-table">
-              <thead>
-                <tr>
-                  <th>Mã sinh viên</th>
-                  <th>Họ và tên</th>
-                  <th>Giới tính</th>
-                  <th>Khoa</th>
-                  <th>Lớp</th>
-                  <th>Email</th>
-                  <th>Điện thoại</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td colSpan="7">Không có sinh viên trong phòng</td>
-                </tr>
-              </tbody>
-            </table>
           </div>
         </>
       )}
