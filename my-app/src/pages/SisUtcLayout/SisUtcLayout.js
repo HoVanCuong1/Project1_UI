@@ -36,16 +36,10 @@ export default function SisUtcLayout() {
             <NavLink to="/bookings">Đăng Kí KTX</NavLink>
           </li>
           <li>
-            <NavLink to="/payment-room">Thanh toán tiền phòng</NavLink>
+            <NavLink to="/payments">Thanh toán</NavLink>
           </li>
           <li>
-            <NavLink to="/payment-electricity">Thanh toán tiền điện</NavLink>
-          </li>
-          <li>
-            <NavLink to="/payment-water">Thanh toán tiền nước</NavLink>
-          </li>
-          <li>
-            <NavLink to="/payment-history">Lịch sử thanh toán</NavLink>
+            <NavLink to="/payment-historys">Lịch sử thanh toán</NavLink>
           </li>
         </ul>
       </nav>

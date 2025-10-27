@@ -8,6 +8,8 @@ import SisUtcLogin from "./pages/SisUtcLogin/SisUtcLogin";
 import ProtectedRoute from "./components/ProtectedRoute";
 import RoomDetail from "./pages/Register/RoomDetail";
 import StudentForm from "./pages/Register/StudentForm";
+import Payment from "./pages/Payment/Payment";
+import PaymentHistory from "./pages/Payment/PaymentHistory";
 
 export default function App() {
   return (
@@ -28,6 +30,8 @@ export default function App() {
           <Route index element={<Home />} />
           <Route path="news" element={<News />} />
           <Route path="bookings" element={<Bookings />} />
+          <Route path="payments" element={<Payment />} />
+          <Route path="payment-historys" element={<PaymentHistory />} />
           <Route path="room/:roomId" element={<RoomDetail />} />
           <Route path="student" element={<StudentForm />} />
         </Route>

@@ -15,13 +15,10 @@ export default function Sidebar() {
           <Link to="/bookings">Đăng Kí Phòng</Link>
         </li>
         <li>
-          <Link to="/payment-electricity">Thanh toán tiền điện</Link>
+          <Link to="/payments">Thanh toán</Link>
         </li>
         <li>
-          <Link to="/payment-water">Thanh toán tiền nước</Link>
-        </li>
-        <li>
-          <Link to="/payment-room">Thanh toán tiền phòng</Link>
+          <Link to="/payment-historys">Lịch sử thanh toán</Link>
         </li>
       </ul>
     </aside>
