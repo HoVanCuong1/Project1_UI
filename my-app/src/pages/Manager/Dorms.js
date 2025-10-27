@@ -1,155 +1,229 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import "./Dorms.css";
+import "./RoomFilter.css";
+import "./RoomStudentList.css";
+import Define from "../../Define.json";
+
+/**
+ * Dorms.js – cập nhật tự động từ server demo-data/
+ * Dữ liệu luôn đồng bộ theo rooms.json và students.json
+ */
 
 export default function Dorms() {
-  const navigate = useNavigate();
+  const [filters, setFilters] = useState({ khu: "", gender: "", roomType: "", nha: "" });
+  const [floorsData, setFloorsData] = useState({});
+  const [floorsSorted, setFloorsSorted] = useState([]);
+  const [selectedFloor, setSelectedFloor] = useState(null);
+  const [selectedRoom, setSelectedRoom] = useState(null);
+  const [studentsInRoom, setStudentsInRoom] = useState([]);
 
-  // Bộ lọc
-  const [khu, setKhu] = useState("");
-  const [gioiTinh, setGioiTinh] = useState("");
-  const [loaiPhong, setLoaiPhong] = useState("");
-  const [nha, setNha] = useState("");
-  const [tang, setTang] = useState(1);
+  const khuOptions = Array.from(new Set((Define.LayDSToaNha?.response || []).map(i => i.TenKhu)));
+  const nhaOptions = (Define.LayDSToaNha?.response || []);
+  const roomTypeOptions = (Define.LayDSLoaiPhong?.response || []).map(i => i.LoaiPhong);
 
-  // Dữ liệu mẫu (giống Bookings.js)
-  const data = {
-    A: {
-      Nam: {
-        "Phòng 6 sinh viên": ["A10", "A11"],
-        "Phòng 4 sinh viên": ["A12"],
-      },
-      Nữ: { "Phòng 6 sinh viên": ["A12"] },
-    },
-    B: {
-      Nam: { "Phòng 4 sinh viên": ["B1", "B2"] },
-      Nữ: { "Phòng 6 sinh viên": ["B3", "B4"] },
-    },
-  };
+  // Lấy danh sách phòng thật từ server thay vì Define.json
+  async function fetchRooms() {
+    const { nha, gender } = filters;
+    if (!nha || !gender) return [];
 
-  const roomsByFloor = {
-    1: [
-      { id: "P101", name: "P101", total: 6, used: 5 },
-      { id: "P102", name: "P102", total: 6, used: 6 },
-      { id: "P103", name: "P103", total: 6, used: 4 },
-    ],
-    2: [
-      { id: "P201", name: "P201", total: 6, used: 6 },
-      { id: "P202", name: "P202", total: 6, used: 5 },
-      { id: "P203", name: "P203", total: 6, used: 2 },
-    ],
-    3: [
-      { id: "P301", name: "P301", total: 6, used: 3 },
-      { id: "P302", name: "P302", total: 6, used: 5 },
-      { id: "P303", name: "P303", total: 6, used: 6 },
-    ],
-    4: [
-      { id: "P401", name: "P401", total: 6, used: 4 },
-      { id: "P402", name: "P402", total: 6, used: 6 },
-      { id: "P403", name: "P403", total: 6, used: 1 },
-    ],
-  };
+    try {
+      const res = await fetch("http://localhost:4000/api/rooms");
+      const data = await res.json();
+      return data.filter(r => {
+        const matchesDorm = r.dormName === nha;
+        const matchesGender = r.roomType === (gender === "Nam" ? "MALE" : "FEMALE");
+        return matchesDorm && matchesGender;
+      });
+    } catch (err) {
+      console.error("Lỗi tải dữ liệu phòng:", err);
+      return [];
+    }
+  }
 
-  // Click phòng
-  const handleRoomClick = (roomId) => {
-    navigate(`/manager/room/${roomId}`, {
-      state: { khu, gioiTinh, loaiPhong, nha, tang },
+
+  async function buildFullRoomList() {
+    const { nha, gender, roomType } = filters;
+    if (!nha || !gender || !roomType) return [];
+
+    const rooms = await fetchRooms();
+    const regs = (Define.room_registrations || []).filter(
+      r => r.nha === nha && r.room_type === roomType && r.gender === gender
+    );
+
+    return rooms.map(r => {
+      const capacity = roomType.includes("6") ? 6 : 4;
+      const inRoom = regs.filter(reg => reg.room_id === r.room_id && reg.status === "APPROVED");
+      return {
+        ...r,
+        occupants: r.currentOccupants || inRoom.length,
+        capacity,
+        Tang: r.floor || 1,
+        students: inRoom
+      };
     });
-  };
+  }
 
-  const getBedIcons = (used, total) => {
+  useEffect(() => {
+    const loadRooms = async () => {
+      const allFilled = Object.values(filters).every(Boolean);
+      if (!allFilled) {
+        setFloorsData({});
+        setFloorsSorted([]);
+        setSelectedFloor(null);
+        setSelectedRoom(null);
+        return;
+      }
+
+      const fullRooms = await buildFullRoomList();
+      const grouped = {};
+      fullRooms.forEach(r => {
+        if (!grouped[r.Tang]) grouped[r.Tang] = [];
+        grouped[r.Tang].push(r);
+      });
+
+      const sorted = Object.keys(grouped)
+        .map(n => parseInt(n, 10))
+        .sort((a, b) => a - b);
+      setFloorsData(grouped);
+      setFloorsSorted(sorted);
+      setSelectedFloor(sorted[0] || null);
+      setSelectedRoom(null);
+    };
+    loadRooms();
+  }, [filters]);
+
+  async function handleRoomClick(room) {
+    setSelectedRoom(room);
+    try {
+      const res = await fetch(`http://localhost:4000/api/rooms/${room.room_id}/students`);
+      const data = await res.json();
+      setStudentsInRoom(data || []);
+    } catch (err) {
+      console.error("Lỗi tải danh sách sinh viên trong phòng:", err);
+      setStudentsInRoom([]);
+    }
+  }
+
+  function resetToFilters() {
+    setSelectedRoom(null);
+    setStudentsInRoom([]);
+  }
+
+  function getBedIcons(used, total) {
     const arr = [];
-    for (let i = 0; i < used; i++) {
-      arr.push(
-        <span key={"r" + i} className="bed red">
-          👤
-        </span>
-      );
-    }
-    for (let i = 0; i < total - used; i++) {
-      arr.push(
-        <span key={"g" + i} className="bed green">
-          🧍‍♂️
-        </span>
-      );
-    }
+    for (let i = 0; i < used; i++) arr.push(<span key={"r" + i} className="bed red">👤</span>);
+    for (let i = 0; i < total - used; i++) arr.push(<span key={"g" + i} className="bed green">🧍‍♂️</span>);
     return arr;
-  };
+  }
 
   return (
-    <div className="booking-container">
+    <div className="dorms-container">
       <h2>Quản lý phòng ký túc xá</h2>
 
-      {/* Bộ lọc */}
-      <div className="filter-row">
-        <select value={khu} onChange={(e) => {setKhu(e.target.value); setGioiTinh(""); setLoaiPhong(""); setNha("");}}>
-          <option value="">-- Chọn Khu --</option>
-          {Object.keys(data).map((k) => (
-            <option key={k} value={k}>{k}</option>
-          ))}
-        </select>
-
-        <select value={gioiTinh} onChange={(e) => {setGioiTinh(e.target.value); setLoaiPhong(""); setNha("");}} disabled={!khu}>
-          <option value="">-- Giới tính --</option>
-          {khu && Object.keys(data[khu]).map((g) => (
-            <option key={g} value={g}>{g}</option>
-          ))}
-        </select>
-
-        <select value={loaiPhong} onChange={(e) => {setLoaiPhong(e.target.value); setNha("");}} disabled={!gioiTinh}>
-          <option value="">-- Loại phòng --</option>
-          {khu && gioiTinh && Object.keys(data[khu][gioiTinh]).map((lp) => (
-            <option key={lp} value={lp}>{lp}</option>
-          ))}
-        </select>
-
-        <select value={nha} onChange={(e) => setNha(e.target.value)} disabled={!loaiPhong}>
-          <option value="">-- Nhà --</option>
-          {khu && gioiTinh && loaiPhong && data[khu][gioiTinh][loaiPhong].map((n) => (
-            <option key={n} value={n}>{n}</option>
-          ))}
-        </select>
-      </div>
-
-      {/* Khi đã chọn Nhà */}
-      {nha && (
+      {!selectedRoom && (
         <>
-          <div className="legend">
-            <span className="legend-item red">👤 Đã có SV</span>
-            <span className="legend-item green">🧍‍♂️ Còn trống</span>
+          <div className="filter-row">
+            <select value={filters.khu} onChange={e => setFilters({ ...filters, khu: e.target.value, nha: "" })}>
+              <option value="">-- Chọn Khu --</option>
+              {khuOptions.map(k => <option key={k} value={k}>{k}</option>)}
+            </select>
+
+            <select value={filters.gender} onChange={e => setFilters({ ...filters, gender: e.target.value })}>
+              <option value="">-- Giới tính --</option>
+              <option value="Nam">Nam</option>
+              <option value="Nữ">Nữ</option>
+            </select>
+
+            <select value={filters.roomType} onChange={e => setFilters({ ...filters, roomType: e.target.value })}>
+              <option value="">-- Loại phòng --</option>
+              {roomTypeOptions.map(rt => <option key={rt} value={rt}>{rt}</option>)}
+            </select>
+
+            <select
+              value={filters.nha}
+              onChange={e => setFilters({ ...filters, nha: e.target.value })}
+            >
+              <option value="">-- Nhà --</option>
+              {nhaOptions
+                .filter(n => n.TenKhu === filters.khu)
+                .map(n => <option key={n.MaToa} value={n.MaToa}>{n.MaToa}</option>)}
+            </select>
           </div>
 
-          <div className="floor-tabs">
-            {[1, 2, 3, 4].map((f) => (
-              <button
-                key={f}
-                className={tang === f ? "active" : ""}
-                onClick={() => setTang(f)}
-              >
-                Tầng {f}
-              </button>
-            ))}
-          </div>
-
-          <div className="room-list">
-            {roomsByFloor[tang].map((room) => (
-              <div
-                key={room.id}
-                className="room-card"
-                onClick={() => handleRoomClick(room.id)}
-              >
-                <h3>{room.name}</h3>
-                <p>
-                  Phòng {room.total} sinh viên <br />
-                  <span className="count">
-                    Còn trống: {room.total - room.used}/{room.total}
-                  </span>
-                </p>
-                <div className="beds">{getBedIcons(room.used, room.total)}</div>
+          {filters.nha && floorsSorted.length > 0 && (
+            <>
+              <div className="legend">
+                <span className="legend-item red">👤 Đã có SV</span>
+                <span className="legend-item green">🧍‍♂️ Còn trống</span>
               </div>
-            ))}
-          </div>
+
+              <div className="floor-tabs">
+                {floorsSorted.map(f => (
+                  <button
+                    key={f}
+                    className={selectedFloor === f ? "active" : ""}
+                    onClick={() => setSelectedFloor(f)}
+                  >
+                    Tầng {f}
+                  </button>
+                ))}
+              </div>
+
+              <div className="room-list">
+                {floorsData[selectedFloor]?.map(room => (
+                  <div
+                    key={room.room_id}
+                    className="room-card"
+                    onClick={() => handleRoomClick(room)}
+                  >
+                    <h3>{room.room_name}</h3>
+                    <p>
+                      {room.roomType === "MALE" ? "Phòng Nam" : "Phòng Nữ"} <br />
+                      <span className="count">
+                        Còn trống: {room.capacity - room.occupants}/{room.capacity}
+                      </span>
+                    </p>
+                    <div className="beds">{getBedIcons(room.occupants, room.capacity)}</div>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
         </>
+      )}
+
+      {selectedRoom && (
+        <div className="room-students">
+          <div className="header">
+            <button className="btn-back" onClick={resetToFilters}>← Quay lại</button>
+            <h3>Phòng {selectedRoom.room_name}</h3>
+          </div>
+
+          <table className="rs-table">
+            <thead>
+              <tr>
+                <th>MSSV</th>
+                <th>Họ và tên</th>
+                <th>Giới tính</th>
+                <th>Lớp</th>
+                <th>Trạng thái</th>
+              </tr>
+            </thead>
+            <tbody>
+              {studentsInRoom.length === 0 ? (
+                <tr><td colSpan="5">Phòng hiện trống.</td></tr>
+              ) : studentsInRoom.map(s => (
+                <tr key={s.student_id}>
+                  <td>{s.student_id}</td>
+                  <td>{s.full_name || s.last_name + " " + s.first_name}</td>
+                  <td>{s.gender}</td>
+                  <td>{s.class_name || "-"}</td>
+                  <td>{s.status || "APPROVED"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );

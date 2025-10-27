@@ -1,56 +1,122 @@
-.manager-dorms {
-  padding: 16px;
-  font-family: Arial, sans-serif;
-  color: #222;
+.dorms-container {
+  padding: 20px;
 }
 
-h2 {
-  margin-bottom: 12px;
+.filter-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
 }
 
-.filter-bar {
+.filter-row select {
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 5px;
+}
+
+.legend {
+  margin-top: 10px;
+}
+
+.legend-item {
+  margin-right: 20px;
+  font-size: 14px;
+}
+
+.floor-tabs {
+  display: flex;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.floor-tabs button {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  background-color: #f3f3f3;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.floor-tabs button.active {
+  background-color: #1976d2;
+  color: #fff;
+}
+
+.room-list {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin-bottom: 20px;
 }
 
-.filter-item {
-  display: flex;
-  flex-direction: column;
+.room-card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  width: 180px;
+  text-align: center;
+  padding: 10px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: transform 0.2s;
 }
 
-.filter-item label {
+.room-card:hover {
+  transform: scale(1.05);
+}
+
+.room-card h3 {
+  margin-bottom: 5px;
+  font-size: 18px;
+}
+
+.room-card .count {
+  color: #555;
   font-size: 13px;
-  margin-bottom: 4px;
 }
 
-.filter-item select {
-  padding: 6px 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  min-width: 180px;
+.beds {
+  margin-top: 6px;
 }
 
-.student-list {
-  margin-top: 16px;
+.bed {
+  margin: 0 2px;
+  font-size: 16px;
 }
 
-.students-table {
+.bed.red {
+  color: red;
+}
+
+.bed.green {
+  color: green;
+}
+
+.room-students {
+  margin-top: 20px;
+}
+
+.room-students .btn-back {
+  padding: 6px 10px;
+  margin-bottom: 10px;
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.rs-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 8px;
 }
 
-.students-table th,
-.students-table td {
-  border: 1px solid #eee;
+.rs-table th,
+.rs-table td {
+  border: 1px solid #ccc;
   padding: 8px;
   text-align: left;
-  font-size: 13px;
 }
 
-.info {
-  color: #777;
-  padding: 8px 0;
+.rs-table th {
+  background-color: #f0f0f0;
 }

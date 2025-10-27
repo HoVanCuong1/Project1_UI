@@ -1,0 +1,722 @@
+[
+  {
+    "room_id": "A1-101",
+    "dormName": "A1",
+    "room_name": "A1-101",
+    "roomType": "MALE",
+    "currentOccupants": 3,
+    "maxOccupants": 6,
+    "roomPrice": 100000,
+    "floor": 1
+  },
+  {
+    "room_id": "A1-102",
+    "dormName": "A1",
+    "room_name": "A1-102",
+    "roomType": "FEMALE",
+    "currentOccupants": 0,
+    "maxOccupants": 4,
+    "roomPrice": 120000,
+    "floor": 1
+  },
+  {
+    "room_id": "A1-103",
+    "dormName": "A1",
+    "room_name": "A1-103",
+    "roomType": "MALE",
+    "currentOccupants": 0,
+    "maxOccupants": 6,
+    "roomPrice": 100000,
+    "floor": 1
+  },
+  {
+    "room_id": "A1-104",
+    "dormName": "A1",
+    "room_name": "A1-104",
+    "roomType": "FEMALE",
+    "currentOccupants": 0,
+    "maxOccupants": 4,
+    "roomPrice": 120000,
+    "floor": 1
+  },
+  {
+    "room_id": "A1-105",
+    "dormName": "A1",
+    "room_name": "A1-105",
+    "roomType": "MALE",
+    "currentOccupants": 0,
+    "maxOccupants": 6,
+    "roomPrice": 100000,
+    "floor": 1
+  },
+  {
+    "room_id": "A1-106",
+    "dormName": "A1",
+    "room_name": "A1-106",
+    "roomType": "FEMALE",
+    "currentOccupants": 0,
+    "maxOccupants": 4,
+    "roomPrice": 120000,
+    "floor": 1
+  },
+  {
+    "room_id": "A1-201",
+    "dormName": "A1",
+    "room_name": "A1-201",
+    "roomType": "MALE",
+    "currentOccupants": 0,
+    "maxOccupants": 4,
+    "roomPrice": 120000,
+    "floor": 2
+  },
+  {
+    "room_id": "A1-202",
+    "dormName": "A1",
+    "room_name": "A1-202",
+    "roomType": "FEMALE",
+    "currentOccupants": 1,
+    "maxOccupants": 6,
+    "roomPrice": 100000,
+    "floor": 2
+  },
+  {
+    "room_id": "A1-203",
+    "dormName": "A1",
+    "room_name": "A1-203",
+    "roomType": "MALE",
+    "currentOccupants": 0,
+    "maxOccupants": 6,
+    "roomPrice": 100000,
+    "floor": 2
+  },
+  {
+    "room_id": "A1-204",
+    "dormName": "A1",
+    "room_name": "A1-204",
+    "roomType": "FEMALE",
+    "currentOccupants": 0,
+    "maxOccupants": 4,
+    "roomPrice": 120000,
+    "floor": 2
+  },
+  {
+    "room_id": "A1-205",
+    "dormName": "A1",
+    "room_name": "A1-205",
+    "roomType": "MALE",
+    "currentOccupants": 0,
+    "maxOccupants": 6,
+    "roomPrice": 100000,
+    "floor": 2
+  },
+  {
+    "room_id": "A1-206",
+    "dormName": "A1",
+    "room_name": "A1-206",
+    "roomType": "FEMALE",
+    "currentOccupants": 0,
+    "maxOccupants": 4,
+    "roomPrice": 120000,
+    "floor": 2
+  },
+  {
+    "room_id": "A1-301",
+    "dormName": "A1",
+    "room_name": "A1-301",
+    "roomType": "MALE",
+    "currentOccupants": 0,
+    "maxOccupants": 4,
+    "roomPrice": 120000,
+    "floor": 3
+  },
+  {
+    "room_id": "A1-302",
+    "dormName": "A1",
+    "room_name": "A1-302",
+    "roomType": "FEMALE",
+    "currentOccupants": 0,
+    "maxOccupants": 6,
+    "roomPrice": 100000,
+    "floor": 3
+  },
+  {
+    "room_id": "A1-303",
+    "dormName": "A1",
+    "room_name": "A1-303",
+    "roomType": "MALE",
+    "currentOccupants": 0,
+    "maxOccupants": 4,
+    "roomPrice": 120000,
+    "floor": 3
+  },
+  {
+    "room_id": "A1-304",
+    "dormName": "A1",
+    "room_name": "A1-304",
+    "roomType": "FEMALE",
+    "currentOccupants": 0,
+    "maxOccupants": 6,
+    "roomPrice": 100000,
+    "floor": 3
+  },
+  {
+    "room_id": "A1-305",
+    "dormName": "A1",
+    "room_name": "A1-305",
+    "roomType": "MALE",
+    "currentOccupants": 0,
+    "maxOccupants": 6,
+    "roomPrice": 100000,
+    "floor": 3
+  },
+  {
+    "room_id": "A1-306",
+    "dormName": "A1",
+    "room_name": "A1-306",
+    "roomType": "FEMALE",
+    "currentOccupants": 0,
+    "maxOccupants": 4,
+    "roomPrice": 120000,
+    "floor": 3
+  },
+  {
+    "room_id": "A1-401",
+    "dormName": "A1",
+    "room_name": "A1-401",
+    "roomType": "MALE",
+    "currentOccupants": 0,
+    "maxOccupants": 6,
+    "roomPrice": 100000,
+    "floor": 4
+  },
+  {
+    "room_id": "A1-402",
+    "dormName": "A1",
+    "room_name": "A1-402",
+    "roomType": "FEMALE",
+    "currentOccupants": 0,
+    "maxOccupants": 4,
+    "roomPrice": 120000,
+    "floor": 4
+  },
+  {
+    "room_id": "A1-403",
+    "dormName": "A1",
+    "room_name": "A1-403",
+    "roomType": "MALE",
+    "currentOccupants": 0,
+    "maxOccupants": 4,
+    "roomPrice": 120000,
+    "floor": 4
+  },
+  {
+    "room_id": "A1-404",
+    "dormName": "A1",
+    "room_name": "A1-404",
+    "roomType": "FEMALE",
+    "currentOccupants": 0,
+    "maxOccupants": 6,
+    "roomPrice": 100000,
+    "floor": 4
+  },
+  {
+    "room_id": "A1-405",
+    "dormName": "A1",
+    "room_name": "A1-405",
+    "roomType": "MALE",
+    "currentOccupants": 0,
+    "maxOccupants": 4,
+    "roomPrice": 120000,
+    "floor": 4
+  },
+  {
+    "room_id": "A1-406",
+    "dormName": "A1",
+    "room_name": "A1-406",
+    "roomType": "FEMALE",
+    "currentOccupants": 0,
+    "maxOccupants": 6,
+    "roomPrice": 100000,
+    "floor": 4
+  },
+  {
+    "room_id": "A2-101",
+    "dormName": "A2",
+    "room_name": "A2-101",
+    "roomType": "MALE",
+    "currentOccupants": 0,
+    "maxOccupants": 4,
+    "roomPrice": 120000,
+    "floor": 1
+  },
+  {
+    "room_id": "A2-102",
+    "dormName": "A2",
+    "room_name": "A2-102",
+    "roomType": "FEMALE",
+    "currentOccupants": 0,
+    "maxOccupants": 6,
+    "roomPrice": 100000,
+    "floor": 1
+  },
+  {
+    "room_id": "A2-103",
+    "dormName": "A2",
+    "room_name": "A2-103",
+    "roomType": "MALE",
+    "currentOccupants": 0,
+    "maxOccupants": 6,
+    "roomPrice": 100000,
+    "floor": 1
+  },
+  {
+    "room_id": "A2-104",
+    "dormName": "A2",
+    "room_name": "A2-104",
+    "roomType": "FEMALE",
+    "currentOccupants": 0,
+    "maxOccupants": 4,
+    "roomPrice": 120000,
+    "floor": 1
+  },
+  {
+    "room_id": "A2-105",
+    "dormName": "A2",
+    "room_name": "A2-105",
+    "roomType": "MALE",
+    "currentOccupants": 0,
+    "maxOccupants": 6,
+    "roomPrice": 100000,
+    "floor": 1
+  },
+  {
+    "room_id": "A2-106",
+    "dormName": "A2",
+    "room_name": "A2-106",
+    "roomType": "FEMALE",
+    "currentOccupants": 0,
+    "maxOccupants": 4,
+    "roomPrice": 120000,
+    "floor": 1
+  },
+  {
+    "room_id": "A2-201",
+    "dormName": "A2",
+    "room_name": "A2-201",
+    "roomType": "MALE",
+    "currentOccupants": 0,
+    "maxOccupants": 6,
+    "roomPrice": 100000,
+    "floor": 2
+  },
+  {
+    "room_id": "A2-202",
+    "dormName": "A2",
+    "room_name": "A2-202",
+    "roomType": "FEMALE",
+    "currentOccupants": 0,
+    "maxOccupants": 4,
+    "roomPrice": 120000,
+    "floor": 2
+  },
+  {
+    "room_id": "A2-203",
+    "dormName": "A2",
+    "room_name": "A2-203",
+    "roomType": "MALE",
+    "currentOccupants": 0,
+    "maxOccupants": 4,
+    "roomPrice": 120000,
+    "floor": 2
+  },
+  {
+    "room_id": "A2-204",
+    "dormName": "A2",
+    "room_name": "A2-204",
+    "roomType": "FEMALE",
+    "currentOccupants": 0,
+    "maxOccupants": 6,
+    "roomPrice": 100000,
+    "floor": 2
+  },
+  {
+    "room_id": "A2-205",
+    "dormName": "A2",
+    "room_name": "A2-205",
+    "roomType": "MALE",
+    "currentOccupants": 0,
+    "maxOccupants": 4,
+    "roomPrice": 120000,
+    "floor": 2
+  },
+  {
+    "room_id": "A2-206",
+    "dormName": "A2",
+    "room_name": "A2-206",
+    "roomType": "FEMALE",
+    "currentOccupants": 0,
+    "maxOccupants": 6,
+    "roomPrice": 100000,
+    "floor": 2
+  },
+  {
+    "room_id": "A2-301",
+    "dormName": "A2",
+    "room_name": "A2-301",
+    "roomType": "MALE",
+    "currentOccupants": 0,
+    "maxOccupants": 4,
+    "roomPrice": 120000,
+    "floor": 3
+  },
+  {
+    "room_id": "A2-302",
+    "dormName": "A2",
+    "room_name": "A2-302",
+    "roomType": "FEMALE",
+    "currentOccupants": 0,
+    "maxOccupants": 6,
+    "roomPrice": 100000,
+    "floor": 3
+  },
+  {
+    "room_id": "A2-303",
+    "dormName": "A2",
+    "room_name": "A2-303",
+    "roomType": "MALE",
+    "currentOccupants": 0,
+    "maxOccupants": 6,
+    "roomPrice": 100000,
+    "floor": 3
+  },
+  {
+    "room_id": "A2-304",
+    "dormName": "A2",
+    "room_name": "A2-304",
+    "roomType": "FEMALE",
+    "currentOccupants": 0,
+    "maxOccupants": 4,
+    "roomPrice": 120000,
+    "floor": 3
+  },
+  {
+    "room_id": "A2-305",
+    "dormName": "A2",
+    "room_name": "A2-305",
+    "roomType": "MALE",
+    "currentOccupants": 0,
+    "maxOccupants": 4,
+    "roomPrice": 120000,
+    "floor": 3
+  },
+  {
+    "room_id": "A2-306",
+    "dormName": "A2",
+    "room_name": "A2-306",
+    "roomType": "FEMALE",
+    "currentOccupants": 0,
+    "maxOccupants": 6,
+    "roomPrice": 100000,
+    "floor": 3
+  },
+  {
+    "room_id": "A2-401",
+    "dormName": "A2",
+    "room_name": "A2-401",
+    "roomType": "MALE",
+    "currentOccupants": 0,
+    "maxOccupants": 6,
+    "roomPrice": 100000,
+    "floor": 4
+  },
+  {
+    "room_id": "A2-402",
+    "dormName": "A2",
+    "room_name": "A2-402",
+    "roomType": "FEMALE",
+    "currentOccupants": 0,
+    "maxOccupants": 4,
+    "roomPrice": 120000,
+    "floor": 4
+  },
+  {
+    "room_id": "A2-403",
+    "dormName": "A2",
+    "room_name": "A2-403",
+    "roomType": "MALE",
+    "currentOccupants": 0,
+    "maxOccupants": 4,
+    "roomPrice": 120000,
+    "floor": 4
+  },
+  {
+    "room_id": "A2-404",
+    "dormName": "A2",
+    "room_name": "A2-404",
+    "roomType": "FEMALE",
+    "currentOccupants": 0,
+    "maxOccupants": 6,
+    "roomPrice": 100000,
+    "floor": 4
+  },
+  {
+    "room_id": "A2-405",
+    "dormName": "A2",
+    "room_name": "A2-405",
+    "roomType": "MALE",
+    "currentOccupants": 0,
+    "maxOccupants": 6,
+    "roomPrice": 100000,
+    "floor": 4
+  },
+  {
+    "room_id": "A2-406",
+    "dormName": "A2",
+    "room_name": "A2-406",
+    "roomType": "FEMALE",
+    "currentOccupants": 0,
+    "maxOccupants": 4,
+    "roomPrice": 120000,
+    "floor": 4
+  },
+  {
+    "room_id": "B1-101",
+    "dormName": "B1",
+    "room_name": "B1-101",
+    "roomType": "MALE",
+    "currentOccupants": 0,
+    "maxOccupants": 4,
+    "roomPrice": 120000,
+    "floor": 1
+  },
+  {
+    "room_id": "B1-102",
+    "dormName": "B1",
+    "room_name": "B1-102",
+    "roomType": "FEMALE",
+    "currentOccupants": 0,
+    "maxOccupants": 6,
+    "roomPrice": 100000,
+    "floor": 1
+  },
+  {
+    "room_id": "B1-103",
+    "dormName": "B1",
+    "room_name": "B1-103",
+    "roomType": "MALE",
+    "currentOccupants": 0,
+    "maxOccupants": 4,
+    "roomPrice": 120000,
+    "floor": 1
+  },
+  {
+    "room_id": "B1-104",
+    "dormName": "B1",
+    "room_name": "B1-104",
+    "roomType": "FEMALE",
+    "currentOccupants": 0,
+    "maxOccupants": 6,
+    "roomPrice": 100000,
+    "floor": 1
+  },
+  {
+    "room_id": "B1-201",
+    "dormName": "B1",
+    "room_name": "B1-201",
+    "roomType": "MALE",
+    "currentOccupants": 0,
+    "maxOccupants": 4,
+    "roomPrice": 120000,
+    "floor": 2
+  },
+  {
+    "room_id": "B1-202",
+    "dormName": "B1",
+    "room_name": "B1-202",
+    "roomType": "FEMALE",
+    "currentOccupants": 0,
+    "maxOccupants": 6,
+    "roomPrice": 100000,
+    "floor": 2
+  },
+  {
+    "room_id": "B1-203",
+    "dormName": "B1",
+    "room_name": "B1-203",
+    "roomType": "MALE",
+    "currentOccupants": 0,
+    "maxOccupants": 6,
+    "roomPrice": 100000,
+    "floor": 2
+  },
+  {
+    "room_id": "B1-204",
+    "dormName": "B1",
+    "room_name": "B1-204",
+    "roomType": "FEMALE",
+    "currentOccupants": 0,
+    "maxOccupants": 4,
+    "roomPrice": 120000,
+    "floor": 2
+  },
+  {
+    "room_id": "B1-301",
+    "dormName": "B1",
+    "room_name": "B1-301",
+    "roomType": "MALE",
+    "currentOccupants": 0,
+    "maxOccupants": 4,
+    "roomPrice": 120000,
+    "floor": 3
+  },
+  {
+    "room_id": "B1-302",
+    "dormName": "B1",
+    "room_name": "B1-302",
+    "roomType": "FEMALE",
+    "currentOccupants": 0,
+    "maxOccupants": 6,
+    "roomPrice": 100000,
+    "floor": 3
+  },
+  {
+    "room_id": "B1-303",
+    "dormName": "B1",
+    "room_name": "B1-303",
+    "roomType": "MALE",
+    "currentOccupants": 0,
+    "maxOccupants": 6,
+    "roomPrice": 100000,
+    "floor": 3
+  },
+  {
+    "room_id": "B1-304",
+    "dormName": "B1",
+    "room_name": "B1-304",
+    "roomType": "FEMALE",
+    "currentOccupants": 0,
+    "maxOccupants": 4,
+    "roomPrice": 120000,
+    "floor": 3
+  },
+  {
+    "room_id": "B2-101",
+    "dormName": "B2",
+    "room_name": "B2-101",
+    "roomType": "MALE",
+    "currentOccupants": 0,
+    "maxOccupants": 6,
+    "roomPrice": 100000,
+    "floor": 1
+  },
+  {
+    "room_id": "B2-102",
+    "dormName": "B2",
+    "room_name": "B2-102",
+    "roomType": "FEMALE",
+    "currentOccupants": 0,
+    "maxOccupants": 4,
+    "roomPrice": 120000,
+    "floor": 1
+  },
+  {
+    "room_id": "B2-103",
+    "dormName": "B2",
+    "room_name": "B2-103",
+    "roomType": "MALE",
+    "currentOccupants": 0,
+    "maxOccupants": 6,
+    "roomPrice": 100000,
+    "floor": 1
+  },
+  {
+    "room_id": "B2-104",
+    "dormName": "B2",
+    "room_name": "B2-104",
+    "roomType": "FEMALE",
+    "currentOccupants": 0,
+    "maxOccupants": 4,
+    "roomPrice": 120000,
+    "floor": 1
+  },
+  {
+    "room_id": "B2-201",
+    "dormName": "B2",
+    "room_name": "B2-201",
+    "roomType": "MALE",
+    "currentOccupants": 0,
+    "maxOccupants": 4,
+    "roomPrice": 120000,
+    "floor": 2
+  },
+  {
+    "room_id": "B2-202",
+    "dormName": "B2",
+    "room_name": "B2-202",
+    "roomType": "FEMALE",
+    "currentOccupants": 0,
+    "maxOccupants": 6,
+    "roomPrice": 100000,
+    "floor": 2
+  },
+  {
+    "room_id": "B2-203",
+    "dormName": "B2",
+    "room_name": "B2-203",
+    "roomType": "MALE",
+    "currentOccupants": 0,
+    "maxOccupants": 6,
+    "roomPrice": 100000,
+    "floor": 2
+  },
+  {
+    "room_id": "B2-204",
+    "dormName": "B2",
+    "room_name": "B2-204",
+    "roomType": "FEMALE",
+    "currentOccupants": 0,
+    "maxOccupants": 4,
+    "roomPrice": 120000,
+    "floor": 2
+  },
+  {
+    "room_id": "B2-301",
+    "dormName": "B2",
+    "room_name": "B2-301",
+    "roomType": "MALE",
+    "currentOccupants": 0,
+    "maxOccupants": 4,
+    "roomPrice": 120000,
+    "floor": 3
+  },
+  {
+    "room_id": "B2-302",
+    "dormName": "B2",
+    "room_name": "B2-302",
+    "roomType": "FEMALE",
+    "currentOccupants": 0,
+    "maxOccupants": 6,
+    "roomPrice": 100000,
+    "floor": 3
+  },
+  {
+    "room_id": "B2-303",
+    "dormName": "B2",
+    "room_name": "B2-303",
+    "roomType": "MALE",
+    "currentOccupants": 0,
+    "maxOccupants": 6,
+    "roomPrice": 100000,
+    "floor": 3
+  },
+  {
+    "room_id": "B2-304",
+    "dormName": "B2",
+    "room_name": "B2-304",
+    "roomType": "FEMALE",
+    "currentOccupants": 0,
+    "maxOccupants": 4,
+    "roomPrice": 120000,
+    "floor": 3
+  }
+]

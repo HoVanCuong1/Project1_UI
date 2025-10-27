@@ -1,158 +1,207 @@
 {
   "LoginUsers": [
-    {
-      "username": "221230001",
-      "password": "123",
-      "role": "USER"
-    },
-    {
-      "username": "221230002",
-      "password": "123",
-      "role": "USER"
-    },
-    {
-      "username": "221230003",
-      "password": "123",
-      "role": "USER"
-    },
-    {
-      "username": "221230004",
-      "password": "123",
-      "role": "USER"
-    },
-    {
-      "username": "221230005",
-      "password": "123",
-      "role": "USER"
-    },
-    {
-      "username": "221230006",
-      "password": "123",
-      "role": "USER"
-    },
-    {
-      "username": "221230007",
-      "password": "123",
-      "role": "USER"
-    },
-    {
-      "username": "221230008",
-      "password": "123",
-      "role": "USER"
-    },
-    {
-      "username": "221230009",
-      "password": "123",
-      "role": "USER"
-    },
-    {
-      "username": "221230010",
-      "password": "123",
-      "role": "USER"
-    }
+    { "username": "221230001", "password": "123", "role": "USER" },
+    { "username": "221230002", "password": "123", "role": "USER" },
+    { "username": "221230003", "password": "123", "role": "USER" },
+    { "username": "221230004", "password": "123", "role": "USER" },
+    { "username": "221230005", "password": "123", "role": "USER" },
+    { "username": "221230006", "password": "123", "role": "USER" },
+    { "username": "221230007", "password": "123", "role": "USER" },
+    { "username": "221230008", "password": "123", "role": "USER" },
+    { "username": "221230009", "password": "123", "role": "USER" },
+    { "username": "221230010", "password": "123", "role": "USER" }
   ],
+
   "LoginManager": {
     "username": "manager",
     "password": "123",
     "role": "MANAGER",
     "fullName": "Nguyễn Quản Lý"
   },
+
   "LoginAdmin": {
     "username": "admin",
     "password": "123",
     "role": "ADMIN",
     "fullName": "Trần Quản Trị"
   },
+
   "LayDSToaNha": {
     "response": [
-      {
-        "TenKhu": "A01",
-        "MaToa": "A1"
-      },
-      {
-        "TenKhu": "A02",
-        "MaToa": "A2"
-      },
-      {
-        "TenKhu": "B01",
-        "MaToa": "B1"
-      }
+      { "TenKhu": "A", "MaToa": "A1" },
+      { "TenKhu": "A", "MaToa": "A2" },
+      { "TenKhu": "B", "MaToa": "B1" },
+      { "TenKhu": "B", "MaToa": "B2" }
     ]
   },
+
+  "LayDSGioiTinh": {
+    "response": [
+      { "MaGT": "M", "TenGT": "Nam" },
+      { "MaGT": "F", "TenGT": "Nữ" }
+    ]
+  },
+
   "LayDSLoaiPhong": {
-    "request": {
-      "MaToa": "A01"
-    },
+    "request": {},
+    "response": [
+      { "LoaiPhong": "Phòng 4 người", "MaLoaiPhong": "L4", "Gia": "120000" },
+      { "LoaiPhong": "Phòng 6 người", "MaLoaiPhong": "L6", "Gia": "100000" }
+    ]
+  },
+
+  "LayDSTangTheoToa": {
     "response": [
       {
-        "LoaiPhong": "Phòng 4 người",
-        "MaLoaiPhong": "L4",
-        "Gia": "120000"
+        "MaToa": "A1",
+        "Tang": [1, 2, 3, 4],
+        "DanhSachPhong": [
+          { "Tang": 1, "MaPhong": "A1-101", "LoaiPhong": "Phòng 6 người", "GioiTinh": "Nam" },
+          { "Tang": 1, "MaPhong": "A1-102", "LoaiPhong": "Phòng 4 người", "GioiTinh": "Nữ" },
+          { "Tang": 1, "MaPhong": "A1-103", "LoaiPhong": "Phòng 6 người", "GioiTinh": "Nam" },
+          { "Tang": 1, "MaPhong": "A1-104", "LoaiPhong": "Phòng 4 người", "GioiTinh": "Nữ" },
+          { "Tang": 1, "MaPhong": "A1-105", "LoaiPhong": "Phòng 6 người", "GioiTinh": "Nam" },
+          { "Tang": 1, "MaPhong": "A1-106", "LoaiPhong": "Phòng 4 người", "GioiTinh": "Nữ" },
+
+          { "Tang": 2, "MaPhong": "A1-201", "LoaiPhong": "Phòng 4 người", "GioiTinh": "Nam" },
+          { "Tang": 2, "MaPhong": "A1-202", "LoaiPhong": "Phòng 6 người", "GioiTinh": "Nữ" },
+          { "Tang": 2, "MaPhong": "A1-203", "LoaiPhong": "Phòng 6 người", "GioiTinh": "Nam" },
+          { "Tang": 2, "MaPhong": "A1-204", "LoaiPhong": "Phòng 4 người", "GioiTinh": "Nữ" },
+          { "Tang": 2, "MaPhong": "A1-205", "LoaiPhong": "Phòng 6 người", "GioiTinh": "Nam" },
+          { "Tang": 2, "MaPhong": "A1-206", "LoaiPhong": "Phòng 4 người", "GioiTinh": "Nữ" },
+
+          { "Tang": 3, "MaPhong": "A1-301", "LoaiPhong": "Phòng 4 người", "GioiTinh": "Nam" },
+          { "Tang": 3, "MaPhong": "A1-302", "LoaiPhong": "Phòng 6 người", "GioiTinh": "Nữ" },
+          { "Tang": 3, "MaPhong": "A1-303", "LoaiPhong": "Phòng 4 người", "GioiTinh": "Nam" },
+          { "Tang": 3, "MaPhong": "A1-304", "LoaiPhong": "Phòng 6 người", "GioiTinh": "Nữ" },
+          { "Tang": 3, "MaPhong": "A1-305", "LoaiPhong": "Phòng 6 người", "GioiTinh": "Nam" },
+          { "Tang": 3, "MaPhong": "A1-306", "LoaiPhong": "Phòng 4 người", "GioiTinh": "Nữ" },
+
+          { "Tang": 4, "MaPhong": "A1-401", "LoaiPhong": "Phòng 6 người", "GioiTinh": "Nam" },
+          { "Tang": 4, "MaPhong": "A1-402", "LoaiPhong": "Phòng 4 người", "GioiTinh": "Nữ" },
+          { "Tang": 4, "MaPhong": "A1-403", "LoaiPhong": "Phòng 4 người", "GioiTinh": "Nam" },
+          { "Tang": 4, "MaPhong": "A1-404", "LoaiPhong": "Phòng 6 người", "GioiTinh": "Nữ" },
+          { "Tang": 4, "MaPhong": "A1-405", "LoaiPhong": "Phòng 4 người", "GioiTinh": "Nam" },
+          { "Tang": 4, "MaPhong": "A1-406", "LoaiPhong": "Phòng 6 người", "GioiTinh": "Nữ" }
+        ]
       },
       {
-        "LoaiPhong": "Phòng 6 người",
-        "MaLoaiPhong": "L6",
-        "Gia": "100000"
+        "MaToa": "A2",
+        "Tang": [1, 2, 3, 4],
+        "DanhSachPhong": [
+          { "Tang": 1, "MaPhong": "A2-101", "LoaiPhong": "Phòng 4 người", "GioiTinh": "Nam" },
+          { "Tang": 1, "MaPhong": "A2-102", "LoaiPhong": "Phòng 6 người", "GioiTinh": "Nữ" },
+          { "Tang": 1, "MaPhong": "A2-103", "LoaiPhong": "Phòng 6 người", "GioiTinh": "Nam" },
+          { "Tang": 1, "MaPhong": "A2-104", "LoaiPhong": "Phòng 4 người", "GioiTinh": "Nữ" },
+          { "Tang": 1, "MaPhong": "A2-105", "LoaiPhong": "Phòng 6 người", "GioiTinh": "Nam" },
+          { "Tang": 1, "MaPhong": "A2-106", "LoaiPhong": "Phòng 4 người", "GioiTinh": "Nữ" },
+
+          { "Tang": 2, "MaPhong": "A2-201", "LoaiPhong": "Phòng 6 người", "GioiTinh": "Nam" },
+          { "Tang": 2, "MaPhong": "A2-202", "LoaiPhong": "Phòng 4 người", "GioiTinh": "Nữ" },
+          { "Tang": 2, "MaPhong": "A2-203", "LoaiPhong": "Phòng 4 người", "GioiTinh": "Nam" },
+          { "Tang": 2, "MaPhong": "A2-204", "LoaiPhong": "Phòng 6 người", "GioiTinh": "Nữ" },
+          { "Tang": 2, "MaPhong": "A2-205", "LoaiPhong": "Phòng 4 người", "GioiTinh": "Nam" },
+          { "Tang": 2, "MaPhong": "A2-206", "LoaiPhong": "Phòng 6 người", "GioiTinh": "Nữ" },
+
+          { "Tang": 3, "MaPhong": "A2-301", "LoaiPhong": "Phòng 4 người", "GioiTinh": "Nam" },
+          { "Tang": 3, "MaPhong": "A2-302", "LoaiPhong": "Phòng 6 người", "GioiTinh": "Nữ" },
+          { "Tang": 3, "MaPhong": "A2-303", "LoaiPhong": "Phòng 6 người", "GioiTinh": "Nam" },
+          { "Tang": 3, "MaPhong": "A2-304", "LoaiPhong": "Phòng 4 người", "GioiTinh": "Nữ" },
+          { "Tang": 3, "MaPhong": "A2-305", "LoaiPhong": "Phòng 4 người", "GioiTinh": "Nam" },
+          { "Tang": 3, "MaPhong": "A2-306", "LoaiPhong": "Phòng 6 người", "GioiTinh": "Nữ" },
+
+          { "Tang": 4, "MaPhong": "A2-401", "LoaiPhong": "Phòng 6 người", "GioiTinh": "Nam" },
+          { "Tang": 4, "MaPhong": "A2-402", "LoaiPhong": "Phòng 4 người", "GioiTinh": "Nữ" },
+          { "Tang": 4, "MaPhong": "A2-403", "LoaiPhong": "Phòng 4 người", "GioiTinh": "Nam" },
+          { "Tang": 4, "MaPhong": "A2-404", "LoaiPhong": "Phòng 6 người", "GioiTinh": "Nữ" },
+          { "Tang": 4, "MaPhong": "A2-405", "LoaiPhong": "Phòng 6 người", "GioiTinh": "Nam" },
+          { "Tang": 4, "MaPhong": "A2-406", "LoaiPhong": "Phòng 4 người", "GioiTinh": "Nữ" }
+        ]
+      },
+      {
+        "MaToa": "B1",
+        "Tang": [1, 2, 3],
+        "DanhSachPhong": [
+          { "Tang": 1, "MaPhong": "B1-101", "LoaiPhong": "Phòng 4 người", "GioiTinh": "Nam" },
+          { "Tang": 1, "MaPhong": "B1-102", "LoaiPhong": "Phòng 6 người", "GioiTinh": "Nữ" },
+          { "Tang": 1, "MaPhong": "B1-103", "LoaiPhong": "Phòng 4 người", "GioiTinh": "Nam" },
+          { "Tang": 1, "MaPhong": "B1-104", "LoaiPhong": "Phòng 6 người", "GioiTinh": "Nữ" },
+
+          { "Tang": 2, "MaPhong": "B1-201", "LoaiPhong": "Phòng 4 người", "GioiTinh": "Nam" },
+          { "Tang": 2, "MaPhong": "B1-202", "LoaiPhong": "Phòng 6 người", "GioiTinh": "Nữ" },
+          { "Tang": 2, "MaPhong": "B1-203", "LoaiPhong": "Phòng 6 người", "GioiTinh": "Nam" },
+          { "Tang": 2, "MaPhong": "B1-204", "LoaiPhong": "Phòng 4 người", "GioiTinh": "Nữ" },
+
+          { "Tang": 3, "MaPhong": "B1-301", "LoaiPhong": "Phòng 4 người", "GioiTinh": "Nam" },
+          { "Tang": 3, "MaPhong": "B1-302", "LoaiPhong": "Phòng 6 người", "GioiTinh": "Nữ" },
+          { "Tang": 3, "MaPhong": "B1-303", "LoaiPhong": "Phòng 6 người", "GioiTinh": "Nam" },
+          { "Tang": 3, "MaPhong": "B1-304", "LoaiPhong": "Phòng 4 người", "GioiTinh": "Nữ" }
+        ]
+      },
+      {
+        "MaToa": "B2",
+        "Tang": [1, 2, 3],
+        "DanhSachPhong": [
+          { "Tang": 1, "MaPhong": "B2-101", "LoaiPhong": "Phòng 6 người", "GioiTinh": "Nam" },
+          { "Tang": 1, "MaPhong": "B2-102", "LoaiPhong": "Phòng 4 người", "GioiTinh": "Nữ" },
+          { "Tang": 1, "MaPhong": "B2-103", "LoaiPhong": "Phòng 6 người", "GioiTinh": "Nam" },
+          { "Tang": 1, "MaPhong": "B2-104", "LoaiPhong": "Phòng 4 người", "GioiTinh": "Nữ" },
+
+          { "Tang": 2, "MaPhong": "B2-201", "LoaiPhong": "Phòng 4 người", "GioiTinh": "Nam" },
+          { "Tang": 2, "MaPhong": "B2-202", "LoaiPhong": "Phòng 6 người", "GioiTinh": "Nữ" },
+          { "Tang": 2, "MaPhong": "B2-203", "LoaiPhong": "Phòng 6 người", "GioiTinh": "Nam" },
+          { "Tang": 2, "MaPhong": "B2-204", "LoaiPhong": "Phòng 4 người", "GioiTinh": "Nữ" },
+
+          { "Tang": 3, "MaPhong": "B2-301", "LoaiPhong": "Phòng 4 người", "GioiTinh": "Nam" },
+          { "Tang": 3, "MaPhong": "B2-302", "LoaiPhong": "Phòng 6 người", "GioiTinh": "Nữ" },
+          { "Tang": 3, "MaPhong": "B2-303", "LoaiPhong": "Phòng 6 người", "GioiTinh": "Nam" },
+          { "Tang": 3, "MaPhong": "B2-304", "LoaiPhong": "Phòng 4 người", "GioiTinh": "Nữ" }
+        ]
       }
     ]
   },
-  "LayDSPhongTrong": {
-    "request": {
-      "Gioitinh": "Nam",
-      "MaToa": "A01",
-      "MaLoaiPhong": "L6"
-    },
-    "response": [
-      {
-        "LoaiPhong": "Phòng 6 người",
-        "MaPhong": "P403"
-      },
-      {
-        "LoaiPhong": "Phòng 6 người",
-        "MaPhong": "P404"
-      }
-    ]
+
+"room_registrations": [
+  {
+    "student_id": "221230001",
+    "full_name": "Họ và tên 1",
+    "gender": "Nam",
+    "date_of_birth": "2025-10-01",
+    "email": "Email@1",
+    "phone": "Số điện thoại 1",
+    "department": "Khoa 1",
+    "class_name": "Lớp 1",
+    "address": "Địa chỉ 1",
+    "khu": "A",
+    "nha": "A1",
+    "tang": 1,
+    "room_type": "Phòng 6 người",
+    "room_id": "A1-101",
+    "registration_date": "2025-10-26",
+    "status": "APPROVED",
+    "request_type": "REGISTER",
+    "registration_id": 1761478580708
   },
-  "LayDSGiuong": {
-    "request": {
-      "MaPhong": "P403",
-      "MaToa": "A01",
-      "Gioitinh": "Nam",
-      "MaLoaiPhong": "L6"
-    },
-    "response": [
-      {
-        "MaGiuong": "G1",
-        "TenGiuong": "Giường 1",
-        "TTGiuong": "Trống"
-      },
-      {
-        "MaGiuong": "G2",
-        "TenGiuong": "Giường 2",
-        "TTGiuong": "Đã có người chọn"
-      }
-    ]
-  },
-  "room_registrations": [
-    {
-      "student_id": "221230001",
-      "full_name": "Họ và tên 1",
-      "gender": "Nam",
-      "date_of_birth": "2025-10-01",
-      "email": "Email@1",
-      "phone": "Số điện thoại 1",
-      "department": "Khoa 1",
-      "class_name": "Lớp 1",
-      "address": "Địa chỉ 1",
-      "khu": "A",
-      "nha": "A10",
-      "tang": 1,
-      "room_type": "Phòng 6 sinh viên",
-      "room_id": "P101",
-      "registration_date": "2025-10-26",
-      "status": "APPROVED",
-      "request_type": "REGISTER",
-      "registration_id": 1761478580708
-    }
-  ]
+  {
+    "student_id": "221230002",
+    "full_name": "Họ và tên 2",
+    "gender": "Nam",
+    "date_of_birth": "2025-10-02",
+    "email": "Email@2",
+    "phone": "Số điện thoại 2",
+    "department": "Khoa 2",
+    "class_name": "Lớp 2",
+    "address": "Địa chỉ 2",
+    "khu": "A",
+    "nha": "A1",
+    "tang": 1,
+    "room_type": "Phòng 6 người",
+    "room_id": "A1-101",
+    "registration_date": "2025-10-27",
+    "status": "APPROVED",
+    "request_type": "REGISTER",
+    "registration_id": 1761537730803
+  }
+]
+
 }

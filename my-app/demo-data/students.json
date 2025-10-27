@@ -1,0 +1,62 @@
+[
+  {
+    "student_id": "221230001",
+    "full_name": "Họ và tên 1",
+    "gender": "Nam",
+    "room_id": "A1-101"
+  },
+  {
+    "student_id": "221230002",
+    "full_name": "Họ và tên 2",
+    "gender": "Nam",
+    "room_id": "A1-101"
+  },
+  {
+    "student_id": "221230003",
+    "full_name": "Họ và tên 3",
+    "gender": "Nam",
+    "room_id": "A1-101"
+  },
+  {
+    "student_id": "221230004",
+    "full_name": "Họ và tên 4",
+    "gender": "Nam",
+    "room_id": "A1-202"
+  },
+  {
+    "student_id": "221230005",
+    "full_name": "Họ và tên 5",
+    "gender": "Nam",
+    "room_id": null
+  },
+  {
+    "student_id": "221230006",
+    "full_name": "Họ và tên 6",
+    "gender": "Nam",
+    "room_id": null
+  },
+  {
+    "student_id": "221230007",
+    "full_name": "Họ và tên 7",
+    "gender": "Nam",
+    "room_id": null
+  },
+  {
+    "student_id": "221230008",
+    "full_name": "Họ và tên 8",
+    "gender": "Nam",
+    "room_id": null
+  },
+  {
+    "student_id": "221230009",
+    "full_name": "Họ và tên 9",
+    "gender": "Nam",
+    "room_id": null
+  },
+  {
+    "student_id": "221230010",
+    "full_name": "Họ và tên 10",
+    "gender": "Nam",
+    "room_id": null
+  }
+]

@@ -1,4 +1,4 @@
-.booking-container {
+.dorms-container {
   padding: 20px;
   font-family: "Segoe UI", sans-serif;
 }
@@ -33,23 +33,40 @@
 }
 
 .floor-tabs {
-  margin-bottom: 20px;
+  display: flex;
+  gap: 15px;
+  margin: 25px 0;
+  justify-content: center;
+  flex-wrap: nowrap;
+  overflow-x: auto;
 }
 
 .floor-tabs button {
-  margin-right: 10px;
-  padding: 6px 12px;
-  border: 1px solid #aaa;
-  border-radius: 6px;
-  background: #f9f9f9;
+  background-color: #ffffff;
+  border: 2px solid #007bff;
+  color: #007bff;
+  padding: 12px 24px;
+  border-radius: 10px;
   cursor: pointer;
+  font-weight: 600;
+  font-size: 16px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.floor-tabs button:hover {
+  background-color: #e6f0ff;
 }
 
 .floor-tabs button.active {
-  background: #007bff;
-  color: #fff;
+  background-color: #007bff;
+  color: white;
   border-color: #007bff;
-  font-weight: bold;
+  transform: scale(1.05);
+}
+
+.floor-tabs button:focus {
+  outline: none;
 }
 
 .room-list {
@@ -65,6 +82,8 @@
   text-align: center;
   background: #fff;
   transition: 0.2s;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .room-card.available {
@@ -73,11 +92,12 @@
 
 .room-card.full {
   border-color: red;
-  opacity: 0.7;
+  opacity: 0.8;
 }
 
 .room-card h3 {
   margin: 5px 0;
+  color: #333;
 }
 
 .count {
@@ -92,90 +112,49 @@
 .bed {
   margin: 0 2px;
 }
-.floor-tabs {
-  display: flex;
-  gap: 15px;
-  margin: 25px 0;
-  justify-content: center;
-  flex-wrap: nowrap;
-  overflow-x: auto;
+
+.room-students {
+  margin-top: 25px;
 }
 
-.floor-tabs button {
-  background-color: #ffffff;
-  border: 2px solid #007bff;
-  color: #007bff; /* Màu chữ xanh */
-  padding: 12px 24px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 16px;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.floor-tabs button:hover {
-  background-color: #e6f0ff; /* xanh nhạt khi hover */
-}
-
-.floor-tabs button.active {
-  background-color: #007bff; /* nền xanh */
-  color: white; /* chữ trắng */
-  border-color: #007bff;
-  transform: scale(1.05);
-}
-
-.floor-tabs button:focus {
-  outline: none;
-}
-.confirm-btn button {
-  background-color: #007bff; /* xanh lam */
+.room-students .btn-back {
+  background-color: #007bff;
   color: white;
   border: none;
-  padding: 12px 28px;
+  padding: 8px 16px;
   border-radius: 8px;
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+  margin-bottom: 12px;
 }
 
-.student-table {
+.room-students .btn-back:hover {
+  background-color: #005ec9;
+}
+
+.rs-table {
   width: 100%;
   border-collapse: collapse;
-  margin: 20px 0;
+  margin-top: 10px;
   background: #fff;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.student-table th,
-.student-table td {
+.rs-table th,
+.rs-table td {
   border: 1px solid #ccc;
   padding: 10px;
   text-align: center;
 }
 
-.student-table th {
+.rs-table th {
   background-color: #007bff;
   color: white;
-}
-.room-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 20px 0;
-  background: #fff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  font-weight: 600;
 }
 
-.room-table th,
-.room-table td {
-  border: 1px solid #ccc;
-  padding: 10px;
-  text-align: center;
-}
-
-.room-table th {
-  background-color: #007bff;
-  color: white;
+.rs-table td {
+  font-size: 14px;
 }

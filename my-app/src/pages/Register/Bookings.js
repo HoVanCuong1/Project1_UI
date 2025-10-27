@@ -1,119 +1,136 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./Bookings.css";
+import Define from "../../Define.json";
 
 export default function Booking() {
   const location = useLocation();
   const navigate = useNavigate();
-  const studentData = location.state?.student; // Lấy đúng thông tin sinh viên được truyền từ form
+  const studentData = location.state?.student;
 
-  // Các state cần đặt ở đầu component
   const [khu, setKhu] = useState("");
   const [gioiTinh, setGioiTinh] = useState("");
   const [loaiPhong, setLoaiPhong] = useState("");
   const [nha, setNha] = useState("");
   const [tang, setTang] = useState(1);
+  const [floorsData, setFloorsData] = useState({});
+  const [floorsSorted, setFloorsSorted] = useState([]);
+  const [roomsFromServer, setRoomsFromServer] = useState([]);
 
-  // Dữ liệu mẫu
-  const data = {
-    A: {
-      Nam: {
-        "Phòng 6 sinh viên": ["A10", "A11"],
-        "Phòng 4 sinh viên": ["A12"],
-      },
-      Nữ: { "Phòng 6 sinh viên": ["A12"] },
-    },
-    B: {
-      Nam: { "Phòng 4 sinh viên": ["B1", "B2"] },
-      Nữ: { "Phòng 6 sinh viên": ["B3", "B4"] },
-    },
-  };
+  const khuOptions = Array.from(
+    new Set((Define.LayDSToaNha?.response || []).map((i) => i.TenKhu))
+  );
+  const nhaOptions = Define.LayDSToaNha?.response || [];
+  const roomTypeOptions =
+    (Define.LayDSLoaiPhong?.response || []).map((i) => i.LoaiPhong) || [];
 
-  // Danh sách phòng từng tầng
-  const roomsByFloor = {
-    1: [
-      { id: "P101", name: "P101", total: 6, used: 5 },
-      { id: "P102", name: "P102", total: 6, used: 6 },
-      { id: "P103", name: "P103", total: 6, used: 4 },
-    ],
-    2: [
-      { id: "P201", name: "P201", total: 6, used: 6 },
-      { id: "P202", name: "P202", total: 6, used: 5 },
-      { id: "P203", name: "P203", total: 6, used: 2 },
-    ],
-    3: [
-      { id: "P301", name: "P301", total: 6, used: 3 },
-      { id: "P302", name: "P302", total: 6, used: 5 },
-      { id: "P303", name: "P303", total: 6, used: 6 },
-    ],
-    4: [
-      { id: "P401", name: "P401", total: 6, used: 4 },
-      { id: "P402", name: "P402", total: 6, used: 6 },
-      { id: "P403", name: "P403", total: 6, used: 1 },
-    ],
-  };
+  // lấy dữ liệu thật từ server
+  useEffect(() => {
+    const fetchRooms = async () => {
+      try {
+        const res = await fetch("http://localhost:4000/api/rooms");
+        const data = await res.json();
+        setRoomsFromServer(data);
+      } catch (err) {
+        console.error("Không thể tải danh sách phòng từ server:", err);
+      }
+    };
+    fetchRooms();
+  }, []);
 
-  // Khi click vào phòng → chuyển sang trang chi tiết
-  //Lưu giá trị phòng
+  function buildFullRoomList() {
+    if (!nha || !gioiTinh || !loaiPhong) return [];
+    const toa = (Define.LayDSTangTheoToa?.response || []).find(
+      (t) => t.MaToa === nha
+    );
+    if (!toa) return [];
+
+    const rooms = toa.DanhSachPhong.filter(
+      (p) => p.GioiTinh === gioiTinh && p.LoaiPhong === loaiPhong
+    );
+
+    const serverRooms = roomsFromServer.filter((r) => r.dormName === nha);
+    const merged = rooms.map((p) => {
+      const serverRoom = serverRooms.find((r) => r.room_id === p.MaPhong);
+      const current = serverRoom ? serverRoom.currentOccupants : 0;
+      return {
+        ...p,
+        occupants: current,
+        capacity: p.LoaiPhong.includes("6") ? 6 : 4,
+        Tang: p.Tang,
+      };
+    });
+
+    return merged;
+  }
+
+  useEffect(() => {
+    const allFilled = khu && gioiTinh && loaiPhong && nha;
+    if (!allFilled) {
+      setFloorsData({});
+      setFloorsSorted([]);
+      return;
+    }
+
+    const fullRooms = buildFullRoomList();
+    const grouped = {};
+    fullRooms.forEach((r) => {
+      if (!grouped[r.Tang]) grouped[r.Tang] = [];
+      grouped[r.Tang].push(r);
+    });
+
+    const sorted = Object.keys(grouped)
+      .map((n) => parseInt(n, 10))
+      .sort((a, b) => a - b);
+    setFloorsData(grouped);
+    setFloorsSorted(sorted);
+    setTang(sorted[0] || 1);
+  }, [khu, gioiTinh, loaiPhong, nha, roomsFromServer]);
+
   const handleRoomClick = (roomId) => {
     navigate("/student", {
       state: {
-        bookingInfo: {
-          khu,
-          gioiTinh,
-          loaiPhong,
-          nha,
-          tang,
-          phong: roomId,
-        },
+        bookingInfo: { khu, gioiTinh, loaiPhong, nha, tang, phong: roomId },
       },
     });
   };
 
-  // Khi nhấn xác nhận
   const handleConfirm = () => {
     console.log("Thông tin sinh viên:", studentData);
-    console.log("Phòng đã chọn:", { khu, gioiTinh, loaiPhong, nha, tang });
     alert("Đăng ký thành công!");
     navigate("/success");
   };
 
-  // Khi thay đổi select
   const handleKhuChange = (e) => {
     setKhu(e.target.value);
     setGioiTinh("");
     setLoaiPhong("");
     setNha("");
   };
-
   const handleGioiTinhChange = (e) => {
     setGioiTinh(e.target.value);
     setLoaiPhong("");
     setNha("");
   };
-
   const handleLoaiPhongChange = (e) => {
     setLoaiPhong(e.target.value);
     setNha("");
   };
 
-  // Render icon giường
   const getBedIcons = (used, total) => {
     const arr = [];
-    for (let i = 0; i < used; i++) {
+    for (let i = 0; i < used; i++)
       arr.push(
         <span key={"r" + i} className="bed red">
           👤
         </span>
       );
-    }
-    for (let i = 0; i < total - used; i++) {
+    for (let i = 0; i < total - used; i++)
       arr.push(
         <span key={"g" + i} className="bed green">
           🧍‍♂️
         </span>
       );
-    }
     return arr;
   };
 
@@ -128,11 +145,12 @@ export default function Booking() {
       ) : (
         <p className="warning">Không có thông tin sinh viên!</p>
       )}
-      {/* Hàng chọn bộ lọc */}
+
+      {/* Bộ lọc */}
       <div className="filter-row">
         <select value={khu} onChange={handleKhuChange}>
           <option value="">-- Chọn Khu --</option>
-          {Object.keys(data).map((k) => (
+          {khuOptions.map((k) => (
             <option key={k} value={k}>
               {k}
             </option>
@@ -145,12 +163,8 @@ export default function Booking() {
           disabled={!khu}
         >
           <option value="">-- Giới tính --</option>
-          {khu &&
-            Object.keys(data[khu]).map((g) => (
-              <option key={g} value={g}>
-                {g}
-              </option>
-            ))}
+          <option value="Nam">Nam</option>
+          <option value="Nữ">Nữ</option>
         </select>
 
         <select
@@ -159,13 +173,11 @@ export default function Booking() {
           disabled={!gioiTinh}
         >
           <option value="">-- Loại phòng --</option>
-          {khu &&
-            gioiTinh &&
-            Object.keys(data[khu][gioiTinh]).map((lp) => (
-              <option key={lp} value={lp}>
-                {lp}
-              </option>
-            ))}
+          {roomTypeOptions.map((lp) => (
+            <option key={lp} value={lp}>
+              {lp}
+            </option>
+          ))}
         </select>
 
         <select
@@ -174,17 +186,17 @@ export default function Booking() {
           disabled={!loaiPhong}
         >
           <option value="">-- Nhà --</option>
-          {khu &&
-            gioiTinh &&
-            loaiPhong &&
-            data[khu][gioiTinh][loaiPhong].map((n) => (
-              <option key={n} value={n}>
-                {n}
+          {nhaOptions
+            .filter((n) => n.TenKhu === khu)
+            .map((n) => (
+              <option key={n.MaToa} value={n.MaToa}>
+                {n.MaToa}
               </option>
             ))}
         </select>
       </div>
-      {/* Bảng hiển thị thông tin sinh viên */}
+
+      {/* Thông tin sinh viên */}
       {studentData && (
         <table className="student-table">
           <thead>
@@ -196,7 +208,6 @@ export default function Booking() {
               <th>Lớp</th>
               <th>Khoa</th>
               <th>Quê Quán</th>
-              <th>Xác Nhận</th>
             </tr>
           </thead>
           <tbody>
@@ -208,44 +219,21 @@ export default function Booking() {
               <td>{studentData.className}</td>
               <td>{studentData.department}</td>
               <td>{studentData.address}</td>
-              <td>{"Gửi || Xóa"}</td>
             </tr>
           </tbody>
         </table>
       )}
-      {studentData && (
-        <table className="room-table">
-          <thead>
-            <tr>
-              <th>Khu </th>
-              <th>Tầng</th>
-              <th>Loại phòng</th>
-              <th>Nhà</th>
-              <th>Phòng</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{studentData.khu}</td>
-              <td>{studentData.tang}</td>
-              <td>{studentData.loaiphong}</td>
-              <td>{studentData.nha}</td>
-              <td>{studentData.phong}</td>
-            </tr>
-          </tbody>
-        </table>
-      )}
-      {/* Khi đã chọn nhà */}
-      {nha && (
+
+      {/* Danh sách phòng */}
+      {nha && floorsSorted.length > 0 && (
         <>
           <div className="legend">
             <span className="legend-item red">👤 Đã có SV</span>
             <span className="legend-item green">🧍‍♂️ Còn trống</span>
           </div>
 
-          {/* Các tầng hiển thị ngang */}
           <div className="floor-tabs">
-            {[1, 2, 3, 4].map((f) => (
+            {floorsSorted.map((f) => (
               <button
                 key={f}
                 className={tang === f ? "active" : ""}
@@ -256,25 +244,27 @@ export default function Booking() {
             ))}
           </div>
 
-          {/* Danh sách phòng */}
           <div className="room-list">
-            {roomsByFloor[tang].map((room) => (
+            {floorsData[tang]?.map((room) => (
               <div
-                key={room.id}
+                key={room.MaPhong}
                 className="room-card"
-                onClick={() => handleRoomClick(room.id)}
+                onClick={() => handleRoomClick(room.MaPhong)}
               >
-                <h3>{room.name}</h3>
+                <h3>{room.MaPhong}</h3>
                 <p>
-                  Phòng {room.total} sinh viên <br />
+                  {room.LoaiPhong} <br />
                   <span className="count">
-                    Còn trống: {room.total - room.used}/{room.total}
+                    Còn trống: {room.capacity - room.occupants}/{room.capacity}
                   </span>
                 </p>
-                <div className="beds">{getBedIcons(room.used, room.total)}</div>
+                <div className="beds">
+                  {getBedIcons(room.occupants, room.capacity)}
+                </div>
               </div>
             ))}
           </div>
+
           <div className="confirm-btn">
             <button onClick={handleConfirm}>Xác nhận đăng ký</button>
           </div>

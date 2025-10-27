@@ -1,144 +1,259 @@
-// server.js — chạy với Node 18+
-// Đọc Define.json để trả dữ liệu tĩnh giống phần đăng ký sinh viên
+/**
+ * server.js — phiên bản đầy đủ cho chức năng Quản lý phòng
+ * Giữ nguyên mô hình JSON để demo, tương thích hoàn toàn với dbktx.sql
+ */
 
-import express from "express";
-import cors from "cors";
-import fs from "fs";
-import path from "path";
+const express = require("express");
+const fs = require("fs");
+const path = require("path");
+const { v4: uuidv4 } = require("uuid");
 
 const app = express();
-app.use(cors());
+
+// ======= Bật CORS (không cần cài thư viện cors) =======
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
+  if (req.method === "OPTIONS") return res.sendStatus(200);
+  next();
+});
+
 app.use(express.json());
 
-// ====== Đường dẫn tới Define.json ======
-const DATA_PATH = path.resolve("src", "Define.json");
+// ======= Tạo thư mục dữ liệu =======
+const DATA_DIR = path.join(__dirname, "demo-data");
+if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR);
 
-// ====== Helper đọc file ======
-function readData() {
+// ======= Đường dẫn các file =======
+const roomsFile = path.join(DATA_DIR, "rooms.json");
+const studentsFile = path.join(DATA_DIR, "students.json");
+const regsFile = path.join(DATA_DIR, "room_registrations.json");
+
+// ======= HÀM TIỆN ÍCH =======
+function readJSON(file, fallback = []) {
   try {
-    const raw = fs.readFileSync(DATA_PATH, "utf8");
-    return JSON.parse(raw);
-  } catch (e) {
-    console.error("Lỗi đọc Define.json:", e);
-    return {};
+    return JSON.parse(fs.readFileSync(file, "utf8"));
+  } catch {
+    return fallback;
   }
 }
 
-// ===================================================
-// =============== API cho chức năng Manager =========
-// ===================================================
+function writeJSON(file, data) {
+  fs.writeFileSync(file, JSON.stringify(data, null, 2), "utf8");
+}
 
-// 1. Danh sách khu (LayDSToaNha.response[].TenKhu)
-app.get("/api/dorms", (req, res) => {
-  const data = readData();
-  const dorms = data.LayDSToaNha?.response?.map((x) => ({
-    dorm_id: x.TenKhu,
-    dorm_name: x.TenKhu,
-  })) || [];
-  res.json(dorms);
-});
+function ensureFiles() {
+  const definePath = path.join(__dirname, "src", "Define.json");
+  let importedRegs = [];
 
-// 2. Danh sách nhà theo khu (LayDSToaNha.response[].MaToa)
-app.get("/api/buildings", (req, res) => {
-  const data = readData();
-  const { dorm_id } = req.query;
-  const list = data.LayDSToaNha?.response || [];
-  const filtered = dorm_id ? list.filter((x) => x.TenKhu === dorm_id) : list;
-  const houses = filtered.map((x) => ({
-    building_id: x.MaToa,
-    building_name: x.MaToa,
-  }));
-  res.json(houses);
-});
+  if (fs.existsSync(definePath)) {
+    try {
+      const defineData = JSON.parse(fs.readFileSync(definePath, "utf8"));
+      importedRegs = defineData.room_registrations || [];
+    } catch (e) {
+      console.error("Lỗi đọc Define.json:", e);
+    }
+  }
 
-// 3. Danh sách loại phòng theo nhà (LayDSLoaiPhong.response[])
-app.get("/api/roomtypes", (req, res) => {
-  const data = readData();
-  const types = data.LayDSLoaiPhong?.response?.map((x) => ({
-    MaLoaiPhong: x.MaLoaiPhong,
-    LoaiPhong: x.LoaiPhong,
-  })) || [];
-  res.json(types);
-});
+  if (!fs.existsSync(roomsFile)) writeJSON(roomsFile, []);
+  if (!fs.existsSync(studentsFile)) writeJSON(studentsFile, []);
 
-// 4. Danh sách phòng (chuẩn hóa dữ liệu cho cả Manager và Student)
+  // Nếu file room_registrations.json trống hoặc không tồn tại → nạp dữ liệu cũ
+  if (!fs.existsSync(regsFile)) {
+    writeJSON(regsFile, importedRegs);
+  } else {
+    const current = readJSON(regsFile, []);
+    if (current.length === 0 && importedRegs.length > 0) {
+      writeJSON(regsFile, importedRegs);
+      console.log("Đã nhập dữ liệu room_registrations từ Define.json");
+    }
+  }
+}
+ensureFiles();
+
+// ======= ĐỒNG BỘ DỮ LIỆU ĐỊNH NGHĨA BAN ĐẦU =======
+const definePath = path.join(__dirname, "src", "Define.json");
+if (fs.existsSync(definePath)) {
+  try {
+    const defineData = JSON.parse(fs.readFileSync(definePath, "utf8"));
+    const regsFromDefine = defineData.room_registrations || [];
+    const regsFromFile = readJSON(regsFile);
+    if (regsFromDefine.length > 0 && regsFromFile.length === 0) {
+      writeJSON(regsFile, regsFromDefine);
+      console.log("Đã import room_registrations từ Define.json vào demo-data/");
+    }
+  } catch (err) {
+    console.error("Lỗi đọc Define.json:", err);
+  }
+}
+
+
+// ======= CORE LOGIC =======
+
+// Tính lại currentOccupants dựa trên students
+function recalcRoomCounts() {
+  const rooms = readJSON(roomsFile);
+  const students = readJSON(studentsFile);
+  const counts = {};
+  students.forEach((s) => {
+    if (s.room_id) counts[s.room_id] = (counts[s.room_id] || 0) + 1;
+  });
+  rooms.forEach((r) => {
+    r.currentOccupants = counts[r.room_id] || 0;
+  });
+  writeJSON(roomsFile, rooms);
+  return rooms;
+}
+
+// ======= API =======
+
+// 1. Lấy danh sách phòng (có filter)
 app.get("/api/rooms", (req, res) => {
-  const data = readData();
-  const src = data.LayDSPhongTrong?.response || [];
-
-  const rooms = src.map((x) => ({
-    roomName: x.MaPhong,
-    dormName: x.TenKhu || x.Khu || "KTX A",
-    floor: x.Tang || x.Floor || 1,
-    roomType:
-      x.LoaiPhong === "Phòng Nam"
-        ? "MALE"
-        : x.LoaiPhong === "Phòng Nữ"
-        ? "FEMALE"
-        : "MALE",
-    currentOccupants: x.SoNguoiHienTai || 0,
-    maxOccupants: x.SoNguoiToiDa || 6,
-    roomPrice: x.GiaPhong || 1200000,
-  }));
-
+  let rooms = readJSON(roomsFile);
+  const { dorm, gender, type, building } = req.query;
+  if (dorm) rooms = rooms.filter((r) => r.dormName === dorm);
+  if (gender)
+    rooms = rooms.filter(
+      (r) => r.roomType === (gender === "Nam" ? "MALE" : "FEMALE")
+    );
+  if (type) rooms = rooms.filter((r) => String(r.room_name).includes(type));
+  if (building) rooms = rooms.filter((r) => r.dormName === building);
   res.json(rooms);
 });
 
-
-// 5. Danh sách sinh viên đã duyệt trong phòng
-app.get("/api/rooms/:roomId/students", (req, res) => {
-  const roomId = req.params.roomId;
-  const data = readData();
-  const regs = (data.room_registrations || []).filter(
-    (r) => r.status === "APPROVED" && r.room_id === roomId
-  );
-  const students = regs.map((r) => ({
-    student_id: r.student_id,
-    full_name: r.full_name,
-    gender: r.gender,
-    department: r.department,
-    class_name: r.class_name,
-    email: r.email,
-    phone: r.phone,
-  }));
-  res.json(students);
+// 2. Lấy danh sách sinh viên trong một phòng
+app.get("/api/rooms/:room_id/students", (req, res) => {
+  const { room_id } = req.params;
+  const students = readJSON(studentsFile);
+  const filtered = students.filter((s) => s.room_id === room_id);
+  res.json(filtered);
 });
 
-// ===================================================
-// =============== Các API cũ (đăng ký) ==============
-// ===================================================
+// 3. Lấy danh sách đăng ký phòng
 app.get("/api/registrations", (req, res) => {
-  const data = readData();
-  res.json(data.room_registrations || []);
+  res.json(readJSON(regsFile));
 });
 
+// 4. Sinh viên tạo đăng ký phòng
 app.post("/api/registrations", (req, res) => {
-  const data = readData();
-  const list = data.room_registrations || [];
-  const newReg = { registration_id: Date.now(), ...req.body };
-  list.push(newReg);
-  data.room_registrations = list;
-  fs.writeFileSync(DATA_PATH, JSON.stringify(data, null, 2), "utf8");
-  res.json({ success: true, registration_id: newReg.registration_id });
+  const regs = readJSON(regsFile);
+  const body = req.body;
+
+  // Lưu toàn bộ thông tin sinh viên và phòng
+  const newReg = {
+    registration_id: uuidv4(),
+    registration_date: new Date().toISOString().split("T")[0],
+    status: "PENDING",
+    ...body,
+  };
+
+  regs.push(newReg);
+  writeJSON(regsFile, regs);
+
+  // Trả đúng định dạng frontend mong đợi
+  res.json({ success: true, registration: newReg });
 });
 
-app.post("/api/registrations/update", (req, res) => {
-  const { id, status } = req.body;
-  const data = readData();
-  const list = data.room_registrations || [];
-  const updated = list.map((r) =>
-    r.registration_id === id ? { ...r, status } : r
-  );
-  data.room_registrations = updated;
-  fs.writeFileSync(DATA_PATH, JSON.stringify(data, null, 2), "utf8");
-  res.json({ success: true });
+// 5. Manager duyệt đơn
+app.post("/api/registrations/:id/approve", (req, res) => {
+  const regId = req.params.id;
+  const regs = readJSON(regsFile);
+  const students = readJSON(studentsFile);
+  const rooms = readJSON(roomsFile);
+
+  const reg = regs.find((r) => r.registration_id === regId);
+  if (!reg) return res.status(404).json({ message: "Không tìm thấy đơn" });
+
+  const room = rooms.find((r) => r.room_id === reg.room_id);
+  if (!room)
+    return res.status(404).json({ message: "Phòng không tồn tại hoặc đã xóa" });
+
+  const student = students.find((s) => s.student_id === reg.student_id);
+  if (!student)
+    return res
+      .status(404)
+      .json({ message: "Sinh viên không tồn tại hoặc chưa khai báo" });
+
+  if (room.currentOccupants >= room.maxOccupants)
+    return res.status(400).json({ message: "Phòng đã đầy" });
+
+  // cập nhật
+  reg.status = "APPROVED";
+  student.room_id = room.room_id;
+  room.currentOccupants += 1;
+
+  writeJSON(regsFile, regs);
+  writeJSON(studentsFile, students);
+  writeJSON(roomsFile, rooms);
+
+  res.json({ message: "Duyệt thành công", registration: reg });
 });
 
-app.get("/", (_, res) => res.send("Server hoạt động..."));
+// 6. Manager từ chối hoặc thu hồi
+app.post("/api/registrations/:id/revoke", (req, res) => {
+  const regId = req.params.id;
+  const regs = readJSON(regsFile);
+  const students = readJSON(studentsFile);
+  const rooms = readJSON(roomsFile);
 
-// ===================================================
-const PORT = 4000;
+  const reg = regs.find((r) => r.registration_id === regId);
+  if (!reg) return res.status(404).json({ message: "Không tìm thấy đơn" });
+
+  const student = students.find((s) => s.student_id === reg.student_id);
+  if (student && student.room_id === reg.room_id) {
+    student.room_id = null;
+    const room = rooms.find((r) => r.room_id === reg.room_id);
+    if (room && room.currentOccupants > 0) room.currentOccupants -= 1;
+  }
+
+  reg.status = "REJECTED";
+  writeJSON(regsFile, regs);
+  writeJSON(studentsFile, students);
+  writeJSON(roomsFile, rooms);
+  res.json({ message: "Thu hồi / từ chối thành công", registration: reg });
+});
+
+// 7. Đồng bộ lại counts từ students
+app.post("/api/reconcile", (req, res) => {
+  const rooms = recalcRoomCounts();
+  res.json({ message: "Đã đồng bộ lại số lượng sinh viên", rooms });
+});
+
+// 8. Lấy danh sách toàn bộ sinh viên
+app.get("/api/students", (req, res) => {
+  res.json(readJSON(studentsFile));
+});
+
+// 9. Chuyển sinh viên giữa phòng (manager move)
+app.post("/api/students/:id/move", (req, res) => {
+  const { new_room_id } = req.body;
+  const { id } = req.params;
+  const students = readJSON(studentsFile);
+  const rooms = readJSON(roomsFile);
+
+  const student = students.find((s) => s.student_id === id);
+  if (!student) return res.status(404).json({ message: "Không tìm thấy SV" });
+
+  const oldRoom = rooms.find((r) => r.room_id === student.room_id);
+  const newRoom = rooms.find((r) => r.room_id === new_room_id);
+  if (!newRoom) return res.status(404).json({ message: "Phòng mới không tồn tại" });
+
+  if (newRoom.currentOccupants >= newRoom.maxOccupants)
+    return res.status(400).json({ message: "Phòng mới đã đầy" });
+
+  // cập nhật
+  if (oldRoom && oldRoom.currentOccupants > 0) oldRoom.currentOccupants -= 1;
+  newRoom.currentOccupants += 1;
+  student.room_id = new_room_id;
+
+  writeJSON(studentsFile, students);
+  writeJSON(roomsFile, rooms);
+  res.json({ message: "Chuyển phòng thành công", student });
+});
+
+// ======= SERVER START =======
+const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
-  console.log(`Server chạy tại http://localhost:${PORT}`);
-  console.log(`Đọc dữ liệu từ: ${DATA_PATH}`);
+  console.log("Demo server running on port", PORT);
 });

@@ -1,157 +1,152 @@
-import React, { useState } from "react";
-import "./Dorms.css";
+import React, { useEffect, useState } from "react";
 import "./Approval.css";
+import DefineData from "../../Define.json";
 
-export default function Dorms() {
-  const [khu, setKhu] = useState("");
-  const [gioiTinh, setGioiTinh] = useState("");
-  const [loaiPhong, setLoaiPhong] = useState("");
-  const [nha, setNha] = useState("");
-  const [tang, setTang] = useState(1);
-  const [selectedRoom, setSelectedRoom] = useState(null);
+function Approval() {
+  const [registrations, setRegistrations] = useState([]);
+  const [filterStatus, setFilterStatus] = useState("All");
 
-  // dữ liệu tĩnh
-  const data = {
-    A: {
-      Nam: {
-        "Phòng 6 sinh viên": ["A10", "A11"],
-        "Phòng 4 sinh viên": ["A12"],
-      },
-      Nữ: { "Phòng 6 sinh viên": ["A12"] },
-    },
-    B: {
-      Nam: { "Phòng 4 sinh viên": ["B1", "B2"] },
-      Nữ: { "Phòng 6 sinh viên": ["B3", "B4"] },
-    },
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch("http://localhost:4000/api/registrations");
+        const data = await res.json();
+        if (data && data.length > 0) {
+          setRegistrations(data);
+          localStorage.setItem("room_registrations", JSON.stringify(data));
+        } else {
+          const localData = localStorage.getItem("room_registrations");
+          if (localData) setRegistrations(JSON.parse(localData));
+          else setRegistrations(DefineData.room_registrations || []);
+        }
+      } catch (error) {
+        console.error("Lỗi tải dữ liệu từ server:", error);
+        const localData = localStorage.getItem("room_registrations");
+        if (localData) setRegistrations(JSON.parse(localData));
+        else setRegistrations(DefineData.room_registrations || []);
+      }
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (registrations.length > 0) {
+      localStorage.setItem("room_registrations", JSON.stringify(registrations));
+    }
+  }, [registrations]);
+
+  // Cập nhật trạng thái duyệt / từ chối và đồng bộ lại số lượng phòng
+  const handleStatusChange = async (id, newStatus) => {
+    const updated = registrations.map((r) =>
+      r.registration_id === id ? { ...r, status: newStatus } : r
+    );
+    setRegistrations(updated);
+
+    try {
+      const url =
+        newStatus === "APPROVED"
+          ? `http://localhost:4000/api/registrations/${id}/approve`
+          : `http://localhost:4000/api/registrations/${id}/revoke`;
+
+      await fetch(url, { method: "POST" });
+
+      // Gọi reconcile để cập nhật số lượng sinh viên trong phòng
+      await fetch("http://localhost:4000/api/reconcile", { method: "POST" });
+
+      // Tải lại danh sách đăng ký
+      const res = await fetch("http://localhost:4000/api/registrations");
+      const updatedData = await res.json();
+      setRegistrations(updatedData);
+      localStorage.setItem("room_registrations", JSON.stringify(updatedData));
+    } catch (err) {
+      console.error("Không thể cập nhật trạng thái:", err);
+    }
   };
 
-  const roomsByFloor = {
-    1: [
-      { id: "P101", name: "P101", total: 6, used: 5 },
-      { id: "P102", name: "P102", total: 6, used: 6 },
-      { id: "P103", name: "P103", total: 6, used: 4 },
-    ],
-    2: [
-      { id: "P201", name: "P201", total: 6, used: 6 },
-      { id: "P202", name: "P202", total: 6, used: 5 },
-      { id: "P203", name: "P203", total: 6, used: 2 },
-    ],
-    3: [
-      { id: "P301", name: "P301", total: 6, used: 3 },
-      { id: "P302", name: "P302", total: 6, used: 5 },
-      { id: "P303", name: "P303", total: 6, used: 6 },
-    ],
-    4: [
-      { id: "P401", name: "P401", total: 6, used: 4 },
-      { id: "P402", name: "P402", total: 6, used: 6 },
-      { id: "P403", name: "P403", total: 6, used: 1 },
-    ],
-  };
-
-  // khi click phòng
-  const handleRoomClick = (roomId) => {
-    setSelectedRoom(roomId);
-  };
-
-  // biểu tượng giường
-  const getBedIcons = (used, total) => {
-    const arr = [];
-    for (let i = 0; i < used; i++)
-      arr.push(<span key={"r" + i} className="bed red">👤</span>);
-    for (let i = 0; i < total - used; i++)
-      arr.push(<span key={"g" + i} className="bed green">🧍‍♂️</span>);
-    return arr;
-  };
+  const filteredData =
+    filterStatus === "All"
+      ? registrations
+      : registrations.filter((r) => r.status === filterStatus.toUpperCase());
 
   return (
-    <div className="booking-container">
-      <h2>Quản lý phòng ký túc xá</h2>
+    <div className="approval-container">
+      <h2>Duyệt đăng ký phòng</h2>
 
-      {/* Bộ lọc */}
-      <div className="filter-row">
-        <select value={khu} onChange={(e) => { setKhu(e.target.value); setGioiTinh(""); setLoaiPhong(""); setNha(""); }}>
-          <option value="">-- Chọn Khu --</option>
-          {Object.keys(data).map((k) => <option key={k} value={k}>{k}</option>)}
-        </select>
-
-        <select value={gioiTinh} onChange={(e) => { setGioiTinh(e.target.value); setLoaiPhong(""); setNha(""); }} disabled={!khu}>
-          <option value="">-- Giới tính --</option>
-          {khu && Object.keys(data[khu]).map((g) => <option key={g} value={g}>{g}</option>)}
-        </select>
-
-        <select value={loaiPhong} onChange={(e) => { setLoaiPhong(e.target.value); setNha(""); }} disabled={!gioiTinh}>
-          <option value="">-- Loại phòng --</option>
-          {khu && gioiTinh && Object.keys(data[khu][gioiTinh]).map((lp) => <option key={lp} value={lp}>{lp}</option>)}
-        </select>
-
-        <select value={nha} onChange={(e) => setNha(e.target.value)} disabled={!loaiPhong}>
-          <option value="">-- Nhà --</option>
-          {khu && gioiTinh && loaiPhong && data[khu][gioiTinh][loaiPhong].map((n) => <option key={n} value={n}>{n}</option>)}
+      <div className="filter-bar">
+        <label>Lọc theo trạng thái: </label>
+        <select
+          value={filterStatus}
+          onChange={(e) => setFilterStatus(e.target.value)}
+        >
+          <option value="All">Tất cả</option>
+          <option value="PENDING">Chờ duyệt</option>
+          <option value="APPROVED">Đã duyệt</option>
+          <option value="REJECTED">Từ chối</option>
         </select>
       </div>
 
-      {/* Khi chọn nhà */}
-      {nha && (
-        <>
-          <div className="legend">
-            <span className="legend-item red">👤 Đã có SV</span>
-            <span className="legend-item green">🧍‍♂️ Còn trống</span>
-          </div>
-
-          <div className="floor-tabs">
-            {[1, 2, 3, 4].map((f) => (
-              <button key={f} className={tang === f ? "active" : ""} onClick={() => setTang(f)}>
-                Tầng {f}
-              </button>
-            ))}
-          </div>
-
-          <div className="room-list">
-            {roomsByFloor[tang].map((room) => (
-              <div
-                key={room.id}
-                className={`room-card ${selectedRoom === room.id ? "selected" : ""}`}
-                onClick={() => handleRoomClick(room.id)}
+      <table className="approval-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Mã sinh viên</th>
+            <th>Mã phòng</th>
+            <th>Ngày đăng ký</th>
+            <th>Trạng thái</th>
+            <th>Loại yêu cầu</th>
+            <th>Hành động</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredData.map((reg) => (
+            <tr key={reg.registration_id}>
+              <td>{reg.registration_id}</td>
+              <td>{reg.student_id}</td>
+              <td>{reg.room_id}</td>
+              <td>{reg.registration_date}</td>
+              <td
+                className={
+                  reg.status === "APPROVED"
+                    ? "status-approved"
+                    : reg.status === "REJECTED"
+                    ? "status-rejected"
+                    : "status-pending"
+                }
               >
-                <h3>{room.name}</h3>
-                <p>
-                  Phòng {room.total} sinh viên <br />
-                  <span className="count">
-                    Còn trống: {room.total - room.used}/{room.total}
-                  </span>
-                </p>
-                <div className="beds">{getBedIcons(room.used, room.total)}</div>
-              </div>
-            ))}
-          </div>
-
-          <div className="approval-container" style={{ marginTop: "30px" }}>
-            <h3>
-              {selectedRoom
-                ? `Danh sách sinh viên trong phòng ${selectedRoom}`
-                : "Danh sách sinh viên trong phòng"}
-            </h3>
-            <table className="approval-table">
-              <thead>
-                <tr>
-                  <th>Mã sinh viên</th>
-                  <th>Họ và tên</th>
-                  <th>Giới tính</th>
-                  <th>Khoa</th>
-                  <th>Lớp</th>
-                  <th>Email</th>
-                  <th>Điện thoại</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td colSpan="7">Không có sinh viên trong phòng</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </>
-      )}
+                {reg.status}
+              </td>
+              <td>{reg.request_type}</td>
+              <td>
+                {reg.status === "PENDING" && (
+                  <>
+                    <button
+                      className="btn-approve"
+                      onClick={() =>
+                        handleStatusChange(reg.registration_id, "APPROVED")
+                      }
+                    >
+                      Duyệt
+                    </button>
+                    <button
+                      className="btn-reject"
+                      onClick={() =>
+                        handleStatusChange(reg.registration_id, "REJECTED")
+                      }
+                    >
+                      Từ chối
+                    </button>
+                  </>
+                )}
+                {reg.status !== "PENDING" && (
+                  <span className="no-action">—</span>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
+
+export default Approval;
