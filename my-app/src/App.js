@@ -32,8 +32,8 @@ export default function App() {
           <Route path="bookings" element={<Bookings />} />
           <Route path="payments" element={<Payment />} />
           <Route path="payment-historys" element={<PaymentHistory />} />
-          <Route path="room/:roomId" element={<RoomDetail />} />
-          <Route path="student" element={<StudentForm />} />
+          <Route path="/roomdetail/:roomId" element={<RoomDetail />} />
+          <Route path="/studentform" element={<StudentForm />} />
         </Route>
       </Routes>
     </Router>

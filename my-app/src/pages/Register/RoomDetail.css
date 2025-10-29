@@ -1,77 +1,135 @@
 .room-detail-container {
   display: flex;
   justify-content: space-between;
-  gap: 20px;
-  padding: 20px;
+  align-items: flex-start;
+  gap: 30px;
+  padding: 40px 60px;
+  background-color: #f4f6f9;
+  min-height: 100vh;
+  font-family: "Segoe UI", sans-serif;
 }
 
-.info-box,
-.slots-box {
+/* ====== HỘP THÔNG TIN ====== */
+.info-box {
   flex: 1;
   background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 25px 30px;
+  transition: all 0.3s ease;
 }
 
-h2 {
-  color: #2a6ebd;
-  border-bottom: 2px solid #e6e6e6;
-  padding-bottom: 10px;
-  margin-bottom: 15px;
+.info-box:hover {
+  transform: translateY(-3px);
 }
 
-table {
+.info-box h2 {
+  text-align: center;
+  color: #1a237e;
+  font-size: 22px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #1a237e;
+  padding-bottom: 8px;
+}
+
+.info-box table {
   width: 100%;
   border-collapse: collapse;
 }
 
-td,
-th {
-  padding: 10px;
-  border-bottom: 1px solid #eee;
-  text-align: left;
+.info-box td {
+  padding: 10px 8px;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 16px;
 }
 
-tr:hover {
-  background: #fafafa;
+.info-box td:first-child {
+  font-weight: 600;
+  color: #333;
+}
+
+/* ====== DANH SÁCH CHỖ NGỒI ====== */
+.slots-box {
+  flex: 1.2;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 25px 30px;
+  transition: all 0.3s ease;
+}
+
+.slots-box:hover {
+  transform: translateY(-3px);
+}
+
+.slots-box h2 {
+  text-align: center;
+  color: #2e7d32;
+  font-size: 22px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #2e7d32;
+  padding-bottom: 8px;
+}
+
+.slots-box table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.slots-box th,
+.slots-box td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 16px;
 }
 
 .trong {
-  color: green;
-  font-weight: bold;
+  color: #2e7d32;
+  font-weight: 600;
 }
 
 .dangky {
-  color: red;
-  font-weight: bold;
+  color: #c62828;
+  font-weight: 600;
 }
 
+.slots-box input[type="radio"] {
+  transform: scale(1.2);
+  margin-right: 8px;
+}
+
+/* ====== NÚT ====== */
 .buttons {
-  margin-top: 20px;
   display: flex;
-  justify-content: flex-end;
-  gap: 10px;
+  justify-content: space-between;
+  margin-top: 20px;
 }
 
-button {
-  padding: 8px 16px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  background: #f8f8f8;
+.buttons button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-button:hover {
-  background: #ddd;
+.buttons button:first-child {
+  background: #cfd8dc;
+  color: #37474f;
+}
+
+.buttons button:first-child:hover {
+  background: #b0bec5;
 }
 
 .next-btn {
-  background: #2a6ebd;
+  background: #1e88e5;
   color: white;
-  border: none;
 }
 
 .next-btn:hover {
-  background: #1f5394;
+  background: #1565c0;
 }

@@ -1,18 +1,19 @@
-import React from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import "./RoomDetail.css";
 
 export default function RoomDetail() {
   const { roomId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+  const bookingInfo = location.state?.bookingInfo || {};
 
-  // Giả lập dữ liệu phòng
   const roomData = {
     P101: {
-      khu: "A",
-      nha: "A10",
+      khu: bookingInfo.khu || "A",
+      nha: bookingInfo.nha || "A10",
       phong: "P101",
-      loaiPhong: "Phòng 6 sinh viên",
+      loaiPhong: bookingInfo.loaiPhong || "Phòng 6 sinh viên",
       choNgoi: [
         { id: 1, trangThai: "Đã được đăng ký" },
         { id: 2, trangThai: "Trống" },
@@ -23,10 +24,10 @@ export default function RoomDetail() {
       ],
     },
     P202: {
-      khu: "A",
-      nha: "A11",
+      khu: bookingInfo.khu || "A",
+      nha: bookingInfo.nha || "A11",
       phong: "P202",
-      loaiPhong: "Phòng 4 sinh viên",
+      loaiPhong: bookingInfo.loaiPhong || "Phòng 4 sinh viên",
       choNgoi: [
         { id: 1, trangThai: "Trống" },
         { id: 2, trangThai: "Trống" },
@@ -37,6 +38,7 @@ export default function RoomDetail() {
   };
 
   const phong = roomData[roomId];
+  const [selectedSeat, setSelectedSeat] = useState(null);
 
   if (!phong) {
     return (
@@ -46,6 +48,26 @@ export default function RoomDetail() {
       </div>
     );
   }
+
+  const handleContinue = () => {
+    if (!selectedSeat) {
+      alert("Vui lòng chọn chỗ trống trước khi tiếp tục!");
+      return;
+    }
+
+    navigate("/studentform", {
+      state: {
+        bookingInfo: {
+          ...bookingInfo,
+          phong: phong.phong,
+          cho: selectedSeat,
+          khu: phong.khu,
+          nha: phong.nha,
+          loaiPhong: phong.loaiPhong,
+        },
+      },
+    });
+  };
 
   return (
     <div className="room-detail-container">
@@ -88,8 +110,9 @@ export default function RoomDetail() {
                 <td>
                   <input
                     type="radio"
-                    disabled={cho.trangThai !== "Trống"}
                     name="chonCho"
+                    disabled={cho.trangThai !== "Trống"}
+                    onChange={() => setSelectedSeat(cho.id)}
                   />{" "}
                   Chỗ {cho.id}
                 </td>
@@ -103,7 +126,9 @@ export default function RoomDetail() {
 
         <div className="buttons">
           <button onClick={() => navigate(-1)}>⬅ Trở lại</button>
-          <button className="next-btn">Tiếp tục ➡</button>
+          <button className="next-btn" onClick={handleContinue}>
+            Tiếp tục ➡
+          </button>
         </div>
       </div>
     </div>
