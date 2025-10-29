@@ -20,7 +20,7 @@ export default function StudentForm() {
     khu: bookingInfo?.khu || "",
     nha: bookingInfo?.nha || "",
     tang: bookingInfo?.tang || "",
-    loaiphong: bookingInfo?.loaiPhong || "",
+    loaiphong: bookingInfo?.loaiPhong || bookingInfo?.loaiphong || "",
     phong: bookingInfo?.phong || "",
   });
 
@@ -50,7 +50,9 @@ export default function StudentForm() {
   return (
     <div className="student-form-container">
       <h2>Biểu mẫu đăng ký nội trú</h2>
-      <h3 className="section-title">Thông tin sinh viên</h3>
+      <h3 className="section-title">
+        Thông tin sinh viên đăng ký phòng {student.phong} - Chỗ {student.cho}
+      </h3>
 
       <form onSubmit={handleSubmit}>
         <div className="form-grid">

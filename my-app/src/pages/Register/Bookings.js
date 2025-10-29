@@ -13,6 +13,7 @@ export default function Booking() {
   const [loaiPhong, setLoaiPhong] = useState("");
   const [nha, setNha] = useState("");
   const [tang, setTang] = useState(1);
+  const [selectedRoom, setSelectedRoom] = useState(null);
 
   // Dữ liệu mẫu
   const data = {
@@ -56,7 +57,19 @@ export default function Booking() {
   // Khi click vào phòng → chuyển sang trang chi tiết
   //Lưu giá trị phòng
   const handleRoomClick = (roomId) => {
-    navigate("/student", {
+    setSelectedRoom(roomId); // chỉ lưu tạm thời
+  };
+
+  // Khi nhấn xác nhận
+  const handleConfirm = () => {
+    if (!khu || !nha || !loaiPhong || !tang) {
+      alert(
+        "Vui lòng chọn đủ khu, nhà, loại phòng và tầng trước khi xác nhận!"
+      );
+      return;
+    }
+
+    navigate(`/roomdetail/${selectedRoom || "P101"}`, {
       state: {
         bookingInfo: {
           khu,
@@ -64,18 +77,9 @@ export default function Booking() {
           loaiPhong,
           nha,
           tang,
-          phong: roomId,
         },
       },
     });
-  };
-
-  // Khi nhấn xác nhận
-  const handleConfirm = () => {
-    console.log("Thông tin sinh viên:", studentData);
-    console.log("Phòng đã chọn:", { khu, gioiTinh, loaiPhong, nha, tang });
-    alert("Đăng ký thành công!");
-    navigate("/success");
   };
 
   // Khi thay đổi select
@@ -275,9 +279,9 @@ export default function Booking() {
               </div>
             ))}
           </div>
-          {/* <div className="confirm-btn">
+          <div className="confirm-btn">
             <button onClick={handleConfirm}>Xác nhận đăng ký</button>
-          </div> */}
+          </div>
         </>
       )}
     </div>
