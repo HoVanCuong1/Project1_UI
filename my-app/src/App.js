@@ -12,6 +12,8 @@ import RoleRoute from "./components/RoleRoute";
 import Forbidden from "./pages/Forbidden";
 // (giả sử có AdminLayout / AdminPage)
 // import AdminLayout from "./pages/admin/AdminLayout";
+import Payment from "./pages/Payment/Payment";
+import PaymentHistory from "./pages/Payment/PaymentHistory";
 
 export default function App() {
   return (
@@ -32,6 +34,8 @@ export default function App() {
           <Route index element={<Home />} />
           <Route path="news" element={<News />} />
           <Route path="bookings" element={<Bookings />} />
+          <Route path="payments" element={<Payment />} />
+          <Route path="payment-historys" element={<PaymentHistory />} />
           <Route path="room/:roomId" element={<RoomDetail />} />
           <Route path="student" element={<StudentForm />} />
         </Route>

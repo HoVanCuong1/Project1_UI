@@ -275,9 +275,9 @@ export default function Booking() {
               </div>
             ))}
           </div>
-          <div className="confirm-btn">
+          {/* <div className="confirm-btn">
             <button onClick={handleConfirm}>Xác nhận đăng ký</button>
-          </div>
+          </div> */}
         </>
       )}
     </div>
