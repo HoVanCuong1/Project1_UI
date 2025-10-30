@@ -5,15 +5,17 @@ import "./Bookings.css";
 export default function Booking() {
   const location = useLocation();
   const navigate = useNavigate();
-  const studentData = location.state?.student; // Lấy đúng thông tin sinh viên được truyền từ form
+  const studentData = location.state?.student;
 
   // Các state cần đặt ở đầu component
   const [khu, setKhu] = useState("");
   const [gioiTinh, setGioiTinh] = useState("");
   const [loaiPhong, setLoaiPhong] = useState("");
-  const [nha, setNha] = useState("");
+  // const [nha, setNha] = useState("");
   const [tang, setTang] = useState(1);
   const [selectedRoom, setSelectedRoom] = useState(null);
+
+  const [isSent, setIsSent] = useState(false);
 
   // Dữ liệu mẫu
   const data = {
@@ -62,7 +64,7 @@ export default function Booking() {
 
   // Khi nhấn xác nhận
   const handleConfirm = () => {
-    if (!khu || !nha || !loaiPhong || !tang) {
+    if (!khu || !loaiPhong || !tang) {
       alert(
         "Vui lòng chọn đủ khu, nhà, loại phòng và tầng trước khi xác nhận!"
       );
@@ -75,7 +77,7 @@ export default function Booking() {
           khu,
           gioiTinh,
           loaiPhong,
-          nha,
+          // nha,
           tang,
         },
       },
@@ -87,18 +89,34 @@ export default function Booking() {
     setKhu(e.target.value);
     setGioiTinh("");
     setLoaiPhong("");
-    setNha("");
   };
 
   const handleGioiTinhChange = (e) => {
     setGioiTinh(e.target.value);
     setLoaiPhong("");
-    setNha("");
   };
 
   const handleLoaiPhongChange = (e) => {
     setLoaiPhong(e.target.value);
-    setNha("");
+  };
+  const handleSendToAdmin = (student) => {
+    if (!student) {
+      alert("Không có thông tin sinh viên để gửi!");
+      return;
+    }
+
+    // Giả lập gửi dữ liệu
+    console.log("Đã gửi thông tin sinh viên lên admin:", student);
+    setIsSent(true); // ✅ Cập nhật trạng thái đã gửi
+    alert(`Đã gửi đăng ký của ${student.fullName} lên admin!`);
+  };
+
+  const handleDelete = (studentId) => {
+    if (window.confirm("Bạn có chắc muốn xóa đăng ký này không?")) {
+      console.log("Đã xóa sinh viên có ID:", studentId);
+      alert("Xóa thành công!");
+      // Có thể thêm code điều hướng hoặc xóa khỏi state tại đây
+    }
   };
 
   // Render icon giường
@@ -171,22 +189,6 @@ export default function Booking() {
               </option>
             ))}
         </select>
-
-        <select
-          value={nha}
-          onChange={(e) => setNha(e.target.value)}
-          disabled={!loaiPhong}
-        >
-          <option value="">-- Nhà --</option>
-          {khu &&
-            gioiTinh &&
-            loaiPhong &&
-            data[khu][gioiTinh][loaiPhong].map((n) => (
-              <option key={n} value={n}>
-                {n}
-              </option>
-            ))}
-        </select>
       </div>
       {/* Bảng hiển thị thông tin sinh viên */}
       {studentData && (
@@ -212,7 +214,26 @@ export default function Booking() {
               <td>{studentData.className}</td>
               <td>{studentData.department}</td>
               <td>{studentData.address}</td>
-              <td>{"Gửi || Xóa"}</td>
+              <td>
+                {isSent ? (
+                  <span className="sent-status">✅ Đã gửi</span>
+                ) : (
+                  <>
+                    <button
+                      className="send-btn"
+                      onClick={() => handleSendToAdmin(studentData)}
+                    >
+                      Gửi
+                    </button>
+                    <button
+                      className="delete-btn"
+                      onClick={() => handleDelete(studentData.studentId)}
+                    >
+                      Xóa
+                    </button>
+                  </>
+                )}
+              </td>
             </tr>
           </tbody>
         </table>
@@ -224,7 +245,6 @@ export default function Booking() {
               <th>Khu </th>
               <th>Tầng</th>
               <th>Loại phòng</th>
-              <th>Nhà</th>
               <th>Phòng</th>
             </tr>
           </thead>
@@ -232,15 +252,14 @@ export default function Booking() {
             <tr>
               <td>{studentData.khu}</td>
               <td>{studentData.tang}</td>
-              <td>{studentData.loaiphong}</td>
-              <td>{studentData.nha}</td>
+              <td>{studentData.loaiPhong}</td>
               <td>{studentData.phong}</td>
             </tr>
           </tbody>
         </table>
       )}
       {/* Khi đã chọn nhà */}
-      {nha && (
+      {loaiPhong && (
         <>
           <div className="legend">
             <span className="legend-item red">👤 Đã có SV</span>

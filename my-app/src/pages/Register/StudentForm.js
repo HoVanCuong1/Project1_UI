@@ -18,10 +18,10 @@ export default function StudentForm() {
     className: "",
     address: "",
     khu: bookingInfo?.khu || "",
-    nha: bookingInfo?.nha || "",
     tang: bookingInfo?.tang || "",
-    loaiphong: bookingInfo?.loaiPhong || bookingInfo?.loaiphong || "",
+    loaiPhong: bookingInfo?.loaiPhong || "",
     phong: bookingInfo?.phong || "",
+    cho: bookingInfo?.cho || "",
   });
 
   const handleChange = (e) => {

@@ -11,7 +11,6 @@ export default function RoomDetail() {
   const roomData = {
     P101: {
       khu: bookingInfo.khu || "A",
-      nha: bookingInfo.nha || "A10",
       phong: "P101",
       loaiPhong: bookingInfo.loaiPhong || "Phòng 6 sinh viên",
       choNgoi: [
@@ -25,7 +24,6 @@ export default function RoomDetail() {
     },
     P202: {
       khu: bookingInfo.khu || "A",
-      nha: bookingInfo.nha || "A11",
       phong: "P202",
       loaiPhong: bookingInfo.loaiPhong || "Phòng 4 sinh viên",
       choNgoi: [
@@ -62,7 +60,6 @@ export default function RoomDetail() {
           phong: phong.phong,
           cho: selectedSeat,
           khu: phong.khu,
-          nha: phong.nha,
           loaiPhong: phong.loaiPhong,
         },
       },
@@ -78,10 +75,6 @@ export default function RoomDetail() {
             <tr>
               <td>Khu</td>
               <td>{phong.khu}</td>
-            </tr>
-            <tr>
-              <td>Nhà</td>
-              <td>{phong.nha}</td>
             </tr>
             <tr>
               <td>Phòng</td>
