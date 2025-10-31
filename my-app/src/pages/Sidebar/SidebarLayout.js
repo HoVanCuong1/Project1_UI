@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import ".";
 
-export default function Sidebar() {
+export default function SidebarLayout() {
   return (
     <aside className="sis-sidebar">
       <ul>
