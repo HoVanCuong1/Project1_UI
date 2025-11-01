@@ -14,6 +14,7 @@ import Forbidden from "./pages/Forbidden";
 // import AdminLayout from "./pages/admin/AdminLayout";
 import Payment from "./pages/Payment/Payment";
 import PaymentHistory from "./pages/Payment/PaymentHistory";
+import RegistrationStatus from "./pages/Register/RegistrationStatus";
 
 export default function App() {
   return (
@@ -38,6 +39,7 @@ export default function App() {
           <Route path="payment-historys" element={<PaymentHistory />} />
           <Route path="/roomdetail/:roomId" element={<RoomDetail />} />
           <Route path="/studentform" element={<StudentForm />} />
+          <Route path="/booking/status" element={<RegistrationStatus />} />
         </Route>
          {/* /admin: chỉ ADMIN hoặc MANAGER */}
         <Route

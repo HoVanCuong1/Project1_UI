@@ -1,4 +1,4 @@
-import axios from "./axios-customize";
+import axios from "./axios-customize"; 
 
 // Auth
 export const loginAPI = (payload) =>
@@ -13,9 +13,52 @@ export const logoutAPI = () =>
 export const refreshAPI = () =>
   axios.post("/webktx/authentication/refresh");
 
-// Ví dụ module khác
-export const listUsersAPI = (page = 1, pageSize = 20) =>
-  axios.get("/users", { params: { page, pageSize } });
+// --- Rooms ---
+export const getRoomById = (id) =>
+  axios.get(`/webktx/rooms/${id}`);
 
-export const createUser = (payload) =>
-  axios.post("/users", payload);
+export const getRoomsPaged = (pageIndex = 0, pageSize = 10) =>
+  axios.get("/webktx/rooms", { params: { pageIndex, pageSize } });
+
+// search 3 fields: dormName, type, maxOccupants
+export const searchRooms3 = ({ dormName, type, maxOccupants, pageIndex = 0, pageSize = 10 }) =>
+  axios.get("/webktx/rooms/_search3", {
+    params: { dormName, type, maxOccupants, pageIndex, pageSize },
+  });
+
+// search 4 fields: dormName, type, maxOccupants, floor
+export const searchRooms4 = ({ dormName, type, maxOccupants, floor, pageIndex = 0, pageSize = 10 }) =>
+  axios.get("/webktx/rooms/_search", {
+    params: { dormName, type, maxOccupants, floor, pageIndex, pageSize },
+  });
+
+// filter từng loại một (tuỳ dùng)
+export const getRoomsByDorm = ({ dormName, pageIndex = 0, pageSize = 10 }) =>
+  axios.get("/webktx/rooms/by-dorm", { params: { dormName, pageIndex, pageSize } });
+
+export const getRoomsByType = ({ type, pageIndex = 0, pageSize = 10 }) =>
+  axios.get("/webktx/rooms/by-type", { params: { type, pageIndex, pageSize } });
+
+export const getRoomsByMax = ({ max, pageIndex = 0, pageSize = 10 }) =>
+  axios.get("/webktx/rooms/by-max", { params: { max, pageIndex, pageSize } });
+
+export const getRoomsByFloor = ({ floor, pageIndex = 0, pageSize = 10 }) =>
+  axios.get("/webktx/rooms/by-floor", { params: { floor, pageIndex, pageSize } });
+
+// Tên các khu (danh sách dormName)
+export const getDormNames = () =>
+  axios.get("/webktx/dormitories/names");
+
+// Số tầng tối đa hiện có (int)
+export const getGlobalMaxFloor = () =>
+  axios.get("/webktx/rooms/max-floor");
+
+// --- Users/Students/Rooms/Registration ---
+export const getMyInfo = () => axios.get("/webktx/user/myInfo");
+export const getStudentById = (id) => axios.get(`/webktx/students/${id}`);
+
+export const createRoomRegistration = (payload) =>
+  axios.post("/webktx/room-registrations/create", payload);
+// payload = { studentId, roomId, requestType: "REGISTER", registrationDate: null }
+export const getRegistrationsByStudentId = (id) =>
+  axios.get(`/webktx/room-registrations/student/${id}`, { withCredentials: true });

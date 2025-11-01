@@ -1,0 +1,164 @@
+/* ===== Layout chung ===== */
+.reg-status-container {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 24px;
+  color: #1f2937; /* slate-800 */
+}
+
+.reg-status-container h2 {
+  margin-bottom: 6px;
+  font-weight: 700;
+  color: #111827; /* slate-900 */
+}
+
+.hint {
+  color: #6b7280; /* slate-500 */
+  margin-bottom: 16px;
+}
+
+/* ===== Card (sáng, có viền nhẹ) ===== */
+.card,
+.card.single {
+  background: #ffffff;
+  border: 1px solid #e5e7eb; /* slate-200 */
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(17, 24, 39, 0.06); /* slate-900 @ 6% */
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+/* ===== Bảng key-value (khối trên) ===== */
+.kv-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+.kv-table .section th {
+  text-align: left;
+  padding: 12px 0 8px;
+  font-size: 1rem;
+  color: #111827;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.kv-table .key {
+  width: 220px;
+  padding: 10px 12px 10px 0;
+  color: #374151; /* slate-700 */
+  vertical-align: top;
+}
+
+.kv-table .val {
+  padding: 10px 0;
+  color: #111827;
+  word-break: break-word;
+}
+
+/* ===== Bảng danh sách (lịch sử) ===== */
+.list-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+.list-table thead th {
+  text-align: left;
+  color: #374151;
+  padding: 10px 12px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #f9fafb; /* slate-50 */
+}
+
+.list-table tbody td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #f3f4f6; /* slate-100 */
+  color: #111827;
+}
+
+/* Zebra row cho lịch sử */
+.list-table tbody tr:nth-child(odd) {
+  background: #fcfcfd; /* rất nhạt */
+}
+
+/* Hover row */
+.list-table tbody tr:hover {
+  background: #f5f7fb; /* hơi xanh nhạt */
+}
+
+/* ===== Badge trạng thái (tươi, dễ nhìn) ===== */
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+  border: 1px solid transparent;
+  font-size: 12px;
+  letter-spacing: .2px;
+}
+
+/* Đang chờ */
+.status-badge.pending {
+  background: #fff7ed;   /* orange-50 */
+  border-color: #fed7aa; /* orange-200 */
+  color: #c2410c;        /* orange-700 */
+}
+
+/* Đã duyệt */
+.status-badge.approved {
+  background: #ecfdf5;   /* emerald-50 */
+  border-color: #a7f3d0; /* emerald-200 */
+  color: #047857;        /* emerald-700 */
+}
+
+/* Từ chối */
+.status-badge.rejected {
+  background: #fef2f2;   /* red-50 */
+  border-color: #fecaca; /* red-200 */
+  color: #b91c1c;        /* red-700 */
+}
+
+/* ===== Nút hành động ===== */
+.actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.actions .primary,
+.actions .secondary {
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-weight: 600;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+/* Primary (xanh) */
+.actions .primary {
+  background: #2563eb;       /* indigo-600/blue-600 */
+  border-color: #2563eb;
+  color: #ffffff;
+}
+.actions .primary:hover {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+}
+
+/* Secondary (viền xám) */
+.actions .secondary {
+  background: #ffffff;
+  border-color: #e5e7eb;
+  color: #111827;
+}
+.actions .secondary:hover {
+  background: #f9fafb;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .kv-table .key { width: 140px; }
+  .list-table thead th,
+  .list-table tbody td { padding: 8px 10px; }
+}

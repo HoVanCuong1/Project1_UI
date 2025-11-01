@@ -74,6 +74,9 @@ export default function SisUtcLayout() {
             <NavLink to="/bookings">Đăng Kí KTX</NavLink>
           </li>
           <li>
+            <NavLink to="/booking/status">Thông tin đăng Kí</NavLink>
+          </li>
+          <li>
             <NavLink to="/payments">Thanh toán</NavLink>
           </li>
           <li>
