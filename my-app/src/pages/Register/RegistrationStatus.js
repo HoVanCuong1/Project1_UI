@@ -214,7 +214,7 @@ const mergeStudentProfile = (prev, p) => ({
     <p className="hint">
       {currentReg && currentReg.status === "PENDING"
         ? "Vui lòng chờ quản trị viên duyệt yêu cầu của bạn."
-        : "Yêu cầu mới nhất của bạn đã được chấp nhận"}
+        : "Không có thông tin"}
     </p>
 
     {/* CHỈ HIỆN PHẦN DƯỚI NẾU ĐANG Ở TRẠNG THÁI PENDING */}

@@ -1,3 +1,4 @@
+// src/pages/RoomDetail.js
 import React, { useEffect, useMemo, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import "./RoomDetail.css";
@@ -21,7 +22,16 @@ export default function RoomDetail() {
       try {
         setLoading(true);
         setError("");
-        const data = await getRoomById(roomId); // interceptor trả thẳng object room
+        const res = await getRoomById(roomId);
+        // Chuẩn hoá phòng: interceptor có thể đã unwrap, nhưng ta vẫn an toàn:
+        const data =
+          res?.data?.data ??
+          res?.data?.result ??
+          res?.data ??
+          res?.result ??
+          res ??
+          null;
+
         if (mounted) setRoom(data || null);
       } catch (e) {
         if (mounted) setError("Không tải được thông tin phòng.");
@@ -39,28 +49,44 @@ export default function RoomDetail() {
     const used = Number(room.currentOccupants || 0);
     return Array.from({ length: total }, (_, i) => ({
       id: i + 1,
-      trangThai: i < used ? "Đã được đăng ký" : "Trống",
+      isFree: i >= used, // true nếu chỗ trống
     }));
   }, [room]);
 
+  const isFull = useMemo(() => {
+    if (!room) return false;
+    const total = Number(room.maxOccupants || 0);
+    const used  = Number(room.currentOccupants || 0);
+    return used >= total;
+  }, [room]);
+
+  // Auto-chọn chỗ trống đầu tiên nếu có
+  useEffect(() => {
+    if (!seats.length) return;
+    const firstFree = seats.find(s => s.isFree);
+    if (firstFree) setSelectedSeat(prev => prev ?? firstFree.id);
+    else setSelectedSeat(null);
+  }, [seats]);
+
   const handleContinue = () => {
+    if (!room) return;
+
     if (!selectedSeat) {
-      alert("Vui lòng chọn chỗ trống trước khi tiếp tục!");
+      alert("Phòng đã đầy hoặc bạn chưa chọn chỗ!");
       return;
     }
-    if (!room) return;
 
     navigate("/studentform", {
       state: {
         bookingInfo: {
           ...bookingInfo,
-          roomId: room.id,                 // RM-A101
-          phong: room.name,                // A101 (tên phòng để hiển thị)
+          roomId: room.id,                 // RM-A101 (id phòng để BE dùng)
+          phong: room.name,                // A101 (tên hiển thị)
           cho: selectedSeat,
           khu: room.dormName,              // Block A
           floor: room.floor,               // Tầng
           loaiPhong: `${room.maxOccupants} chỗ`,
-          price: room.price,               // truyền giá nếu cần dùng ở bước sau
+          price: room.price,               // giá để hiện ở bước sau
           type: room.type,                 // MALE/FEMALE
         },
       },
@@ -83,6 +109,11 @@ export default function RoomDetail() {
       </div>
     );
   }
+
+  const remain = Math.max(
+    0,
+    Number(room.maxOccupants || 0) - Number(room.currentOccupants || 0)
+  );
 
   return (
     <div className="room-detail-container">
@@ -112,8 +143,18 @@ export default function RoomDetail() {
               <td>Giá</td>
               <td>{Number(room.price).toLocaleString()} đ/tháng</td>
             </tr>
+            <tr>
+              <td>Còn trống</td>
+              <td><b>{remain}</b> / {room.maxOccupants}</td>
+            </tr>
           </tbody>
         </table>
+
+        {isFull && (
+          <div className="full-banner">
+            Phòng đã đầy — vui lòng chọn phòng khác.
+          </div>
+        )}
       </div>
 
       <div className="slots-box">
@@ -126,28 +167,39 @@ export default function RoomDetail() {
             </tr>
           </thead>
           <tbody>
-            {seats.map((cho) => (
-              <tr key={cho.id}>
-                <td>
-                  <input
-                    type="radio"
-                    name="chonCho"
-                    disabled={cho.trangThai !== "Trống"}
-                    onChange={() => setSelectedSeat(cho.id)}
-                  />{" "}
-                  Chỗ {cho.id}
-                </td>
-                <td className={cho.trangThai === "Trống" ? "trong" : "dangky"}>
-                  {cho.trangThai}
-                </td>
-              </tr>
-            ))}
+            {seats.map((cho) => {
+              const disabled = !cho.isFree; // không phải "Trống" thì disable
+              return (
+                <tr key={cho.id}>
+                  <td>
+                    <label style={{ cursor: disabled ? "not-allowed" : "pointer" }}>
+                      <input
+                        type="radio"
+                        name="chonCho"
+                        disabled={disabled}
+                        checked={selectedSeat === cho.id}
+                        onChange={() => !disabled && setSelectedSeat(cho.id)}
+                      />{" "}
+                      Chỗ {cho.id}
+                    </label>
+                  </td>
+                  <td className={cho.isFree ? "trong" : "dangky"}>
+                    {cho.isFree ? "Trống" : "Đã được đăng ký"}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
 
         <div className="buttons">
           <button onClick={() => navigate(-1)}>⬅ Trở lại</button>
-          <button className="next-btn" onClick={handleContinue}>
+          <button
+            className="next-btn"
+            onClick={handleContinue}
+            disabled={isFull || !selectedSeat}
+            title={isFull ? "Phòng đã đầy" : (!selectedSeat ? "Vui lòng chọn chỗ" : "")}
+          >
             Tiếp tục ➡
           </button>
         </div>

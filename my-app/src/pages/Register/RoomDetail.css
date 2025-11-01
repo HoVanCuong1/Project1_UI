@@ -133,3 +133,16 @@
 .next-btn:hover {
   background: #1565c0;
 }
+/* RoomDetail.css – thêm */
+.full-banner {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #fff3cd;
+  color: #7f5f00;
+  border: 1px solid #ffe69c;
+  font-weight: 600;
+}
+.slots-box .trong { color: #2e7d32; font-weight: 600; }
+.slots-box .dangky { color: #c62828; opacity: .9; }
+.next-btn:disabled { opacity: .6; cursor: not-allowed; }
