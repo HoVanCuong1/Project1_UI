@@ -1,0 +1,42 @@
+/* Thanh tìm kiếm nhỏ gọn, biểu tượng bên phải trong ô nhập */
+.smgmt-search {
+  position: relative;     /* tạo khung định vị cho biểu tượng */
+  width: 220px;
+  margin-bottom: 16px;
+}
+
+.smgmt-search-input {
+  width: 100%;
+  padding: 8px 26px 8px 10px;  /* chừa chỗ cho biểu tượng */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  font-size: 13px;
+  height: 32px;
+  box-sizing: border-box;
+}
+
+.smgmt-search-btn {
+  position: absolute;
+  top: 40%;
+  right: 6px;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  color: #666;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: auto;
+  line-height: 1;
+}
+
+.smgmt-search-btn:hover {
+  color: #666;
+  background: transparent;
+}
+

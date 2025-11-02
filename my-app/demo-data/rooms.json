@@ -24,7 +24,7 @@
     "dormName": "A1",
     "room_name": "A1-103",
     "roomType": "MALE",
-    "currentOccupants": 0,
+    "currentOccupants": 1,
     "maxOccupants": 6,
     "roomPrice": 100000,
     "floor": 1

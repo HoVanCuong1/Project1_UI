@@ -17,7 +17,9 @@ import AdminHome from "./pages/AdminHome";
 import ManagerLayout from "./pages/SisUtcLayout/ManagerLayout";
 import ManagerHome from "./pages/ManagerHome";
 import Approval from "./pages/Manager/Approval";
-import Dorms from "./pages/Manager/Dorms"; // ← thêm dòng này
+import Dorms from "./pages/Manager/Dorms";
+import StudentManagement from "./pages/Manager/StudentManagement";
+import StudentDetail from "./pages/Manager/StudentDetail"; // ← thêm dòng này
 
 export default function App() {
   return (
@@ -65,7 +67,9 @@ export default function App() {
         >
           <Route index element={<ManagerHome />} />
           <Route path="approval" element={<Approval />} />
-          <Route path="dorms" element={<Dorms />} /> {/* ← thêm dòng này */}
+          <Route path="dorms" element={<Dorms />} />
+          <Route path="student-management" element={<StudentManagement />} />
+          <Route path="student-detail" element={<StudentDetail />} /> {/* ← thêm dòng này */}
         </Route>
       </Routes>
     </Router>

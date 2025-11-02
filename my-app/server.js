@@ -225,6 +225,11 @@ app.get("/api/students", (req, res) => {
   res.json(readJSON(studentsFile));
 });
 
+// 8b. Lấy danh sách đăng ký phòng đã duyệt (room_registrations)
+app.get("/api/room_registrations", (req, res) => {
+  res.json(readJSON(regsFile));
+});
+
 // 9. Chuyển sinh viên giữa phòng (manager move)
 app.post("/api/students/:id/move", (req, res) => {
   const { new_room_id } = req.body;

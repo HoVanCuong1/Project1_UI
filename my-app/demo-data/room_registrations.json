@@ -78,5 +78,25 @@
     "room_type": "Phòng 6 người",
     "room_id": "A1-202",
     "request_type": "REGISTER"
+  },
+  {
+    "registration_id": "34399ae0-cd2a-48fc-b781-ea7663ce67f6",
+    "registration_date": "2025-10-27",
+    "status": "APPROVED",
+    "student_id": "221230005",
+    "full_name": "Họ và tên 5",
+    "gender": "Nam",
+    "date_of_birth": "2025-10-05",
+    "email": "Email@5",
+    "phone": "Số điện thoại 5",
+    "department": "Khoa 5",
+    "class_name": "Lớp 5",
+    "address": "Địa chỉ 5",
+    "khu": "A",
+    "nha": "A1",
+    "tang": 1,
+    "room_type": "Phòng 6 người",
+    "room_id": "A1-103",
+    "request_type": "REGISTER"
   }
 ]
