@@ -15,6 +15,11 @@ import Forbidden from "./pages/Forbidden";
 import Payment from "./pages/Payment/Payment";
 import PaymentHistory from "./pages/Payment/PaymentHistory";
 import RegistrationStatus from "./pages/Register/RegistrationStatus";
+// ====== Thêm import cho manager ======
+import ManagerLayout from "./pages/SisUtcLayout/ManagerLayout";
+import ManagerHome from "./pages/ManagerHome";
+import Approval from "./pages/Manager/Approval";
+import Dorms from "./pages/Manager/Dorms";
 
 export default function App() {
   return (
@@ -41,12 +46,29 @@ export default function App() {
           <Route path="/studentform" element={<StudentForm />} />
           <Route path="/booking/status" element={<RegistrationStatus />} />
         </Route>
+
+         {/* Route cho manager */}
+        <Route
+          path="/manager"
+          element={
+            <ProtectedRoute>
+              <RoleRoute allowed={["ADMIN", "MANAGER"]}>
+                <ManagerLayout />
+              </RoleRoute>
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<ManagerHome />} />
+          <Route path="approval" element={<Approval />} />
+          <Route path="dorms" element={<Dorms />} /> {/* ← thêm dòng này */}
+        </Route>
+
          {/* /admin: chỉ ADMIN hoặc MANAGER */}
         <Route
           path="/admin"
           element={
             <ProtectedRoute>
-              <RoleRoute allowed={["ADMIN", "MANAGER"]}>
+              <RoleRoute allowed={["ADMIN"]}>
                 {/* <AdminLayout /> */}
               </RoleRoute>
             </ProtectedRoute>

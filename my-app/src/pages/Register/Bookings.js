@@ -271,14 +271,6 @@ console.log("[Bookings] studentData:", studentData);
     <div className="booking-container">
       <h2>Chọn phòng ký túc xá</h2>
 
-      {studentData ? (
-        <p className="welcome">
-          Xin chào <b>{studentData.fullName}</b> ({studentData.studentId}) – {studentData.gender}
-        </p>
-      ) : (
-        <p className="warning">Không có thông tin sinh viên!</p>
-      )}
-
       {/* ===== CHẾ ĐỘ CHỌN PHÒNG (chỉ hiện khi CHƯA có dữ liệu sinh viên) ===== */}
       {!hasStudentData && (
         <>

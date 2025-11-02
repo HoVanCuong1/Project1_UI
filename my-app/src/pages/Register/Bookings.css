@@ -328,11 +328,11 @@
   bottom: 12px;
   padding: 6px 10px;
   border-radius: 999px;
-  background: #0d6efd;
+  background: #525454;
   color: #fff;
   font-weight: 700;
   font-size: 13px;
-  box-shadow: 0 4px 10px rgba(13,110,253,.25);
+  box-shadow: 0 4px 10px rgba(86, 133, 202, 0.25);
 }
 
 /* === Tooltip title hiển thị đẹp trên desktop (tuỳ trình duyệt) === */

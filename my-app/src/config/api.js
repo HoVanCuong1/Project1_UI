@@ -62,3 +62,17 @@ export const createRoomRegistration = (payload) =>
 // payload = { studentId, roomId, requestType: "REGISTER", registrationDate: null }
 export const getRegistrationsByStudentId = (id) =>
   axios.get(`/webktx/room-registrations/student/${id}`, { withCredentials: true });
+
+// Lấy danh sách đăng ký theo status (pending/approved/rejected) có phân trang
+export const getRegistrationsByStatus = (status, pageIndex = 0, pageSize = 10) =>
+  axios.get(`/webktx/room-registrations/${String(status).toLowerCase()}`, {
+    params: { pageIndex, pageSize },
+  });
+
+// Duyệt
+export const approveRegistration = (id) =>
+  axios.put(`/webktx/room-registrations/approve/${id}`);
+
+// Từ chối
+export const rejectRegistration = (id) =>
+  axios.put(`/webktx/room-registrations/reject/${id}`);

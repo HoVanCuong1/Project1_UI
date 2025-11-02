@@ -1,0 +1,122 @@
+.dorms-container {
+  padding: 20px;
+}
+
+.filter-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.filter-row select {
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 5px;
+}
+
+.legend {
+  margin-top: 10px;
+}
+
+.legend-item {
+  margin-right: 20px;
+  font-size: 14px;
+}
+
+.floor-tabs {
+  display: flex;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.floor-tabs button {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  background-color: #f3f3f3;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.floor-tabs button.active {
+  background-color: #1976d2;
+  color: #fff;
+}
+
+.room-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.room-card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  width: 180px;
+  text-align: center;
+  padding: 10px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.room-card:hover {
+  transform: scale(1.05);
+}
+
+.room-card h3 {
+  margin-bottom: 5px;
+  font-size: 18px;
+}
+
+.room-card .count {
+  color: #555;
+  font-size: 13px;
+}
+
+.beds {
+  margin-top: 6px;
+}
+
+.bed {
+  margin: 0 2px;
+  font-size: 16px;
+}
+
+.bed.red {
+  color: red;
+}
+
+.bed.green {
+  color: green;
+}
+
+.room-students {
+  margin-top: 20px;
+}
+
+.room-students .btn-back {
+  padding: 6px 10px;
+  margin-bottom: 10px;
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.rs-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.rs-table th,
+.rs-table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+
+.rs-table th {
+  background-color: #f0f0f0;
+}

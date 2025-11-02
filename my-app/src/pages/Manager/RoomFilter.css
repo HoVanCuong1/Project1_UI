@@ -1,0 +1,156 @@
+/* ============================
+   File: src/pages/Manager/RoomFilter.css
+   Giao diện bộ lọc và danh sách phòng (Manager)
+   ============================ */
+
+.room-filter-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+/* Tiêu đề */
+.room-filter-container h2 {
+  font-size: 22px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 18px;
+}
+
+/* Bộ lọc phòng */
+.room-filter-form {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.room-filter-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.room-filter-row label {
+  display: block;
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+.room-filter-row input,
+.room-filter-row select {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.room-filter-row input:focus,
+.room-filter-row select:focus {
+  outline: none;
+  border-color: #005bbb;
+}
+
+/* Gợi ý khi chưa nhập đủ */
+.hint {
+  font-style: italic;
+  color: #666;
+  margin-top: 10px;
+}
+
+/* Danh sách phòng */
+.rooms-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 18px;
+}
+
+.room-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  cursor: pointer;
+}
+
+.room-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Header của thẻ phòng */
+.room-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.room-header h3 {
+  font-size: 18px;
+  margin: 0;
+  color: #222;
+}
+
+.room-header span {
+  font-size: 13px;
+  color: #666;
+}
+
+/* Nội dung phòng */
+.room-body {
+  text-align: left;
+}
+
+.beds {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.bed {
+  font-size: 18px;
+  opacity: 0.5;
+}
+
+.bed.red {
+  color: #e74c3c;
+  opacity: 1;
+}
+
+.counts {
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.price {
+  font-size: 14px;
+  color: #007bff;
+}
+
+/* Trạng thái rỗng hoặc loading */
+.loading-text,
+.empty-text {
+  text-align: center;
+  color: #555;
+  margin-top: 20px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .room-filter-row {
+    grid-template-columns: 1fr;
+  }
+  .room-header h3 {
+    font-size: 16px;
+  }
+  .price {
+    font-size: 13px;
+  }
+}
