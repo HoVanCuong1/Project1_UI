@@ -1,5 +1,6 @@
 // File: src/pages/Manager/StudentManagement.js
 // Hiển thị danh sách sinh viên (đã duyệt và chưa đăng ký phòng) + xem chi tiết
+// Giao diện bảng rút gọn chỉ hiển thị: Họ và tên, Mã sinh viên, Phòng, Trạng thái
 
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -17,7 +18,6 @@ export default function StudentManagement() {
 
     async function loadAllStudents() {
       try {
-        // Lấy dữ liệu song song từ cả 2 file
         const [resStudents, resRegs] = await Promise.all([
           fetch("http://localhost:4000/api/students"),
           fetch("http://localhost:4000/api/room_registrations"),
@@ -29,40 +29,39 @@ export default function StudentManagement() {
         const studentsData = await resStudents.json();
         const regsData = await resRegs.json();
 
-        // Lấy danh sách sinh viên đã duyệt phòng
         const approvedRegs = Array.isArray(regsData)
           ? regsData.filter((r) => r.status === "APPROVED")
           : [];
 
-        // Tạo map từ student_id -> registration (nếu có)
         const regMap = new Map();
         approvedRegs.forEach((r) => regMap.set(r.student_id, r));
 
-        // Gộp dữ liệu
         const merged = Array.isArray(studentsData)
           ? studentsData.map((s) => {
               const reg = regMap.get(s.student_id);
               return {
                 ...s,
-                room_id: reg ? reg.room_id : s.room_id || "-",
+                full_name: reg?.full_name || s.full_name,
                 gender: reg?.gender || s.gender,
+                date_of_birth: reg?.date_of_birth || s.date_of_birth,
                 department: reg?.department || s.department,
                 class_name: reg?.class_name || s.class_name,
                 email: reg?.email || s.email,
                 phone: reg?.phone || s.phone,
                 address: reg?.address || s.address,
+                room_id: reg ? reg.room_id : s.room_id || "-",
                 hasRoom: !!reg,
               };
             })
           : [];
 
-        // Thêm sinh viên có trong room_registrations nhưng chưa có trong students.json
         approvedRegs.forEach((r) => {
           if (!merged.find((s) => s.student_id === r.student_id)) {
             merged.push({
               student_id: r.student_id,
               full_name: r.full_name,
               gender: r.gender,
+              date_of_birth: r.date_of_birth,
               department: r.department,
               class_name: r.class_name,
               email: r.email,
@@ -155,9 +154,6 @@ export default function StudentManagement() {
             <tr>
               <th>Họ và tên</th>
               <th>Mã sinh viên</th>
-              <th>Giới tính</th>
-              <th>Khoa</th>
-              <th>Lớp</th>
               <th>Phòng</th>
               <th>Trạng thái</th>
             </tr>
@@ -165,7 +161,7 @@ export default function StudentManagement() {
           <tbody>
             {filtered.length === 0 ? (
               <tr>
-                <td colSpan={7} className="smgmt-empty">
+                <td colSpan={4} className="smgmt-empty">
                   Không có sinh viên để hiển thị
                 </td>
               </tr>
@@ -178,9 +174,6 @@ export default function StudentManagement() {
                 >
                   <td>{s.full_name || "-"}</td>
                   <td>{s.student_id || "-"}</td>
-                  <td>{formatGender(s.gender)}</td>
-                  <td>{s.department || "-"}</td>
-                  <td>{s.class_name || "-"}</td>
                   <td>{s.room_id || "-"}</td>
                   <td style={{ color: s.hasRoom ? "green" : "gray" }}>
                     {s.hasRoom ? "Đã có phòng" : "Chưa có phòng"}
@@ -193,21 +186,4 @@ export default function StudentManagement() {
       </div>
     </div>
   );
-}
-
-function formatGender(g) {
-  if (!g && g !== 0) return "-";
-  const str = String(g).toLowerCase();
-  if (str === "m" || str === "male" || str === "nam") return "Nam";
-  if (str === "f" || str === "female" || str === "nữ" || str === "nu")
-    return "Nữ";
-  if (str === "other" || str === "khác") return "Khác";
-  if (Number(g) === 0) return "Nữ";
-  if (Number(g) === 1) return "Nam";
-  return capitalize(String(g));
-}
-
-function capitalize(s) {
-  if (!s) return s;
-  return s.charAt(0).toUpperCase() + s.slice(1);
 }

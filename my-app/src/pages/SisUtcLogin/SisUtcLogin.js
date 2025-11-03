@@ -1,3 +1,4 @@
+// File: src/pages/SisUtcLogin/SisUtcLogin.js
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./SisUtcLogin.css";
@@ -55,10 +56,14 @@ export default function SisUtcLogin() {
 
       if (user) {
         const userData = { studentId, role: user.role, remember };
-        if (remember)
+
+        if (remember) {
           localStorage.setItem("utc_user", JSON.stringify(userData));
-        else
+          localStorage.setItem("studentId", studentId); // thêm dòng này
+        } else {
           sessionStorage.setItem("utc_user", JSON.stringify(userData));
+          localStorage.setItem("studentId", studentId); // thêm dòng này
+        }
 
         if (user.role === "ADMIN") navigate("/admin", { replace: true });
         else if (user.role === "MANAGER") navigate("/manager", { replace: true });
@@ -118,7 +123,9 @@ export default function SisUtcLogin() {
           </button>
         </form>
 
-        <div className="footer">© {new Date().getFullYear()} UTC — Phiên bản demo</div>
+        <div className="footer">
+          © {new Date().getFullYear()} UTC — Phiên bản demo
+        </div>
       </div>
     </div>
   );

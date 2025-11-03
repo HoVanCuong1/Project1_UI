@@ -1,3 +1,4 @@
+// File: src/App.js
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SisUtcLayout from "./pages/SisUtcLayout/SisUtcLayout";
@@ -19,7 +20,10 @@ import ManagerHome from "./pages/ManagerHome";
 import Approval from "./pages/Manager/Approval";
 import Dorms from "./pages/Manager/Dorms";
 import StudentManagement from "./pages/Manager/StudentManagement";
-import StudentDetail from "./pages/Manager/StudentDetail"; // ← thêm dòng này
+import StudentDetail from "./pages/Manager/StudentDetail"; // ← đã có sẵn
+
+// ====== Thêm import cho student ======
+import StudentInfo from "./pages/Student/StudentInfo";
 
 export default function App() {
   return (
@@ -69,7 +73,19 @@ export default function App() {
           <Route path="approval" element={<Approval />} />
           <Route path="dorms" element={<Dorms />} />
           <Route path="student-management" element={<StudentManagement />} />
-          <Route path="student-detail" element={<StudentDetail />} /> {/* ← thêm dòng này */}
+          <Route path="student-detail" element={<StudentDetail />} />
+        </Route>
+
+        {/* Route cho student */}
+        <Route
+          path="/student"
+          element={
+            <ProtectedRoute>
+              <SisUtcLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="info" element={<StudentInfo />} />
         </Route>
       </Routes>
     </Router>

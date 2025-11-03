@@ -1,3 +1,4 @@
+// File: src/pages/SisUtcLayout/SisUtcLayout.js
 import React from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import "./SisUtcLayout.css";
@@ -47,12 +48,17 @@ export default function SisUtcLayout() {
           <li>
             <NavLink to="/payment-history">Lịch sử thanh toán</NavLink>
           </li>
+
+          {/* ===== Thêm mới: liên kết đến trang thông tin cá nhân ===== */}
+          <li>
+            <NavLink to="/student/info">Thông tin cá nhân</NavLink>
+          </li>
         </ul>
       </nav>
 
       {/* Nội dung */}
       <main className="sis-content">
-        <Outlet /> {/* nơi render Home */}
+        <Outlet />
       </main>
     </div>
   );
