@@ -9,7 +9,7 @@
     "phone": "Số điện thoại 1",
     "department": "Khoa 1",
     "class_name": "Lớp 1",
-    "address": "Địa chỉ 1",
+    "address": "Địa chỉ 1 test 3",
     "khu": "A",
     "nha": "A1",
     "tang": 1,
@@ -17,7 +17,8 @@
     "room_id": "A1-101",
     "registration_date": "2025-10-26",
     "status": "APPROVED",
-    "request_type": "REGISTER"
+    "request_type": "REGISTER",
+    "password": "123"
   },
   {
     "registration_id": 1761537730803,

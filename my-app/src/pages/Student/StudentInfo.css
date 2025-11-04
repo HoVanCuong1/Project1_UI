@@ -1,32 +1,108 @@
-.studentinfo-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 24px;
+.student-detail-container {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 24px 40px;
   background-color: #fff;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.studentinfo-container h2 {
-  text-align: center;
+.student-detail-container h2 {
+  font-size: 24px;
+  font-weight: 700;
   margin-bottom: 20px;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 8px;
+  color: #333;
+  text-align: center;
 }
 
-.info-grid {
+.form-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 16px;
+  grid-template-columns: 0.97fr 1fr; /* cố định tỉ lệ hai cột */
+  gap: 18px 30px;
 }
 
-.info-group label {
-  display: block;
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
   font-weight: 600;
-  margin-bottom: 6px;
+  margin-bottom: 5px;
+  color: #444;
+}
+
+.form-group input {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  background-color: #f7f9fb;
+  transition: all 0.2s ease;
+}
+
+.form-group input:focus {
+  border-color: #007bff;
+  outline: none;
+  background-color: #fff;
 }
 
 .readonly-field {
   background-color: #f5f5f5;
-  padding: 8px 10px;
+  padding: 10px 12px;
   border-radius: 6px;
   border: 1px solid #ddd;
 }
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* giữ nguyên cho hàng trên */
+  gap: 18px 30px;
+}
+
+.two-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* giống hệt các hàng khác */
+  gap: 18px 30px;
+  grid-column: span 2;
+}
+
+.two-column > div {
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+button.continue-btn {
+  padding: 10px 25px;
+  background-color: #007bff;
+  border: none;
+  color: #fff;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button.continue-btn:hover {
+  background-color: #0056b3;
+}
+
+button.cancel-btn {
+  background-color: gray;
+}
+
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.full-width {
+  grid-column: span 2;
+}
+

@@ -3,7 +3,13 @@
     "student_id": "221230001",
     "full_name": "Họ và tên 1",
     "gender": "Nam",
-    "room_id": "A1-101"
+    "room_id": "A1-101",
+    "email": "Email@1",
+    "phone": "Số điện thoại 1",
+    "department": "Khoa 1",
+    "class_name": "Lớp 1",
+    "address": "Địa chỉ 1 test 3",
+    "password": "123"
   },
   {
     "student_id": "221230002",

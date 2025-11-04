@@ -12,20 +12,6 @@ export default function SisUtcLogin() {
 
   const navigate = useNavigate();
 
-  // ====== Danh sách tài khoản demo ======
-  const DEMO_USERS = [
-    { studentId: "221230001", password: "123", role: "USER" },
-    { studentId: "221230002", password: "123", role: "USER" },
-    { studentId: "221230003", password: "123", role: "USER" },
-    { studentId: "221230004", password: "123", role: "USER" },
-    { studentId: "221230005", password: "123", role: "USER" },
-    { studentId: "221230006", password: "123", role: "USER" },
-    { studentId: "221230007", password: "123", role: "USER" },
-    { studentId: "221230008", password: "123", role: "USER" },
-    { studentId: "221230009", password: "123", role: "USER" },
-    { studentId: "221230010", password: "123", role: "USER" }
-  ];
-
   const DEMO_MANAGER = { studentId: "manager", password: "123", role: "MANAGER" };
   const DEMO_ADMIN = { studentId: "admin", password: "123", role: "ADMIN" };
 
@@ -40,39 +26,44 @@ export default function SisUtcLogin() {
 
     setLoading(true);
     try {
-      // Giả lập request tới API
-      await new Promise((resolve) => setTimeout(resolve, 700));
+      // --- Kiểm tra trước tài khoản quản lý và admin ---
+      if (studentId === DEMO_MANAGER.studentId && password === DEMO_MANAGER.password) {
+        localStorage.setItem("utc_user", JSON.stringify({ studentId, role: "MANAGER" }));
+        navigate("/manager", { replace: true });
+        return;
+      }
+      if (studentId === DEMO_ADMIN.studentId && password === DEMO_ADMIN.password) {
+        localStorage.setItem("utc_user", JSON.stringify({ studentId, role: "ADMIN" }));
+        navigate("/admin", { replace: true });
+        return;
+      }
 
-      let user = DEMO_USERS.find(
-        (u) => u.studentId === studentId && u.password === password
+      // --- Nếu không phải manager/admin → kiểm tra trong danh sách sinh viên thật ---
+      const res = await fetch("http://localhost:4000/api/students");
+      if (!res.ok) throw new Error("Không thể tải danh sách sinh viên");
+      const students = await res.json();
+
+      const user = students.find(
+        (s) => s.student_id === studentId && s.password === password
       );
 
-      if (!user) {
-        if (studentId === DEMO_MANAGER.studentId && password === DEMO_MANAGER.password)
-          user = DEMO_MANAGER;
-        else if (studentId === DEMO_ADMIN.studentId && password === DEMO_ADMIN.password)
-          user = DEMO_ADMIN;
-      }
-
       if (user) {
-        const userData = { studentId, role: user.role, remember };
-
+        const userData = { studentId, role: "USER", remember };
         if (remember) {
           localStorage.setItem("utc_user", JSON.stringify(userData));
-          localStorage.setItem("studentId", studentId); // thêm dòng này
+          localStorage.setItem("studentId", studentId);
         } else {
           sessionStorage.setItem("utc_user", JSON.stringify(userData));
-          localStorage.setItem("studentId", studentId); // thêm dòng này
+          localStorage.setItem("studentId", studentId);
         }
 
-        if (user.role === "ADMIN") navigate("/admin", { replace: true });
-        else if (user.role === "MANAGER") navigate("/manager", { replace: true });
-        else navigate("/", { replace: true });
+        navigate("/", { replace: true });
       } else {
-        setError("Sai thông tin đăng nhập");
+        setError("Sai mã sinh viên hoặc mật khẩu");
       }
-    } catch {
-      setError("Lỗi hệ thống, vui lòng thử lại");
+    } catch (err) {
+      console.error(err);
+      setError("Không thể kết nối đến máy chủ.");
     } finally {
       setLoading(false);
     }
@@ -102,7 +93,7 @@ export default function SisUtcLogin() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Mật khẩu: 123"
+            placeholder="Nhập mật khẩu"
           />
 
           <div className="form-footer">
@@ -123,9 +114,7 @@ export default function SisUtcLogin() {
           </button>
         </form>
 
-        <div className="footer">
-          © {new Date().getFullYear()} UTC — Phiên bản demo
-        </div>
+        <div className="footer">© {new Date().getFullYear()} UTC — Phiên bản demo</div>
       </div>
     </div>
   );

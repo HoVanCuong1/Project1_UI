@@ -247,7 +247,6 @@ app.post("/api/students/:id/move", (req, res) => {
   if (newRoom.currentOccupants >= newRoom.maxOccupants)
     return res.status(400).json({ message: "Phòng mới đã đầy" });
 
-  // cập nhật
   if (oldRoom && oldRoom.currentOccupants > 0) oldRoom.currentOccupants -= 1;
   newRoom.currentOccupants += 1;
   student.room_id = new_room_id;
@@ -256,6 +255,76 @@ app.post("/api/students/:id/move", (req, res) => {
   writeJSON(roomsFile, rooms);
   res.json({ message: "Chuyển phòng thành công", student });
 });
+
+
+// 10. Cập nhật thông tin sinh viên (StudentInfo update + đổi mật khẩu)
+app.put("/api/students/:id", (req, res) => {
+  const { id } = req.params;
+  const updates = req.body;
+  const students = readJSON(studentsFile);
+  const regs = readJSON(regsFile);
+
+  const stuIndex = students.findIndex((s) => s.student_id === id);
+  if (stuIndex === -1)
+    return res.status(404).json({ success: false, message: "Không tìm thấy sinh viên" });
+
+  // Cập nhật students.json
+  const editableFields = ["email", "phone", "department", "class_name", "address", "password"];
+  editableFields.forEach((key) => {
+    if (updates[key] !== undefined && updates[key] !== "")
+      students[stuIndex][key] = updates[key];
+  });
+
+  writeJSON(studentsFile, students);
+
+  // Cập nhật room_registrations.json để đồng bộ mật khẩu
+  const regIndex = regs.findIndex((r) => r.student_id === id);
+  if (regIndex !== -1) {
+    editableFields.forEach((key) => {
+      if (updates[key] !== undefined && updates[key] !== "")
+        regs[regIndex][key] = updates[key];
+    });
+    writeJSON(regsFile, regs);
+  }
+
+  res.json({ success: true, student: students[stuIndex] });
+});
+
+
+
+// 11. Cập nhật thông tin đăng ký phòng (room_registrations + đồng bộ password)
+app.put("/api/room_registrations/:student_id", (req, res) => {
+  const { student_id } = req.params;
+  const updates = req.body;
+  const regs = readJSON(regsFile);
+  const students = readJSON(studentsFile);
+
+  const regIndex = regs.findIndex((r) => r.student_id === student_id);
+  if (regIndex === -1)
+    return res.status(404).json({ success: false, message: "Không tìm thấy hồ sơ đăng ký" });
+
+  // Cập nhật room_registrations.json
+  const editableFields = ["email", "phone", "department", "class_name", "address", "password"];
+  editableFields.forEach((key) => {
+    if (updates[key] !== undefined && updates[key] !== "")
+      regs[regIndex][key] = updates[key];
+  });
+  writeJSON(regsFile, regs);
+
+  // Đồng bộ sang students.json
+  const stuIndex = students.findIndex((s) => s.student_id === student_id);
+  if (stuIndex !== -1) {
+    editableFields.forEach((key) => {
+      if (updates[key] !== undefined && updates[key] !== "")
+        students[stuIndex][key] = updates[key];
+    });
+    writeJSON(studentsFile, students);
+  }
+
+  res.json({ success: true, registration: regs[regIndex] });
+});
+
+
 
 // ======= SERVER START =======
 const PORT = process.env.PORT || 4000;
