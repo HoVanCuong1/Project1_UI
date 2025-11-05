@@ -1,6 +1,7 @@
 import React from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import "./SisUtcLayout.css";
+import SidebarRequest from "../Sidebar/SidebarRequest";
 
 export default function SisUtcLayout() {
   return (
@@ -33,7 +34,7 @@ export default function SisUtcLayout() {
             <NavLink to="/news">Tin Tức</NavLink>
           </li>
           <li>
-            <NavLink to="/bookings">Đăng Kí KTX</NavLink>
+            <SidebarRequest />
           </li>
           <li>
             <NavLink to="/payments">Thanh toán</NavLink>

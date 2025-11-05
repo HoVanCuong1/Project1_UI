@@ -13,7 +13,8 @@ export default function SisUtcLogin() {
   const navigate = useNavigate();
 
   // Tài khoản demo
-  const DEMO_USER = { studentId: "221230764", passworsd: "1234" };
+
+  const DEMO_USER = { studentId: "221230764", password: "1234" };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
