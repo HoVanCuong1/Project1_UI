@@ -1,0 +1,223 @@
+/* --- Tổng thể --- */
+.ma-wrap {
+  padding: 16px;
+  font-family: "Segoe UI", sans-serif;
+  color: #111827;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* --- FORM --- */
+.ma-form h3,
+.ma-filter h3 {
+  margin-top: 0;
+  color: #111827;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.ma-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+.ma-grid label {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.ma-grid input,
+.ma-grid select,
+.ma-grid textarea {
+  margin-top: 4px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+.ma-grid input:focus,
+.ma-grid select:focus,
+.ma-grid textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+.ma-grid .full {
+  grid-column: 1 / -1;
+}
+
+/* --- Nút hành động --- */
+.btn {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #111827;
+  background: #f9fafb;
+}
+.btn:hover {
+  background: #e5e7eb;
+}
+
+.btn.primary {
+  background: #2563eb;
+  color: white;
+  border-color: #2563eb;
+}
+.btn.primary:hover {
+  background: #1d4ed8;
+}
+
+.btn.danger {
+  background: #dc2626;
+  color: white;
+  border-color: #dc2626;
+}
+.btn.danger:hover {
+  background: #b91c1c;
+}
+
+.btn.upload {
+  background: #10b981;
+  color: white;
+  border-color: #10b981;
+}
+.btn.upload:hover {
+  background: #059669;
+}
+
+.ma-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* --- Filter Row --- */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.row input,
+.row select {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+}
+
+/* --- Table --- */
+.ma-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.ma-table th,
+.ma-table td {
+  border-bottom: 1px solid #e5e7eb;
+  padding: 8px 10px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.ma-table th {
+  background: #f3f4f6;
+  font-weight: 600;
+  color: #111827;
+}
+
+.ma-table tr:hover {
+  background: #f9fafb;
+}
+
+.ma-table img.thumb {
+  width: 48px;
+  height: 36px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid #d1d5db;
+}
+
+.ma-table .title {
+  font-weight: 600;
+  color: #2563eb;
+  cursor: pointer;
+}
+.ma-table .title:hover {
+  text-decoration: underline;
+}
+
+.ma-table .sub {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.ma-table .right {
+  text-align: right;
+}
+
+.muted {
+  color: #6b7280;
+  font-style: italic;
+  text-align: center;
+}
+
+/* --- Paging --- */
+.paging {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  font-size: 13px;
+  color: #374151;
+}
+
+.paging-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.page-now {
+  padding: 4px 10px;
+  background: #2563eb;
+  color: #fff;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.paging select {
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  font-size: 13px;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .ma-grid {
+    grid-template-columns: 1fr;
+  }
+  .ma-table th,
+  .ma-table td {
+    font-size: 13px;
+  }
+}

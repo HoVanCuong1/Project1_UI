@@ -1,0 +1,233 @@
+.news-page {
+  padding: 20px;
+  background-color: #f9fafb;
+}
+
+.news-page h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #1e293b;
+}
+
+.news-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.news-card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s;
+}
+
+.news-card:hover {
+  transform: scale(1.02);
+}
+
+.news-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+.news-content {
+  padding: 15px;
+}
+
+.news-content h3 {
+  font-size: 18px;
+  margin: 0 0 8px;
+  color: #0f172a;
+}
+
+.news-date {
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 10px;
+}
+
+.news-desc {
+  font-size: 15px;
+  color: #334155;
+  margin-bottom: 12px;
+}
+
+.news-btn {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.news-btn:hover {
+  background-color: #1d4ed8;
+}
+
+/* Compact paging */
+.news-paging.compact {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  padding: 6px 8px;
+  border: 1px solid var(--line, #e5e7eb);
+  border-radius: 8px;
+  background: var(--bg, #fff);
+}
+
+.news-paging.compact .icon-btn {
+  padding: 4px 8px;
+  min-width: 28px;
+  height: 28px;
+  line-height: 20px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: #f9fafb;
+  cursor: pointer;
+  font-size: 12px;
+}
+.news-paging.compact .icon-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.news-paging.compact .icon-btn:hover:not(:disabled) {
+  background: #f3f4f6;
+}
+
+.news-paging.compact .pg-now {
+  font-weight: 600;
+  font-size: 12px;
+  padding: 0 4px;
+  min-width: 48px;
+  text-align: center;
+}
+
+.news-paging.compact .pg-size {
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 2px 6px;
+  height: 28px;
+  font-size: 12px;
+  background: #fff;
+}
+
+/* Ẩn selector size trên mobile để gọn hơn */
+@media (max-width: 640px) {
+  .news-paging.compact .pg-size {
+    display: none;
+  }
+}
+
+/* Khung tổng quan */
+.news-detail-wrap {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 8px 12px 20px;
+}
+
+/* Nút back gọn nhẹ */
+.news-back {
+  margin: 6px 0 12px;
+  padding: 6px 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #fff;
+  color: #1d4ed8;
+  cursor: pointer;
+  font-size: 14px;
+}
+.news-back:hover {
+  background: #f9fafb;
+}
+
+/* Thẻ bài chi tiết */
+.cardish {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #fff;
+  padding: 16px;
+  box-shadow: 0 1px 2px rgba(16,24,40,.06);
+}
+
+/* Header */
+.news-detail-header {
+  margin-bottom: 12px;
+}
+.news-detail-title {
+  font-size: 24px;
+  line-height: 1.25;
+  margin: 0 0 8px;
+}
+.news-detail-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.meta-chip {
+  font-size: 12px;
+  color: #374151;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  padding: 4px 8px;
+  border-radius: 999px;
+}
+
+/* Ảnh hero */
+.news-detail-hero {
+  margin: 12px 0 10px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+  background: #f9fafb;
+}
+.news-detail-hero img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover; /* hình rộng sẽ crop vừa khung */
+}
+
+/* Tóm tắt */
+.news-detail-summary {
+  margin: 8px 0 4px;
+  font-size: 15px;
+  color: #374151;
+  background: #f9fafb;
+  border: 1px dashed #e5e7eb;
+  padding: 10px 12px;
+  border-radius: 10px;
+}
+
+/* Nội dung chính */
+.news-detail-content {
+  margin-top: 8px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #111827;
+}
+
+/* Giữ xuống dòng/ khoảng trắng tự nhiên cho đoạn content dạng text thuần */
+.preline {
+  white-space: pre-line;
+}
+
+/* Phần dùng chung từ trước */
+.news-page .muted {
+  color: #6b7280;
+}
+.news-page .warning {
+  color: #b91c1c;
+  background: #fef2f2;
+  border: 1px solid #fee2e2;
+  padding: 8px 10px;
+  border-radius: 8px;
+}

@@ -63,8 +63,11 @@ export default function ManagerLayout() {
         <ul>
           <li><NavLink to="/manager" end>Dashboard</NavLink></li>
           <li><NavLink to="/manager/dorms">Quản lý phòng</NavLink></li> {/* ← đổi đường dẫn này */}
-          <li><NavLink to="/manager/payments">Quản lý thanh toán</NavLink></li>
+          <li><NavLink to="/manager/student-management">Quản lý sinh viên</NavLink></li>
+          <li><NavLink to="/manager/payment-manager">Lập hóa đơn</NavLink></li>
+          <li><NavLink to="/manager/invoices">Quản lý thanh toán</NavLink></li>
           <li><NavLink to="/manager/approval">Duyệt đăng ký phòng</NavLink></li>
+          <li><NavLink to="/manager/announcements">Quản lí thông báo</NavLink></li>
         </ul>
       </nav>
 

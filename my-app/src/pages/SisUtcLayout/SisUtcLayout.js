@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import "./SisUtcLayout.css";
 import { useAuth } from "../../contexts/AuthContext";
+import SidebarRequest from "../Sidebar/SidebarRequest";
 
 export default function SisUtcLayout() {
   const { user, logout } = useAuth();
@@ -62,7 +63,7 @@ export default function SisUtcLayout() {
 
       <nav className="sis-sidebar">
         <ul>
-          <li>
+          <li> 
             <NavLink to="/" end>
               Trang Chủ
             </NavLink>
@@ -75,6 +76,9 @@ export default function SisUtcLayout() {
           </li>
           <li>
             <NavLink to="/booking/status">Thông tin đăng Kí</NavLink>
+          </li>
+          <li>
+            <SidebarRequest />
           </li>
           <li>
             <NavLink to="/payments">Thanh toán</NavLink>

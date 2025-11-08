@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate} from "react-router-dom";
 import SisUtcLayout from "./pages/SisUtcLayout/SisUtcLayout";
 import Home from "./pages/Home";
-import News from "./pages/News";
+import News from "./pages/New/News";
 import Bookings from "./pages/Register/Bookings";
 import SisUtcLogin from "./pages/SisUtcLogin/SisUtcLogin";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -20,6 +20,17 @@ import ManagerLayout from "./pages/SisUtcLayout/ManagerLayout";
 import ManagerHome from "./pages/ManagerHome";
 import Approval from "./pages/Manager/Approval";
 import Dorms from "./pages/Manager/Dorms";
+import StudentManagement from "./pages/Manager/StudentManagement";
+import StudentDetail from "./pages/Manager/StudentDetail"; // ← thêm dòng này
+import PaymentManager from "./pages/Manager/PaymentManager/PaymentManager";
+import CreateInvoice from "./pages/Manager/PaymentManager/CreateInvoice"
+import InvoicePreview from "./pages/Manager/PaymentManager/InvoicePreview"
+import InvoiceManager from "./pages/Manager/Invoices/InvoiceManager";
+import PaymentCheckout from "./pages/Payment/PaymentCheckout";
+import NewsDetail from "./pages/New/NewsDetail";
+import ManagerAnnouncements from "./pages/Manager/New/ManagerAnnouncements";
+import RequestFix from "./pages/Request/RequestFix/RequestFix";
+import RequestTransfer from "./pages/Request/RequestTransfer/RequestTransfer";
 
 export default function App() {
   return (
@@ -39,12 +50,18 @@ export default function App() {
         >
           <Route index element={<Home />} />
           <Route path="news" element={<News />} />
+          <Route path="news/:id" element={<NewsDetail />} />
           <Route path="bookings" element={<Bookings />} />
           <Route path="payments" element={<Payment />} />
+          <Route path="/payments/:roomId" element={<Payment />} />
+          <Route path="/payments/checkout" element={<PaymentCheckout />} />
           <Route path="payment-historys" element={<PaymentHistory />} />
           <Route path="/roomdetail/:roomId" element={<RoomDetail />} />
           <Route path="/studentform" element={<StudentForm />} />
           <Route path="/booking/status" element={<RegistrationStatus />} />
+          <Route path="request_Fix" element={<RequestFix />} />
+          <Route path="request_Transfer" element={<RequestTransfer />} />
+
         </Route>
 
          {/* Route cho manager */}
@@ -61,6 +78,13 @@ export default function App() {
           <Route index element={<ManagerHome />} />
           <Route path="approval" element={<Approval />} />
           <Route path="dorms" element={<Dorms />} /> {/* ← thêm dòng này */}
+          <Route path="student-management" element={<StudentManagement />} />
+          <Route path="student-detail" element={<StudentDetail />} /> {/* ← thêm dòng này */}
+          <Route path="payment-manager" element={<PaymentManager />} />
+          <Route path="payments-create" element={<CreateInvoice />} />
+          <Route path="payments-preview" element={<InvoicePreview />} />
+          <Route path="invoices" element={<InvoiceManager />} />
+          <Route path="announcements" element={<ManagerAnnouncements />} />
         </Route>
 
          {/* /admin: chỉ ADMIN hoặc MANAGER */}

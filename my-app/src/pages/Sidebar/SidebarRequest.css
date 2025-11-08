@@ -1,0 +1,53 @@
+.sidebar-request {
+  margin-top: 0; /* ❌ bỏ khoảng trống gây cảm giác có gạch ngang */
+  border: none; /* ✅ đảm bảo không có viền */
+  padding: 0;
+}
+
+.sidebar-request-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+  color: #fff;
+}
+
+.sidebar-request-header:hover {
+  background-color: #334155;
+}
+
+.arrow {
+  transition: transform 0.2s ease;
+  font-size: 12px;
+}
+
+.arrow.open {
+  transform: rotate(180deg);
+}
+
+.sidebar-request-list {
+  list-style: none;
+  margin: 5px 0 0 20px; /* ✅ thụt vào */
+  padding: 0;
+}
+
+.sidebar-request-list li {
+  padding: 6px 0;
+}
+
+.sidebar-request-list a {
+  color: #e2e8f0;
+  text-decoration: none;
+  display: block;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.sidebar-request-list a:hover {
+  background-color: #2563eb;
+  color: #fff;
+}
