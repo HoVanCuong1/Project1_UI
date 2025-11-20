@@ -13,7 +13,7 @@ import {
 } from "../../../config/api";
 
 const TARGETS = ["ALL", "STUDENT", "MANAGER"];
-const CHANNELS = ["WEB", "EMAIL", "SMS", "APP"];
+const CHANNELS = ["WEB", "EMAIL"];
 
 function resolveImage(url) {
   const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:8088";

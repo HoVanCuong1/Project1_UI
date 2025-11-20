@@ -53,6 +53,10 @@ export const getRegistrationsByStatus = (status, pageIndex = 0, pageSize = 10) =
 // Registration actions
 export const approveRegistration = (id) => axios.put(`/webktx/room-registrations/approve/${id}`);
 export const rejectRegistration = (id) => axios.put(`/webktx/room-registrations/reject/${id}`);
+export const searchRegistrationsByDate = (date, pageIndex = 0, pageSize = 10) =>
+  axios.get("/webktx/room-registrations/by-date", {
+    params: { date, pageIndex, pageSize },
+  });
 
 // Helpers
 export const _obj = (res) => res?.data?.data ?? res?.data ?? res ?? null;

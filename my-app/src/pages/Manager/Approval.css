@@ -83,7 +83,7 @@
 
 .btn-detail,
 .btn-approve,
-.btn-reject {
+.btn-reject { 
   padding: 6px 10px;
   border-radius: 8px;
   border: 1px solid transparent;
@@ -157,3 +157,11 @@
 .kv td { padding: 6px 0; }
 .kv td:first-child { width: 180px; color: #555; }
 .warning { color: #a8071a; }
+
+.date-input {
+  padding: 8px 10px;
+  border: 1px solid #dcdcdc;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 14px;
+}

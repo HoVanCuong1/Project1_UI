@@ -83,11 +83,20 @@ export default function PaymentManager() {
       let res;
       if (typeof floorNum === "number") {
         res = await searchRooms4({
-          dormName, type, maxOccupants, floor: floorNum, pageIndex: index, pageSize: size,
+          dormName,
+          type,
+          maxOccupants,
+          floor: floorNum,
+          pageIndex: index,
+          pageSize: size,
         });
       } else if (hasAnyFilterExceptFloor) {
         res = await searchRooms3({
-          dormName, type, maxOccupants, pageIndex: index, pageSize: size,
+          dormName,
+          type,
+          maxOccupants,
+          pageIndex: index,
+          pageSize: size,
         });
       } else {
         return fetchAll(index, size);
@@ -165,7 +174,9 @@ export default function PaymentManager() {
     <div className="pm-container">
       <div className="pm-header">
         <h2>Lập hóa đơn phòng</h2>
-        <p className="pm-sub">Chọn phòng → Lập hóa đơn cho sinh viên trong phòng</p>
+        <p className="pm-sub">
+          Chọn phòng đã có sinh viên → Lập hóa đơn điện, nước, phí phát sinh
+        </p>
       </div>
 
       {/* ==== Bộ lọc ==== */}
@@ -176,7 +187,9 @@ export default function PaymentManager() {
             <select value={khu} onChange={(e) => setKhu(e.target.value)}>
               <option value="">Tất cả khu</option>
               {khuOptions.map((k) => (
-                <option key={k} value={k}>{k}</option>
+                <option key={k} value={k}>
+                  {k}
+                </option>
               ))}
             </select>
           </label>
@@ -195,20 +208,29 @@ export default function PaymentManager() {
             <select value={loaiPhong} onChange={(e) => setLoaiPhong(e.target.value)}>
               <option value="">Tất cả</option>
               {[4, 6, 8].map((n) => (
-                <option key={n} value={n}>{n} chỗ</option>
+                <option key={n} value={n}>
+                  {n} chỗ
+                </option>
               ))}
             </select>
           </label>
 
           <div className="pm-actions-inline">
-            <button className="btn btn-primary" onClick={handleSearch}>Tìm</button>
-            <button className="btn btn-secondary" onClick={handleReset}>Reset</button>
+            <button className="btn btn-primary" onClick={handleSearch}>
+              Tìm
+            </button>
+            <button className="btn btn-secondary" onClick={handleReset}>
+              Reset
+            </button>
           </div>
         </div>
 
         {/* Tabs tầng */}
         <div className="pm-floor-tabs">
-          <button className={`chip ${!tang ? "active" : ""}`} onClick={handleClearFloor}>
+          <button
+            className={`chip ${!tang ? "active" : ""}`}
+            onClick={handleClearFloor}
+          >
             Tất cả tầng
           </button>
           {Array.from({ length: Math.max(1, maxFloor) }, (_, i) => i + 1).map((f) => (
@@ -217,6 +239,7 @@ export default function PaymentManager() {
               className={`chip ${String(tang) === String(f) ? "active" : ""}`}
               onClick={() => handleSelectFloor(f)}
             >
+              {/* chữ tầng giờ luôn rõ, không cần hover */}
               Tầng {f}
             </button>
           ))}
@@ -230,18 +253,32 @@ export default function PaymentManager() {
       {!loading && !error && (
         <div className="pm-room-list">
           {rooms.map((room) => {
-            const remain = (room.maxOccupants ?? 0) - (room.currentOccupants ?? 0);
-            const full = remain === 0;
+            const occupants = room.currentOccupants ?? 0;
+            const capacity = room.maxOccupants ?? 0;
+            const remain = capacity - occupants;
+            const isEmpty = occupants === 0;
+            const isFull = capacity > 0 && remain === 0;
+
+            const cardStateClass = isEmpty
+              ? "empty"
+              : isFull
+              ? "full"
+              : "available";
+
+            const canCreateInvoice = !isEmpty; // chỉ khi có sinh viên
+
             return (
               <div
                 key={room.id}
-                className={`pm-room-card ${full ? "full" : "available"}`}
+                className={`pm-room-card ${cardStateClass}`}
                 title={`Khu: ${room.dormName} • Tầng ${room.floor}`}
               >
                 <div className="pm-room-header">
                   <div>
                     <h3 className="pm-room-name">{room.name}</h3>
-                    <div className="pm-room-sub">Khu {room.dormName} • Tầng {room.floor} • {room.type}</div>
+                    <div className="pm-room-sub">
+                      Khu {room.dormName} • Tầng {room.floor} • {room.type}
+                    </div>
                   </div>
                   <div className="pm-room-price">
                     {Number(room.price).toLocaleString()} đ/tháng
@@ -249,17 +286,37 @@ export default function PaymentManager() {
                 </div>
 
                 <div className="pm-room-stats">
-                  <div>Sức chứa: <b>{room.maxOccupants}</b></div>
-                  <div>Đang ở: <b>{room.currentOccupants}</b></div>
-                  <div className={`pm-count ${full ? "full" : ""}`}>
-                    Còn trống: <b>{remain}</b> / {room.maxOccupants}
+                  <div>
+                    Sức chứa: <b>{capacity}</b>
+                  </div>
+                  <div>
+                    Đang ở: <b>{occupants}</b>
+                  </div>
+                  <div
+                    className={`pm-count ${
+                      isEmpty ? "empty" : isFull ? "full" : "ok"
+                    }`}
+                  >
+                    {isEmpty ? (
+                      <span>Chưa có sinh viên</span>
+                    ) : (
+                      <>
+                        Còn trống: <b>{remain}</b> / {capacity}
+                      </>
+                    )}
                   </div>
                 </div>
 
                 <div className="pm-card-actions">
                   <button
-                    onClick={() => handleCreateInvoice(room)}
+                    onClick={() => canCreateInvoice && handleCreateInvoice(room)}
                     className="btn btn-primary"
+                    disabled={!canCreateInvoice}
+                    title={
+                      canCreateInvoice
+                        ? "Lập hóa đơn cho phòng này"
+                        : "Phòng chưa có sinh viên, không thể lập hóa đơn"
+                    }
                   >
                     Lập hóa đơn
                   </button>
@@ -274,11 +331,24 @@ export default function PaymentManager() {
       {/* ==== Phân trang ==== */}
       <div className="pm-paging">
         <div className="pm-paging-info">
-          {meta?.total ?? 0} phòng • Trang {meta?.page ?? pageIndex + 1}/{meta?.pages ?? 1}
+          {meta?.total ?? 0} phòng • Trang {meta?.page ?? pageIndex + 1}/
+          {meta?.pages ?? 1}
         </div>
         <div className="pm-paging-actions">
-          <button onClick={() => handlePageChange(0)} disabled={pageIndex === 0} className="btn btn-light">«</button>
-          <button onClick={() => handlePageChange(pageIndex - 1)} disabled={pageIndex === 0} className="btn btn-light">‹</button>
+          <button
+            onClick={() => handlePageChange(0)}
+            disabled={pageIndex === 0}
+            className="btn btn-light"
+          >
+            «
+          </button>
+          <button
+            onClick={() => handlePageChange(pageIndex - 1)}
+            disabled={pageIndex === 0}
+            className="btn btn-light"
+          >
+            ‹
+          </button>
           <span className="pm-page-now">{pageIndex + 1}</span>
           <button
             onClick={() => handlePageChange(pageIndex + 1)}
@@ -296,9 +366,14 @@ export default function PaymentManager() {
           </button>
           <label className="pm-page-size">
             Size
-            <select value={pageSize} onChange={(e) => setPageSize(Number(e.target.value))}>
+            <select
+              value={pageSize}
+              onChange={(e) => setPageSize(Number(e.target.value))}
+            >
               {[5, 10, 20, 50].map((s) => (
-                <option key={s} value={s}>{s}/trang</option>
+                <option key={s} value={s}>
+                  {s}/trang
+                </option>
               ))}
             </select>
           </label>

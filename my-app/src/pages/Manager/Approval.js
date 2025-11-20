@@ -1,15 +1,16 @@
 import React, { useEffect, useMemo, useState } from "react";
 import "./Approval.css";
+
 import {
   getRegistrationsByStatus,
   approveRegistration,
   rejectRegistration,
   getRoomById,
   getStudentById,
+  searchRegistrationsByDate,
 } from "../../config/api";
 
 const normalizePaged = (res) => {
-  // Chuẩn hoá payload { data: { meta, result } } hoặc các biến thể
   const payload = res?.data?.data ?? res?.data ?? res ?? {};
   const meta = payload?.meta ?? res?.meta ?? {};
   const result = payload?.result ?? payload?.results ?? payload?.items ?? [];
@@ -17,32 +18,45 @@ const normalizePaged = (res) => {
 };
 
 export default function Approval() {
-  const [statusTab, setStatusTab] = useState("PENDING"); // PENDING | APPROVED | REJECTED
+  const [statusTab, setStatusTab] = useState("PENDING");
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(10);
 
   const [rows, setRows] = useState([]);
   const [meta, setMeta] = useState({ page: 1, pages: 1, pageSize: 10, total: 0 });
 
-  const [search, setSearch] = useState(""); // lọc client theo id sv/phòng/đk
+  const [search, setSearch] = useState("");
+  const [searchDate, setSearchDate] = useState(""); // ← NEW
+
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
 
-  // Modal chi tiết
+  // modal
   const [detailOpen, setDetailOpen] = useState(false);
   const [detailReg, setDetailReg] = useState(null);
   const [detailStudent, setDetailStudent] = useState(null);
   const [detailRoom, setDetailRoom] = useState(null);
   const [detailLoading, setDetailLoading] = useState(false);
 
-  // ===== Fetch list theo status + paging
+  // ===== FETCH LIST (ƯU TIÊN THEO NGÀY) =====
   useEffect(() => {
     let cancelled = false;
+
     (async () => {
       try {
         setLoading(true);
         setErr("");
-        const res = await getRegistrationsByStatus(statusTab, pageIndex, pageSize);
+
+        let res;
+
+        if (searchDate) {
+          // SEARCH BY DATE
+          res = await searchRegistrationsByDate(searchDate, pageIndex, pageSize);
+        } else {
+          // DEFAULT: SEARCH BY STATUS
+          res = await getRegistrationsByStatus(statusTab, pageIndex, pageSize);
+        }
+
         const { meta, result } = normalizePaged(res);
         if (cancelled) return;
 
@@ -60,12 +74,13 @@ export default function Approval() {
         if (!cancelled) setLoading(false);
       }
     })();
+
     return () => {
       cancelled = true;
     };
-  }, [statusTab, pageIndex, pageSize]);
+  }, [statusTab, pageIndex, pageSize, searchDate]);
 
-  // ===== Lọc client theo search (mã SV / mã phòng / id / tên SV)
+  // ===== CLIENT FILTER (search text) =====
   const filteredRows = useMemo(() => {
     const q = (search || "").trim().toLowerCase();
     if (!q) return rows;
@@ -88,57 +103,40 @@ export default function Approval() {
     });
   }, [rows, search]);
 
-  // ===== Hành động duyệt / từ chối
+  // ===== APPROVE =====
   const doApprove = async (reg) => {
-    if (!window.confirm(`Duyệt đăng ký ${reg.id} ?`)) return;
+    if (!window.confirm(`Duyệt đăng ký ${reg.id}?`)) return;
     try {
       await approveRegistration(reg.id);
-      // Sau khi duyệt: refetch list hiện tại.
-      // Nếu đang ở tab PENDING, bản ghi sẽ biến mất khỏi tab này (đúng mong muốn).
-      // Người dùng chuyển tab APPROVED sẽ thấy nó.
-      const res = await getRegistrationsByStatus(statusTab, pageIndex, pageSize);
-      const { meta, result } = normalizePaged(res);
-      setMeta({
-        page: meta?.page ?? pageIndex + 1,
-        pages: meta?.pages ?? 1,
-        pageSize: meta?.pageSize ?? pageSize,
-        total: meta?.total ?? result.length,
-      });
-      setRows(result);
       alert("Duyệt thành công!");
+      setPageIndex(0);
     } catch (e) {
       console.error(e);
-      alert("Không thể duyệt. Vui lòng thử lại.");
+      alert("Không thể duyệt.");
     }
   };
 
+  // ===== REJECT =====
   const doReject = async (reg) => {
-    if (!window.confirm(`Từ chối đăng ký ${reg.id} ?`)) return;
+    if (!window.confirm(`Từ chối đăng ký ${reg.id}?`)) return;
     try {
       await rejectRegistration(reg.id);
-      const res = await getRegistrationsByStatus(statusTab, pageIndex, pageSize);
-      const { meta, result } = normalizePaged(res);
-      setMeta({
-        page: meta?.page ?? pageIndex + 1,
-        pages: meta?.pages ?? 1,
-        pageSize: meta?.pageSize ?? pageSize,
-        total: meta?.total ?? result.length,
-      });
-      setRows(result);
       alert("Từ chối thành công!");
+      setPageIndex(0);
     } catch (e) {
       console.error(e);
-      alert("Không thể từ chối. Vui lòng thử lại.");
+      alert("Không thể từ chối.");
     }
   };
 
-  // ===== Chi tiết: mở modal + load student/room
+  // ===== DETAIL MODAL =====
   const openDetail = async (reg) => {
     setDetailOpen(true);
     setDetailReg(reg);
     setDetailStudent(null);
     setDetailRoom(null);
     setDetailLoading(true);
+
     try {
       const [stuRes, roomRes] = await Promise.allSettled([
         reg?.studentId ? getStudentById(reg.studentId) : Promise.resolve(null),
@@ -149,12 +147,13 @@ export default function Approval() {
         const s = stuRes.value?.data?.data ?? stuRes.value?.data ?? stuRes.value ?? null;
         setDetailStudent(s);
       }
+
       if (roomRes.status === "fulfilled") {
         const r = roomRes.value?.data?.data ?? roomRes.value?.data ?? roomRes.value ?? null;
         setDetailRoom(r);
       }
-    } catch (e) {
-      console.warn("Load detail failed:", e);
+    } catch (err) {
+      console.warn("Load detail failed:", err);
     } finally {
       setDetailLoading(false);
     }
@@ -165,25 +164,40 @@ export default function Approval() {
     setDetailReg(null);
     setDetailStudent(null);
     setDetailRoom(null);
-    setDetailLoading(false);
   };
 
-  // ======= UI
+  // ===== UI =====
   return (
     <div className="approval-container">
       <div className="approval-header">
         <h2>Duyệt đăng ký phòng</h2>
+
         <div className="right-tools">
+          {/* Text search */}
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Tìm theo Mã SV / Phòng / ID / Tên"
+            placeholder="Tìm Mã SV / Phòng / ID / Tên"
           />
+
+          {/* Date search */}
+          <input
+            type="date"
+            className="date-input"
+            value={searchDate}
+            onChange={(e) => {
+              setSearchDate(e.target.value);
+              setPageIndex(0);
+            }}
+          />
+
+          {/* Status */}
           <select
             value={statusTab}
             onChange={(e) => {
               setStatusTab(e.target.value);
               setPageIndex(0);
+              setSearchDate(""); // reset date khi đổi tab
             }}
           >
             <option value="PENDING">Chờ duyệt</option>
@@ -199,6 +213,7 @@ export default function Approval() {
         <p className="warning">{err}</p>
       ) : (
         <>
+          {/* TABLE */}
           <table className="approval-table">
             <thead>
               <tr>
@@ -213,12 +228,11 @@ export default function Approval() {
                 <th>Hành động</th>
               </tr>
             </thead>
+
             <tbody>
               {filteredRows.length === 0 ? (
                 <tr>
-                  <td colSpan={9} style={{ textAlign: "center", opacity: 0.8 }}>
-                    Không có bản ghi.
-                  </td>
+                  <td colSpan={9} style={{ textAlign: "center", opacity: 0.7 }}>Không có bản ghi.</td>
                 </tr>
               ) : (
                 filteredRows.map((reg) => (
@@ -226,7 +240,7 @@ export default function Approval() {
                     <td className="mono">{reg.id}</td>
                     <td className="mono">{reg.studentId}</td>
                     <td>{reg.studentName}</td>
-                    <td className="mono">{reg.roomName || reg.roomId}</td>
+                    <td className="mono">{reg.roomName}</td>
                     <td>{reg.dormName}</td>
                     <td>{reg.registrationDate || "-"}</td>
                     <td>{reg.requestType}</td>
@@ -239,6 +253,7 @@ export default function Approval() {
                       <button className="btn-detail" onClick={() => openDetail(reg)}>
                         Chi tiết
                       </button>
+
                       {statusTab === "PENDING" ? (
                         <>
                           <button className="btn-approve" onClick={() => doApprove(reg)}>
@@ -258,37 +273,25 @@ export default function Approval() {
             </tbody>
           </table>
 
+          {/* PAGING */}
           <div className="paging">
             <div className="left">
-              Tổng: {meta?.total ?? 0} • Trang {meta?.page ?? pageIndex + 1}/{meta?.pages ?? 1}
+              Tổng: {meta?.total ?? 0} • Trang {meta?.page}/{meta?.pages}
             </div>
+
             <div className="right">
+              <button onClick={() => setPageIndex(0)} disabled={pageIndex === 0}>«</button>
+              <button onClick={() => setPageIndex((p) => Math.max(0, p - 1))} disabled={pageIndex === 0}>‹</button>
+              <span className="mono">{meta?.page}</span>
               <button
-                onClick={() => setPageIndex(0)}
-                disabled={(meta?.page ?? pageIndex + 1) <= 1}
-              >
-                «
-              </button>
-              <button
-                onClick={() => setPageIndex((p) => Math.max(0, p - 1))}
-                disabled={(meta?.page ?? pageIndex + 1) <= 1}
-              >
-                ‹
-              </button>
-              <span className="mono">{(meta?.page ?? pageIndex + 1)}</span>
-              <button
-                onClick={() =>
-                  setPageIndex((p) =>
-                    Math.min((meta?.pages ?? 1) - 1, p + 1)
-                  )
-                }
-                disabled={(meta?.page ?? pageIndex + 1) >= (meta?.pages ?? 1)}
+                onClick={() => setPageIndex((p) => Math.min((meta?.pages ?? 1) - 1, p + 1))}
+                disabled={meta?.page >= meta?.pages}
               >
                 ›
               </button>
               <button
                 onClick={() => setPageIndex((meta?.pages ?? 1) - 1)}
-                disabled={(meta?.page ?? pageIndex + 1) >= (meta?.pages ?? 1)}
+                disabled={meta?.page >= meta?.pages}
               >
                 »
               </button>
@@ -309,7 +312,7 @@ export default function Approval() {
         </>
       )}
 
-      {/* Modal chi tiết */}
+      {/* MODAL DETAIL */}
       {detailOpen && (
         <div className="modal-mask" onClick={closeDetail}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
@@ -319,14 +322,15 @@ export default function Approval() {
             </div>
 
             {detailLoading ? (
-              <p>Đang tải chi tiết…</p>
+              <p style={{ padding: 20 }}>Đang tải chi tiết…</p>
             ) : (
               <div className="modal-body">
                 <table className="kv">
                   <tbody>
                     <tr><th colSpan={2}>Thông tin đăng ký</th></tr>
                     <tr><td>ID</td><td className="mono">{detailReg?.id}</td></tr>
-                    <tr><td>Trạng thái</td>
+                    <tr>
+                      <td>Trạng thái</td>
                       <td>
                         <span className={`status-badge ${(detailReg?.status || "").toLowerCase()}`}>
                           {detailReg?.status}
@@ -334,16 +338,16 @@ export default function Approval() {
                       </td>
                     </tr>
                     <tr><td>Loại</td><td>{detailReg?.requestType}</td></tr>
-                    <tr><td>Ngày đăng ký</td><td>{detailReg?.registrationDate || "-"}</td></tr>
-                    <tr><td>Khu</td><td>{detailReg?.dormName || "-"}</td></tr>
-                    <tr><td>Phòng</td><td>{detailReg?.roomName || detailReg?.roomId}</td></tr>
+                    <tr><td>Ngày đăng ký</td><td>{detailReg?.registrationDate}</td></tr>
+                    <tr><td>Khu</td><td>{detailReg?.dormName}</td></tr>
+                    <tr><td>Phòng</td><td>{detailReg?.roomName}</td></tr>
 
                     <tr><th colSpan={2}>Thông tin sinh viên</th></tr>
-                    <tr><td>Mã SV</td><td className="mono">{detailReg?.studentId}</td></tr>
+                    <tr><td>Mã SV</td><td>{detailReg?.studentId}</td></tr>
                     <tr><td>Họ tên</td><td>{detailReg?.studentName}</td></tr>
                     <tr><td>Giới tính</td><td>{detailReg?.gender}</td></tr>
-                    <tr><td>Lớp</td><td>{detailReg?.className ?? detailStudent?.className ?? "-"}</td></tr>
-                    <tr><td>Khóa</td><td>{detailReg?.academicYear ?? detailStudent?.academicYear ?? "-"}</td></tr>
+                    <tr><td>Lớp</td><td>{detailStudent?.className ?? "-"}</td></tr>
+                    <tr><td>Khóa</td><td>{detailStudent?.academicYear ?? "-"}</td></tr>
                     <tr><td>Ngày sinh</td><td>{detailStudent?.birthDate ?? "-"}</td></tr>
                     <tr><td>Quê quán</td><td>{detailStudent?.hometown ?? "-"}</td></tr>
                     <tr><td>Email</td><td>{detailStudent?.userEmail ?? "-"}</td></tr>
@@ -351,25 +355,30 @@ export default function Approval() {
 
                     <tr><th colSpan={2}>Thông tin phòng</th></tr>
                     <tr><td>Tầng</td><td>{detailRoom?.floor ?? "-"}</td></tr>
-                    <tr><td>Số chỗ</td><td>{detailRoom?.maxOccupants != null ? `${detailRoom.maxOccupants} chỗ` : "-"}</td></tr>
-                    <tr><td>Đang ở / Còn trống</td>
+                    <tr><td>Số chỗ</td><td>{detailRoom?.maxOccupants ?? "-"}</td></tr>
+                    <tr>
+                      <td>Đang ở / Còn trống</td>
                       <td>
-                        {detailRoom?.currentOccupants != null && detailRoom?.maxOccupants != null
-                          ? `${detailRoom.currentOccupants} / ${detailRoom.maxOccupants - detailRoom.currentOccupants}`
+                        {detailRoom
+                          ? `${detailRoom.currentOccupants} / ${
+                              detailRoom.maxOccupants - detailRoom.currentOccupants
+                            }`
                           : "-"}
                       </td>
                     </tr>
-                    <tr><td>Giá</td>
+                    <tr>
+                      <td>Giá</td>
                       <td>
-                        {detailRoom?.price != null
+                        {detailRoom?.price
                           ? `${Number(detailRoom.price).toLocaleString()} đ/tháng`
                           : "-"}
                       </td>
                     </tr>
                   </tbody>
                 </table>
-            </div>
+              </div>
             )}
+
             <div className="modal-footer">
               {statusTab === "PENDING" && detailReg && (
                 <>
