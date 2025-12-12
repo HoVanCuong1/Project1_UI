@@ -1,0 +1,109 @@
+/* src/pages/Manager/RoomDetailManager.css */
+
+.rdm-container {
+  padding: 16px 24px;
+}
+
+.rdm-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.rdm-back {
+  margin-right: 8px;
+}
+
+.rdm-sub {
+  margin-top: 4px;
+  opacity: 0.8;
+  font-size: 0.9rem;
+}
+
+.rdm-loading,
+.rdm-error {
+  margin-top: 16px;
+}
+
+.rdm-error {
+  color: #d64545;
+}
+
+.rdm-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px 20px;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+  margin-bottom: 16px;
+}
+
+.rdm-room-info {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.rdm-room-main h3 {
+  margin: 0;
+}
+
+.rdm-room-id {
+  font-size: 0.85rem;
+  opacity: 0.7;
+  margin-left: 8px;
+}
+
+.rdm-room-dorm,
+.rdm-room-type,
+.rdm-room-occupancy {
+  margin: 4px 0;
+}
+
+.rdm-room-extra {
+  display: flex;
+  align-items: center;
+}
+
+.rdm-price-box span {
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+.rdm-price {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.rdm-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.rdm-count {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.rdm-table-wrapper {
+  overflow-x: auto;
+}
+
+.rdm-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.rdm-table th,
+.rdm-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.rdm-table th {
+  text-align: left;
+  background: #f9fafb;
+}

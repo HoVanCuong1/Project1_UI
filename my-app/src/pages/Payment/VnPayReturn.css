@@ -1,0 +1,13 @@
+.vnpay-return-wrap { display:flex; justify-content:center; padding:30px; }
+.vnpay-card { width:900px; background:#fff; border-radius:12px; padding:20px; box-shadow:0 8px 24px rgba(0,0,0,0.08); }
+.vnpay-card h2 { margin:0 0 12px; }
+.muted { color:#6b7280; }
+.status.ok { color:#0b6623; font-weight:700; margin:8px 0; }
+.status.fail { color:#b91c1c; font-weight:700; margin:8px 0; }
+.vnpay-info table { width:100%; border-collapse:collapse; margin-top:8px; }
+.vnpay-info td.key { width:260px; color:#374151; font-weight:600; padding:6px 8px; border-bottom:1px solid #f3f4f6; }
+.vnpay-info td.val { padding:6px 8px; border-bottom:1px solid #f3f4f6; color:#111827; }
+.raw { background:#f8fafc; padding:10px; border-radius:6px; max-height:200px; overflow:auto; }
+.actions { margin-top:12px; display:flex; gap:8px; justify-content:flex-end; }
+.btn { padding:8px 14px; border-radius:8px; border:1px solid #d1d5db; background:#fff; cursor:pointer; }
+.btn-primary { background:#1677ff; color:#fff; border:none; }

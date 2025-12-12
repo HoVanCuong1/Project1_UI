@@ -30,7 +30,13 @@ import PaymentCheckout from "./pages/Payment/PaymentCheckout";
 import NewsDetail from "./pages/New/NewsDetail";
 import ManagerAnnouncements from "./pages/Manager/New/ManagerAnnouncements";
 import RequestFix from "./pages/Request/RequestFix/RequestFix";
+import RequestCheckout from "./pages/Request/RequestCheckout/RequestCheckout";
 import RequestTransfer from "./pages/Request/RequestTransfer/RequestTransfer";
+import Complaint from "./pages/Request/Complaint/Complaint";
+import ManagerSupportRequests from "./pages/Manager/Request/ManagerSupportRequests";
+import RoomManager from "./pages/Manager/Dorm/RoomManager";
+import RoomDetailManager from "./pages/Manager/Dorm/RoomDetailManager";
+import VnPayReturn from "./pages/Payment/VnPayReturn";
 
 export default function App() {
   return (
@@ -60,7 +66,10 @@ export default function App() {
           <Route path="/studentform" element={<StudentForm />} />
           <Route path="/booking/status" element={<RegistrationStatus />} />
           <Route path="request_Fix" element={<RequestFix />} />
-          <Route path="request_Transfer" element={<RequestTransfer />} />
+          <Route path="request_RequestCheckout" element={<RequestCheckout />} />
+          <Route path="request_RequestTransfer" element={<RequestTransfer />} />
+          <Route path="complaint" element={<Complaint />} />
+          <Route path="vnpay-return" element={<VnPayReturn />} />
 
         </Route>
 
@@ -85,6 +94,10 @@ export default function App() {
           <Route path="payments-preview" element={<InvoicePreview />} />
           <Route path="invoices" element={<InvoiceManager />} />
           <Route path="announcements" element={<ManagerAnnouncements />} />
+          <Route path="supportRequestManager" element={<ManagerSupportRequests />} />
+          <Route path="RoomManager" element={<RoomManager />} />
+          <Route path="rooms/:roomId" element={<RoomDetailManager />} />
+
         </Route>
 
          {/* /admin: chỉ ADMIN hoặc MANAGER */}

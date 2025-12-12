@@ -95,7 +95,7 @@ export default function Payment() {
         setInvoice(data || null);
       } catch (e) {
         console.error(e);
-        setErrInv("Không tải được hóa đơn chưa thanh toán của phòng.");
+        setErrInv("Không có hóa đơn chưa thanh toán của phòng.");
         setInvoice(null);
       } finally {
         setLoadingInv(false);

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import "./RequestTransfer.css";
+import "./RequestCheckout.css";
 import {
   getMyInfo,
   getStudentById,
   createRoomRegistration,
-  getTransferRegistrationsByStudent,
+  getCheckoutRegistrationsByStudent,
   _obj,
 } from "../../../config/api";
 
-const REQUEST_LABEL = "Yêu cầu chuyển phòng";
+const REQUEST_LABEL = "Yêu cầu trả phòng";
 
 const normalizePaged = (res) => {
   const payload = res?.data?.data ?? res?.data ?? res ?? {};
@@ -20,22 +20,19 @@ const normalizePaged = (res) => {
   };
 };
 
-export default function RequestTransfer() {
+export default function RequestCheckout() {
   // Thông tin sinh viên hiện tại
   const [loadingStudent, setLoadingStudent] = useState(true);
   const [studentError, setStudentError] = useState("");
   const [studentId, setStudentId] = useState("");
   const [studentName, setStudentName] = useState("");
-  const [currentRoomName, setCurrentRoomName] = useState("");
-  const [currentRoomId, setCurrentRoomId] = useState("");
-
-  // Phòng muốn chuyển đến (roomId)
-  const [targetRoomId, setTargetRoomId] = useState("");
+  const [roomName, setRoomName] = useState("");
+  const [roomId, setRoomId] = useState("");
 
   // Loading khi gửi yêu cầu
   const [submitting, setSubmitting] = useState(false);
 
-  // Danh sách yêu cầu TRANSFER của SV
+  // Danh sách yêu cầu CHECKOUT của SV
   const [requests, setRequests] = useState([]);
   const [reqMeta, setReqMeta] = useState({
     page: 1,
@@ -48,7 +45,7 @@ export default function RequestTransfer() {
   const [reqLoading, setReqLoading] = useState(false);
   const [reqError, setReqError] = useState("");
 
-  // ===== Load thông tin user + student + room hiện tại =====
+  // ===== Load thông tin user + student + room =====
   useEffect(() => {
     let cancelled = false;
     (async () => {
@@ -80,8 +77,8 @@ export default function RequestTransfer() {
           sid;
 
         setStudentName(fullName);
-        setCurrentRoomName(stu?.roomName || "");
-        setCurrentRoomId(stu?.roomId || "");
+        setRoomName(stu?.roomName || "");
+        setRoomId(stu?.roomId || "");
       } catch (e) {
         console.error(e);
         if (!cancelled) {
@@ -96,13 +93,13 @@ export default function RequestTransfer() {
     };
   }, []);
 
-  // ===== Fetch list TRANSFER theo studentId =====
+  // ===== Fetch list yêu cầu CHECKOUT theo studentId =====
   const fetchRequests = async (sid, pageIdx = reqPageIndex, pageSz = reqPageSize) => {
     if (!sid) return;
     try {
       setReqLoading(true);
       setReqError("");
-      const res = await getTransferRegistrationsByStudent(sid, pageIdx, pageSz);
+      const res = await getCheckoutRegistrationsByStudent(sid, pageIdx, pageSz);
       const { meta, result } = normalizePaged(res);
       setRequests(result);
       setReqMeta({
@@ -113,7 +110,7 @@ export default function RequestTransfer() {
       });
     } catch (e) {
       console.error(e);
-      setReqError("Không tải được danh sách yêu cầu chuyển phòng.");
+      setReqError("Không tải được danh sách yêu cầu trả phòng.");
       setRequests([]);
       setReqMeta((m) => ({ ...m, total: 0 }));
     } finally {
@@ -128,29 +125,21 @@ export default function RequestTransfer() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [studentId, reqPageIndex, reqPageSize]);
 
-  // ===== Submit yêu cầu TRANSFER =====
+  // ===== Submit yêu cầu CHECKOUT =====
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!studentId) {
       alert("Không xác định được mã sinh viên.");
       return;
     }
-    if (!currentRoomId || !currentRoomName) {
-      alert("Bạn chưa được gán vào phòng nào. Không thể gửi yêu cầu chuyển phòng.");
-      return;
-    }
-    if (!targetRoomId.trim()) {
-      alert("Vui lòng nhập mã phòng muốn chuyển đến (VD: RM-B102).");
-      return;
-    }
-    if (targetRoomId.trim() === currentRoomId) {
-      alert("Phòng muốn chuyển đến đang trùng với phòng hiện tại.");
+    if (!roomId || !roomName) {
+      alert("Bạn chưa được gán vào phòng nào. Không thể gửi yêu cầu trả phòng.");
       return;
     }
 
     if (
       !window.confirm(
-        `Xác nhận gửi yêu cầu chuyển từ phòng ${currentRoomName} sang phòng có mã ${targetRoomId.trim()}?\nYêu cầu sẽ được Ban quản lý xem xét và duyệt.`
+        `Xác nhận gửi yêu cầu trả phòng ${roomName}?\nYêu cầu này sẽ được ban quản lý xem xét và duyệt.`
       )
     ) {
       return;
@@ -160,14 +149,12 @@ export default function RequestTransfer() {
       setSubmitting(true);
       const payload = {
         studentId: studentId,
-        roomId: targetRoomId.trim(), // Đây là phòng muốn chuyển sang
-        requestType: "TRANSFER",
+        roomId: roomId,
+        requestType: "CHECKOUT",
         registrationDate: null, // backend tự set ngày hiện tại
       };
       await createRoomRegistration(payload);
-      alert("Yêu cầu chuyển phòng đã được gửi thành công!");
-
-      setTargetRoomId("");
+      alert("Yêu cầu trả phòng đã được gửi thành công!");
 
       // Sau khi gửi xong -> load lại danh sách yêu cầu, về trang 0
       setReqPageIndex(0);
@@ -189,7 +176,7 @@ export default function RequestTransfer() {
 
   return (
     <div className="request-container">
-      <h2>🔄 Yêu cầu chuyển phòng</h2>
+      <h2>🏠 Yêu cầu trả phòng</h2>
 
       {/* Thông tin + form gửi yêu cầu */}
       {loadingStudent ? (
@@ -212,11 +199,7 @@ export default function RequestTransfer() {
             <label>Phòng hiện tại</label>
             <input
               type="text"
-              value={
-                currentRoomName
-                  ? `${currentRoomName} (${currentRoomId})`
-                  : "Chưa có phòng"
-              }
+              value={roomName || "Chưa có phòng"}
               disabled
             />
           </div>
@@ -226,45 +209,34 @@ export default function RequestTransfer() {
             <input type="text" value={REQUEST_LABEL} disabled />
           </div>
 
-          <div className="form-row">
-            <label>Mã phòng muốn chuyển đến</label>
-            <input
-              type="text"
-              placeholder="VD: RM-B102"
-              value={targetRoomId}
-              onChange={(e) => setTargetRoomId(e.target.value)}
-            />
-          </div>
-
           <p className="helper-text">
-            Vui lòng nhập <b>mã phòng</b> muốn chuyển đến (ví dụ:{" "}
-            <code>RM-B102</code>). Ban quản lý sẽ kiểm tra điều kiện phòng,
-            số lượng chỗ trống và phản hồi yêu cầu của bạn.
+            Sau khi gửi yêu cầu, bạn vui lòng chờ Ban quản lý ký túc xá duyệt.
+            Khi yêu cầu được duyệt, thông tin phòng của bạn sẽ được cập nhật.
           </p>
 
           <button type="submit" className="btn-primary" disabled={submitting}>
-            {submitting ? "Đang gửi..." : "Gửi yêu cầu chuyển phòng"}
+            {submitting ? "Đang gửi..." : "Gửi yêu cầu trả phòng"}
           </button>
         </form>
       )}
 
-      {/* Danh sách yêu cầu TRANSFER của sinh viên */}
+      {/* Danh sách yêu cầu CHECKOUT của sinh viên – tách riêng, thoáng hơn */}
       {studentId && (
         <div className="request-history">
-          <h3>Lịch sử yêu cầu chuyển phòng</h3>
+          <h3>Lịch sử yêu cầu trả phòng</h3>
 
           {reqLoading ? (
             <p className="muted">Đang tải danh sách...</p>
           ) : reqError ? (
             <p className="warning">{reqError}</p>
           ) : requests.length === 0 ? (
-            <p className="muted">Bạn chưa gửi yêu cầu chuyển phòng nào.</p>
+            <p className="muted">Bạn chưa gửi yêu cầu trả phòng nào.</p>
           ) : (
             <>
               <table className="request-table">
                 <thead>
                   <tr>
-                    <th>Phòng đăng ký</th>
+                    <th>Phòng</th>
                     <th>Khu</th>
                     <th>Ngày yêu cầu</th>
                     <th>Trạng thái</th>

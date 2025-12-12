@@ -37,6 +37,8 @@ export const getRoomsByFloor = ({ floor, pageIndex = 0, pageSize = 10 }) =>
   axios.get("/webktx/rooms/by-floor", { params: { floor, pageIndex, pageSize } });
 export const getDormNames = () => axios.get("/webktx/dormitories/names");
 export const getGlobalMaxFloor = () => axios.get("/webktx/rooms/max-floor");
+export const getRoomsIdNameDorm = () =>
+  axios.get("/webktx/rooms/id-name-dorm");
 
 // --- Users/Students/Registration ---
 export const getMyInfo = () => axios.get("/webktx/user/myInfo");
@@ -47,6 +49,14 @@ export const getRegistrationsByStudentId = (id) =>
   axios.get(`/webktx/room-registrations/student/${id}`, { withCredentials: true });
 export const getRegistrationsByStatus = (status, pageIndex = 0, pageSize = 10) =>
   axios.get(`/webktx/room-registrations/${String(status).toLowerCase()}`, {
+    params: { pageIndex, pageSize },
+  });
+export const getCheckoutRegistrationsByStudent = (studentId, pageIndex, pageSize) =>
+  axios.get(`/webktx/room-registrations/student/${studentId}/checkout`, {
+    params: { pageIndex, pageSize },
+  });
+export const getTransferRegistrationsByStudent = (studentId, pageIndex, pageSize) =>
+  axios.get(`/webktx/room-registrations/student/${studentId}/transfer`, {
     params: { pageIndex, pageSize },
   });
 
@@ -128,3 +138,44 @@ export const searchAnnouncements = ({
 // ---- MoMo Payment ----
 export const createMomoQR = (invoiceId) =>
   axios.post(`/api/momo/create`, null, { params: { invoiceId } });
+// VNPAY
+export const createVnPayUrl = (payload) => axios.post("/webktx/vnpay/create", payload);
+
+
+
+// ---- Support Request ----
+export const createSupportRequest = (payload) =>
+  axios.post("/webktx/support-requests", payload);
+
+export const getSupportRequestsByStudent = (studentId, pageIndex = 0, pageSize = 10) =>
+  axios.get("/webktx/support-requests/by-student", {
+    params: { studentId, pageIndex, pageSize },
+  });
+
+export const getSupportRequestsByStatus = (
+  status,
+  pageIndex = 0,
+  pageSize = 10
+) =>
+  axios.get("/webktx/support-requests/by-status", {
+    params: { status, pageIndex, pageSize },
+  });
+
+export const getSupportRequestsByCreatedDate = (
+  date,
+  pageIndex = 0,
+  pageSize = 10
+) =>
+  axios.get("/webktx/support-requests/by-created-date", {
+    params: { date, pageIndex, pageSize },
+  });
+
+export const getSupportRequestDetail = (id) =>
+  axios.get(`/webktx/support-requests/${id}`);
+
+export const updateSupportRequest = (id, body) =>
+  axios.put(`/webktx/support-requests/${id}`, body);
+
+export const deleteSupportRequest = (id) =>
+  axios.delete(`/webktx/support-requests/${id}`);
+

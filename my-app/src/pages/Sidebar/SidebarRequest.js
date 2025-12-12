@@ -21,10 +21,16 @@ export default function SidebarRequest() {
             <NavLink to="/bookings">Đăng ký ở lại</NavLink>
           </li> */}
           <li>
-            <NavLink to="/request_Transfer">Yêu cầu trả phòng</NavLink>
+            <NavLink to="/request_RequestTransfer">Yêu cầu đổi phòng</NavLink>
+          </li>
+          <li>
+            <NavLink to="/request_RequestCheckout">Yêu cầu trả phòng</NavLink>
           </li>
           <li>
             <NavLink to="/request_Fix">Yêu cầu sửa chữa</NavLink>
+          </li>
+          <li>
+            <NavLink to="/complaint">Khiếu nại</NavLink>
           </li>
         </ul>
       )}
