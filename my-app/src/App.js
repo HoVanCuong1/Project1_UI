@@ -37,6 +37,7 @@ import ManagerSupportRequests from "./pages/Manager/Request/ManagerSupportReques
 import RoomManager from "./pages/Manager/Dorm/RoomManager";
 import RoomDetailManager from "./pages/Manager/Dorm/RoomDetailManager";
 import VnPayReturn from "./pages/Payment/VnPayReturn";
+import Reports from "./pages/Manager/Report/Reports";
 
 export default function App() {
   return (
@@ -97,6 +98,7 @@ export default function App() {
           <Route path="supportRequestManager" element={<ManagerSupportRequests />} />
           <Route path="RoomManager" element={<RoomManager />} />
           <Route path="rooms/:roomId" element={<RoomDetailManager />} />
+          <Route path="reports" element={<Reports />} />
 
         </Route>
 

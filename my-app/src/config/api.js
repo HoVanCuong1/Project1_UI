@@ -179,3 +179,20 @@ export const updateSupportRequest = (id, body) =>
 export const deleteSupportRequest = (id) =>
   axios.delete(`/webktx/support-requests/${id}`);
 
+// ====== REPORT / THỐNG KÊ (MANAGER) ======
+
+// 1. Thống kê tổng quan theo tháng (Summary)
+// GET /webktx/manager/reports/summary?month=YYYY-MM
+export const getReportSummary = (month) => 
+  axios.get("/webktx/manager/reports/summary", { params: { month } });
+
+// 2. Danh sách phòng nợ tiền (Debt Rooms)
+// GET /webktx/manager/reports/debt-rooms?month=YYYY-MM
+export const getReportDebtRooms = (month) => 
+  axios.get("/webktx/manager/reports/debt-rooms", { params: { month } });
+
+// 3. Thống kê số lượng sinh viên/sức chứa (Occupancy)
+// GET /webktx/manager/reports/occupancy
+export const getReportOccupancy = () => 
+  axios.get("/webktx/manager/reports/occupancy");
+

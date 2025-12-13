@@ -69,6 +69,7 @@ export default function ManagerLayout() {
           <li><NavLink to="/manager/approval">Duyệt đăng ký phòng</NavLink></li>
           <li><NavLink to="/manager/supportRequestManager">Quản lý yêu cầu</NavLink></li>
           <li><NavLink to="/manager/announcements">Quản lý thông báo</NavLink></li>
+          <li><NavLink to="/manager/reports">Báo cáo thống kê</NavLink></li>
         </ul>
       </nav>
 

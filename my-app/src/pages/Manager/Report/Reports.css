@@ -1,0 +1,187 @@
+/* Reports.css */
+
+:root {
+  --primary-color: #4e73df;
+  --success-color: #1cc88a;
+  --warning-color: #f6c23e;
+  --danger-color: #e74a3b;
+  --text-dark: #2d3748;
+  --text-muted: #718096;
+  --bg-light: #f8f9fc;
+  --card-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15); /* Bóng đổ mềm hơn */
+}
+
+/* --- CONTAINER CHÍNH: QUAN TRỌNG NHẤT --- */
+.reports-container {
+  width: 100%;             /* Ép giãn full chiều rộng */
+  max-width: 100%;         /* Không giới hạn chiều rộng tối đa */
+  background-color: var(--bg-light);
+  min-height: 100vh;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: var(--text-dark);
+  padding: 1.5rem;         /* Padding xung quanh */
+  box-sizing: border-box;  /* Tính padding vào kích thước */
+}
+
+/* --- HEADER --- */
+.page-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e3e6f0;
+}
+
+.custom-date-input {
+  border: 1px solid #d1d3e2;
+  border-radius: 5px;
+  padding: 6px 12px;
+  color: var(--primary-color);
+  font-weight: 600;
+  background: #fff;
+}
+
+/* --- STAT CARDS (Các thẻ thống kê trên cùng) --- */
+.stat-card {
+  background: white;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  
+  /* FIX LỖI CHE MẤT ĐUÔI: */
+  height: 100%;             /* Vẫn giữ height 100% để bằng anh bằng em */
+  min-height: 120px;        /* NHƯNG bắt buộc cao tối thiểu 160px để chứa đủ chữ */
+  
+  border-left: 0.25rem solid transparent;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.2s;
+  
+  display: flex;
+  flex-direction: column;
+  
+  /* THAY ĐỔI QUAN TRỌNG: */
+  justify-content: center;  /* Canh giữa nội dung theo chiều dọc */
+  gap: 1rem;                /* Tạo khoảng cách cứng 16px giữa phần SỐ và phần CHỮ */
+}
+
+/* Các phần còn lại giữ nguyên */
+.stat-card:hover {
+  transform: translateY(-3px);
+}
+
+.stat-card.primary { border-left-color: var(--primary-color); }
+.stat-card.success { border-left-color: var(--success-color); }
+.stat-card.danger  { border-left-color: var(--danger-color); }
+.stat-card.info    { border-left-color: #36b9cc; }
+
+/* Chỉnh lại margin của Value để đẹp hơn khi dùng gap */
+.stat-value {
+  font-size: 1.8rem; /* Tăng kích thước số lên chút cho rõ */
+  font-weight: 700;
+  color: #5a5c69;
+  margin-bottom: 0;  /* Bỏ margin bottom vì đã có gap của cha lo */
+  line-height: 1.2;
+}
+
+.stat-title {
+  color: var(--primary-color);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.stat-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.4; /* Tăng chiều cao dòng để chữ không bị díu */
+}
+
+/* --- SECTION CARDS (Khung chứa Bảng & Biểu đồ) --- */
+.section-card {
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: var(--card-shadow);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Để bo góc không bị đè */
+}
+
+.section-header {
+  padding: 1rem 1.25rem;
+  background-color: #f8f9fc;
+  border-bottom: 1px solid #e3e6f0;
+}
+
+.section-title {
+  margin: 0;
+  font-weight: 700;
+  color: var(--primary-color);
+  font-size: 1rem;
+}
+
+/* --- TABLE --- */
+.table-responsive {
+  overflow-x: auto; /* Cho phép cuộn ngang nếu bảng quá rộng */
+}
+
+.custom-table {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.custom-table thead th {
+  background-color: #fff;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  border-bottom: 2px solid #e3e6f0;
+  padding: 0.75rem;
+}
+
+.custom-table td {
+  padding: 1rem 0.75rem;
+  vertical-align: middle;
+  border-bottom: 1px solid #e3e6f0;
+  color: #5a5c69;
+  font-size: 0.9rem;
+}
+
+/* Badge (Trạng thái UNPAID/PAID) */
+.custom-badge {
+  padding: 0.35em 0.65em;
+  font-size: 0.75em;
+  font-weight: 700;
+  border-radius: 0.35rem;
+}
+.badge-unpaid { background-color: #e74a3b; color: white; }
+.badge-paid { background-color: #1cc88a; color: white; }
+
+/* --- SCROLL AREA (Thanh cuộn đẹp hơn) --- */
+.scroll-area {
+  flex: 1; /* Tự động chiếm chiều cao còn lại */
+  overflow-y: auto;
+  max-height: 500px; /* Giới hạn chiều cao tối đa */
+}
+
+/* Style thanh cuộn */
+.scroll-area::-webkit-scrollbar { width: 6px; }
+.scroll-area::-webkit-scrollbar-track { background: #f1f1f1; }
+.scroll-area::-webkit-scrollbar-thumb { background: #d1d3e2; border-radius: 10px; }
+.scroll-area::-webkit-scrollbar-thumb:hover { background: #858796; }
+
+/* Occupancy List Items */
+.occupancy-item {
+  padding: 1rem;
+  border-bottom: 1px solid #f1f3f9;
+}
+
+/* Thêm vào Reports.css */
+.recharts-legend-item {
+    font-size: 0.85rem !important;
+    font-weight: 600;
+    color: #5a5c69 !important;
+}
+
+.recharts-tooltip-wrapper {
+    z-index: 1000;
+}
