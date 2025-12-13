@@ -1,0 +1,67 @@
+/* UserManagement.css */
+
+.user-manager-container {
+  width: 100%;
+  background-color: #f8f9fc;
+  min-height: 100vh;
+}
+
+/* Badge Roles */
+.role-badge {
+  font-size: 0.75rem;
+  padding: 5px 8px;
+  border-radius: 4px;
+}
+.role-badge.ADMIN { background-color: #4e73df; color: white; }
+.role-badge.MANAGER { background-color: #36b9cc; color: white; }
+.role-badge.USER { background-color: #858796; color: white; }
+
+/* Custom Modal Styling (Overlay) */
+.modal-backdrop-custom {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+}
+
+.modal-content-custom {
+  background: white;
+  width: 500px;
+  max-width: 95%;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  overflow: hidden;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-header-custom {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e3e6f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f8f9fc;
+}
+
+.modal-body-custom {
+  padding: 1.5rem;
+}
+
+.modal-footer-custom {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #e3e6f0;
+  display: flex;
+  justify-content: flex-end;
+  background-color: #f8f9fc;
+}

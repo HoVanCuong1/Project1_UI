@@ -20,7 +20,6 @@ import ManagerLayout from "./pages/SisUtcLayout/ManagerLayout";
 import ManagerHome from "./pages/ManagerHome";
 import Approval from "./pages/Manager/Approval";
 import Dorms from "./pages/Manager/Dorms";
-import StudentManagement from "./pages/Manager/StudentManagement";
 import StudentDetail from "./pages/Manager/StudentDetail"; // ← thêm dòng này
 import PaymentManager from "./pages/Manager/PaymentManager/PaymentManager";
 import CreateInvoice from "./pages/Manager/PaymentManager/CreateInvoice"
@@ -38,6 +37,8 @@ import RoomManager from "./pages/Manager/Dorm/RoomManager";
 import RoomDetailManager from "./pages/Manager/Dorm/RoomDetailManager";
 import VnPayReturn from "./pages/Payment/VnPayReturn";
 import Reports from "./pages/Manager/Report/Reports";
+import UserManagement from "./pages/Admin/User/UserManagement";
+import StudentManagement from "./pages/Manager/Students/StudentManagement";
 
 export default function App() {
   return (
@@ -99,6 +100,7 @@ export default function App() {
           <Route path="RoomManager" element={<RoomManager />} />
           <Route path="rooms/:roomId" element={<RoomDetailManager />} />
           <Route path="reports" element={<Reports />} />
+          <Route path="users" element={<UserManagement />} />
 
         </Route>
 

@@ -61,7 +61,7 @@ export default function ManagerLayout() {
 
       <nav className="sis-sidebar">
         <ul>
-          <li><NavLink to="/manager" end>Dashboard</NavLink></li>
+          <li><NavLink to="/manager" end>Trang chủ</NavLink></li>
           <li><NavLink to="/manager/RoomManager">Quản lý phòng</NavLink></li> {/* ← đổi đường dẫn này */}
           <li><NavLink to="/manager/student-management">Quản lý sinh viên</NavLink></li>
           <li><NavLink to="/manager/payment-manager">Lập hóa đơn</NavLink></li>
@@ -70,6 +70,7 @@ export default function ManagerLayout() {
           <li><NavLink to="/manager/supportRequestManager">Quản lý yêu cầu</NavLink></li>
           <li><NavLink to="/manager/announcements">Quản lý thông báo</NavLink></li>
           <li><NavLink to="/manager/reports">Báo cáo thống kê</NavLink></li>
+          <li><NavLink to="/manager/users">Quản lí tài khoản</NavLink></li>
         </ul>
       </nav>
 

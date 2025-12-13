@@ -1,0 +1,90 @@
+/* Container chung */
+.student-manager-container {
+  width: 100%;
+  background-color: #f8f9fc;
+  min-height: 100vh;
+}
+
+/* Custom Modal Overlay */
+.modal-backdrop-custom {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1055; /* Cao hơn header */
+}
+
+/* Modal Content Box */
+.modal-content-custom {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  width: 500px; /* Default width */
+  max-width: 95%;
+  max-height: 90vh; /* Không vượt quá chiều cao màn hình */
+  animation: modalFadeIn 0.3s ease-out;
+}
+
+/* Large Modal variant */
+.modal-content-custom.modal-lg {
+    width: 800px;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-header-custom {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e3e6f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 8px 8px 0 0;
+}
+
+.modal-body-custom {
+  padding: 1.5rem;
+  overflow-y: auto; /* Cho phép cuộn nội dung nếu dài */
+}
+
+.modal-footer-custom {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #e3e6f0;
+  display: flex;
+  justify-content: flex-end;
+  background-color: #f8f9fc;
+  border-radius: 0 0 8px 8px;
+}
+
+/* Table styles enhancement */
+.table-hover tbody tr:hover {
+    background-color: #f1f3f9;
+}
+
+
+/* Style cho thanh tìm kiếm */
+.input-group-text {
+    background-color: white;
+    border-right: none;
+    color: #6c757d;
+}
+
+.form-control:focus {
+    box-shadow: none;
+    border-color: #ced4da; /* Giữ nguyên màu border khi focus hoặc đổi màu tùy ý */
+}
+
+/* Ẩn viền trái của input để liền mạch với icon */
+.form-control.border-start-0 {
+    border-left: none;
+}

@@ -39,6 +39,14 @@ export const getDormNames = () => axios.get("/webktx/dormitories/names");
 export const getGlobalMaxFloor = () => axios.get("/webktx/rooms/max-floor");
 export const getRoomsIdNameDorm = () =>
   axios.get("/webktx/rooms/id-name-dorm");
+// Tạo phòng mới
+export const createRoom = (data) => axios.post("/webktx/rooms/create", data);
+
+// Cập nhật thông tin phòng
+export const updateRoom = (id, data) => axios.put(`/webktx/rooms/${id}`, data);
+
+// Xóa phòng
+export const deleteRoom = (id) => axios.delete(`/webktx/rooms/${id}`);
 
 // --- Users/Students/Registration ---
 export const getMyInfo = () => axios.get("/webktx/user/myInfo");
@@ -127,7 +135,7 @@ export const getAnnouncementsPaged = (pageIndex = 0, pageSize = 10) =>
 export const searchAnnouncements = ({
   keyword,
   target,     // "ALL" | "STUDENT" | "MANAGER" | undefined
-  channel,    // "WEB" | "EMAIL" | "SMS" | "APP" | undefined
+  channel,    // "WEB" | "EMAIL" undefined
   pageIndex = 0,
   pageSize = 10,
 }) =>
@@ -196,3 +204,28 @@ export const getReportDebtRooms = (month) =>
 export const getReportOccupancy = () => 
   axios.get("/webktx/manager/reports/occupancy");
 
+// ====== QUẢN LÝ USER (ADMIN) ======
+
+// Lấy danh sách tất cả user
+export const getAllUsers = () => axios.get("/webktx/user");
+
+// Tạo user mới
+export const createUser = (payload) => axios.post("/webktx/user/create", payload);
+
+// Cập nhật user (Info, Password, Roles, Active)
+export const updateUser = (id, payload) => axios.put(`/webktx/user/${id}`, payload);
+
+// Xóa user
+export const deleteUser = (id) => axios.delete(`/webktx/user/${id}`);
+
+
+// ====== QUẢN LÝ SINH VIÊN (MANAGER) ======
+
+// Lấy danh sách tất cả sinh viên
+export const getAllStudents = () => axios.get("/webktx/students");
+
+// Lấy chi tiết 1 sinh viên (nếu cần load lại dữ liệu mới nhất)
+export const getStudentDetail = (id) => axios.get(`/webktx/students/${id}`);
+
+// Xóa sinh viên khỏi phòng
+export const removeStudentFromRoom = (id) => axios.put(`/webktx/students/${id}/remove-room`);
