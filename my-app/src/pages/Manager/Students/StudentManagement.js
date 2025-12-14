@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import {
   getAllStudents,
-  getStudentDetail, // <-- Import thêm hàm này
+  getStudentsWithRoom, // <-- Import API mới
+  getStudentDetail,
   removeStudentFromRoom,
 } from "../../../config/api";
 import "./StudentManagement.css";
@@ -10,8 +11,9 @@ const StudentManagement = () => {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(false);
   
-  // State tìm kiếm
+  // State tìm kiếm & Lọc
   const [searchTerm, setSearchTerm] = useState(""); 
+  const [filterWithRoom, setFilterWithRoom] = useState(false); // false: All, true: Only with room
 
   const [showModal, setShowModal] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState(null);
@@ -20,7 +22,14 @@ const StudentManagement = () => {
   const fetchStudents = async () => {
     setLoading(true);
     try {
-      const res = await getAllStudents();
+      let res;
+      if (filterWithRoom) {
+        // Nếu đang bật lọc "Đã có phòng" -> Gọi API mới
+        res = await getStudentsWithRoom();
+      } else {
+        // Mặc định -> Lấy tất cả
+        res = await getAllStudents();
+      }
       setStudents(Array.isArray(res) ? res : []);
     } catch (error) {
       console.error("Lỗi lấy danh sách:", error);
@@ -30,28 +39,31 @@ const StudentManagement = () => {
     }
   };
 
+  // Gọi lại API khi chế độ lọc thay đổi
+  useEffect(() => {
+    // Nếu đang có nội dung tìm kiếm thì ko tự load lại list, để user tự bấm tìm
+    if (!searchTerm) {
+        fetchStudents();
+    }
+  }, [filterWithRoom]);
+
   // --- HÀM TÌM KIẾM ---
   const handleSearch = async (e) => {
-    e.preventDefault(); // Chặn reload form
+    e.preventDefault();
     if (!searchTerm.trim()) {
-      // Nếu ô tìm kiếm trống -> Load lại tất cả
       fetchStudents();
       return;
     }
 
     setLoading(true);
     try {
-      // Gọi API Get Detail theo ID
       const res = await getStudentDetail(searchTerm.trim());
-      
-      // Vì API trả về 1 object duy nhất, ta bọc nó vào mảng để map ra table
       if (res) {
         setStudents([res]); 
       } else {
         setStudents([]);
       }
     } catch (error) {
-      // Nếu lỗi (ví dụ 404 Not Found) -> Coi như không tìm thấy
       console.error("Không tìm thấy sinh viên:", error);
       setStudents([]); 
     } finally {
@@ -59,17 +71,12 @@ const StudentManagement = () => {
     }
   };
 
-  // Nút Reset tìm kiếm
   const handleResetSearch = () => {
     setSearchTerm("");
     fetchStudents();
   };
 
-  useEffect(() => {
-    fetchStudents();
-  }, []);
-
-  // --- CÁC HÀM XỬ LÝ KHÁC (GIỮ NGUYÊN) ---
+  // --- CÁC HÀM XỬ LÝ KHÁC ---
   const handleViewDetail = (student) => {
     setSelectedStudent(student);
     setShowModal(true);
@@ -83,7 +90,6 @@ const StudentManagement = () => {
         await removeStudentFromRoom(student.id);
         alert("Đã xóa sinh viên khỏi phòng thành công!");
         
-        // Sau khi xóa, nếu đang tìm kiếm thì reload theo tìm kiếm, ko thì reload tất cả
         if(searchTerm) handleSearch({preventDefault: ()=>{}}); 
         else fetchStudents();
 
@@ -100,43 +106,55 @@ const StudentManagement = () => {
 
   return (
     <div className="student-manager-container p-4">
-      {/* Header & Search Bar */}
-      <div className="d-flex justify-content-between align-items-center mb-4">
+      {/* Header & Controls */}
+      <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
         <div>
           <h4 className="fw-bold text-dark mb-1">Quản Lý Sinh Viên</h4>
           <p className="text-muted mb-0 small">Thông tin hồ sơ và quản lý nơi ở</p>
         </div>
         
-        {/* THANH TÌM KIẾM MỚI */}
-        <form onSubmit={handleSearch} className="d-flex gap-2">
-          <div className="input-group">
-            <span className="input-group-text bg-white text-muted border-end-0">
-              <i className="bi bi-search"></i>
-            </span>
-            <input
-              type="text"
-              className="form-control border-start-0 ps-0"
-              placeholder="Nhập Mã SV (VD: STU003)..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              style={{ maxWidth: '250px' }}
-            />
-            <button className="btn btn-primary" type="submit">Tìm</button>
-          </div>
-          {/* Nút reset chỉ hiện khi có nội dung tìm kiếm */}
-          {searchTerm && (
-             <button 
-                type="button" 
-                className="btn btn-outline-secondary" 
-                onClick={handleResetSearch} 
-                title="Tải lại danh sách"
-             >
-               <i className="bi bi-arrow-clockwise"></i>
-             </button>
-          )}
-        </form>
+        <div className="d-flex gap-3 align-items-center">
+            {/* TOGGLE FILTER BUTTON */}
+            <button 
+                className={`btn d-flex align-items-center gap-2 ${filterWithRoom ? 'btn-success' : 'btn-outline-secondary'}`}
+                onClick={() => setFilterWithRoom(!filterWithRoom)}
+                title={filterWithRoom ? "Hiển thị tất cả sinh viên" : "Chỉ hiện sinh viên đã có phòng"}
+            >
+                {filterWithRoom ? <i className="bi bi-house-check-fill"></i> : <i className="bi bi-house"></i>}
+                {filterWithRoom ? "Đang lọc: Có phòng" : "Tất cả sinh viên"}
+            </button>
+
+            {/* SEARCH BAR */}
+            <form onSubmit={handleSearch} className="d-flex gap-2">
+              <div className="input-group">
+                <span className="input-group-text bg-white text-muted border-end-0">
+                  <i className="bi bi-search"></i>
+                </span>
+                <input
+                  type="text"
+                  className="form-control border-start-0 ps-0"
+                  placeholder="Nhập Mã SV..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  style={{ maxWidth: '200px' }}
+                />
+                <button className="btn btn-primary" type="submit">Tìm</button>
+              </div>
+              {searchTerm && (
+                 <button 
+                    type="button" 
+                    className="btn btn-outline-secondary" 
+                    onClick={handleResetSearch} 
+                    title="Tải lại danh sách"
+                 >
+                   <i className="bi bi-arrow-clockwise"></i>
+                 </button>
+              )}
+            </form>
+        </div>
       </div>
 
+      {/* TABLE LIST */}
       <div className="card shadow-sm border-0">
         <div className="card-body p-0">
           <div className="table-responsive">
@@ -201,7 +219,7 @@ const StudentManagement = () => {
                 ) : (
                   <tr><td colSpan="6" className="text-center py-4 text-muted">
                     <i className="bi bi-inbox fs-4 d-block mb-2"></i>
-                    Không tìm thấy sinh viên nào.
+                    {filterWithRoom ? "Không có sinh viên nào đang ở trong phòng." : "Không tìm thấy sinh viên nào."}
                   </td></tr>
                 )}
               </tbody>
@@ -210,13 +228,13 @@ const StudentManagement = () => {
         </div>
       </div>
 
-      {/* --- MODAL CHI TIẾT (GIỮ NGUYÊN CODE CŨ) --- */}
+      {/* --- MODAL CHI TIẾT (GIỮ NGUYÊN) --- */}
       {showModal && selectedStudent && (
         <div className="modal-backdrop-custom">
           <div className="modal-content-custom modal-lg">
             <div className="modal-header-custom">
               <h5 className="mb-0 fw-bold">Hồ Sơ Sinh Viên: {selectedStudent.lastName} {selectedStudent.firstName}</h5>
-              <button className="btn-close" onClick={() => setShowModal(false)}> X</button>
+              <button className="btn-close" onClick={() => setShowModal(false)}></button>
             </div>
             
             <div className="modal-body-custom scroll-area-modal">

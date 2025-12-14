@@ -229,3 +229,5 @@ export const getStudentDetail = (id) => axios.get(`/webktx/students/${id}`);
 
 // Xóa sinh viên khỏi phòng
 export const removeStudentFromRoom = (id) => axios.put(`/webktx/students/${id}/remove-room`);
+
+export const getStudentsWithRoom = () => axios.get("/webktx/students/with-room");

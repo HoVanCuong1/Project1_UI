@@ -339,7 +339,7 @@ console.log("[Bookings] studentData:", studentData);
                   >
                     <h3>{room.name}</h3>
                     <p>
-                      Khu: <b>{room.dormName}</b> • Tầng <b>{room.floor}</b> • Loại: <b>{room.type}</b>
+                      Khu: <b>{room.dormName}</b> • Tầng <b>{room.floor}</b> • Loại: <b>{room.type === "MALE" ? "Nam" : room.type === "FEMALE" ? "Nữ" : room.type}</b>
                       <br />
                       Sức chứa: {room.maxOccupants} — Đang có: {room.currentOccupants}
                       <br />

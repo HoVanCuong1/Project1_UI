@@ -227,14 +227,16 @@ const mergeStudentProfile = (prev, p) => ({
             </tr>
             <tr><td className="key">Mã SV</td><td className="val">{student?.studentId || "-"}</td></tr>
             <tr><td className="key">Họ và Tên</td><td className="val">{student?.fullName || currentReg.studentName || "-"}</td></tr>
-            <tr><td className="key">Giới tính</td><td className="val">
-              {student?.gender ||
-                (currentReg.gender === "MALE"
-                  ? "Nam"
-                  : currentReg.gender === "FEMALE"
-                  ? "Nữ"
-                  : currentReg.gender) || "-"}
-            </td></tr>
+            <tr>
+  <td className="key">Giới tính</td>
+  <td className="val">
+    {(student?.gender || currentReg?.gender) === "MALE"
+      ? "Nam"
+      : (student?.gender || currentReg?.gender) === "FEMALE"
+      ? "Nữ"
+      : (student?.gender || currentReg?.gender || "-")}
+  </td>
+</tr>
             <tr><td className="key">Ngày sinh</td><td className="val">{student?.dateOfBirth || "-"}</td></tr>
             <tr><td className="key">Lớp</td><td className="val">{student?.className || currentReg.className || "-"}</td></tr>
             <tr><td className="key">Khóa</td><td className="val">{student?.academicYear ?? currentReg.academicYear ?? "-"}</td></tr>

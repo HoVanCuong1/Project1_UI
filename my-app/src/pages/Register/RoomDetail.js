@@ -136,7 +136,7 @@ export default function RoomDetail() {
             <tr>
               <td>Loại</td>
               <td>
-                {room.type} • {room.maxOccupants} chỗ
+                {room.type === "MALE" ? "Nam" : room.type === "FEMALE" ? "Nữ" : room.type} • {room.maxOccupants} chỗ
               </td>
             </tr>
             <tr>
